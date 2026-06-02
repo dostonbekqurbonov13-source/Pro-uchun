@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Savdolar — Admin</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <a href="../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+        <img src="../images/logo.svg" width="28" height="28" style="border-radius:7px;" alt="logo"/>
+        <span class="brand">InstaMarket</span>
+      </a>
+      <small>Admin Panel</small>
+    </div>
+    <nav class="admin-nav">
+      <div class="nav-section">Asosiy</div>
+      <a href="index.html"><span class="icon">📊</span>Dashboard</a>
+      <a href="listings.html"><span class="icon">📱</span>E'lonlar</a>
+      <a href="users.html"><span class="icon">👥</span>Foydalanuvchilar</a>
+      <div class="nav-section">Savdo</div>
+      <a href="orders.html" class="active"><span class="icon">💰</span>Savdolar</a>
+      <a href="disputes.html"><span class="icon">⚠️</span>Nizolar</a>
+      <a href="finance.html"><span class="icon">📈</span>Moliya</a>
+      <div class="nav-section">Tizim</div>
+      <a href="settings.html"><span class="icon">⚙️</span>Sozlamalar</a>
+      <a href="../index.html"><span class="icon">🌐</span>Saytga qaytish</a>
+    </nav>
+  </aside>
+
+  <div class="admin-content">
+    <div class="admin-topbar">
+      <h1>💰 Savdolar boshqaruvi</h1>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" placeholder="🔍 Qidirish..." oninput="filterOrders(this.value)"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;outline:none;font-family:inherit;width:200px;"/>
+        <select onchange="filterStatus(this.value)"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;outline:none;">
+          <option value="all">Barchasi</option>
+          <option value="escrow">Escrow</option>
+          <option value="checking">Tekshirish</option>
+          <option value="done">Yakunlandi</option>
+          <option value="dispute">Nizo</option>
+          <option value="refund">Qaytarildi</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-body">
+      <div class="dash-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:24px;">
+        <div class="dash-card"><div class="dc-label">📦 Jami savdo</div><div class="dc-val">356</div></div>
+        <div class="dash-card" style="border-color:var(--green);"><div class="dc-label">✅ Yakunlandi</div><div class="dc-val" style="color:var(--green-dark);">298</div></div>
+        <div class="dash-card" style="border-color:#f59e0b;"><div class="dc-label">⏳ Escrow</div><div class="dc-val" style="color:#d97706;">34</div></div>
+        <div class="dash-card" style="border-color:#ef4444;"><div class="dc-label">⚠️ Nizo</div><div class="dc-val" style="color:#dc2626;">2</div></div>
+        <div class="dash-card" style="border-color:#8b5cf6;"><div class="dc-label">💵 Bu oy</div><div class="dc-val" style="color:#7c3aed;">$1,840</div></div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-top">
+          <h2>Barcha savdolar</h2>
+          <span style="font-size:13px;color:var(--text-muted);">Jami: 356 ta</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Account</th><th>Xaridor</th><th>Sotuvchi</th><th>Summa</th><th>Komissiya</th><th>Holat</th><th>Sana</th><th>Amal</th></tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order detail modal -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal" style="max-width:500px;position:relative;">
+    <button class="modal-close" onclick="closeModal('orderModal')">✕</button>
+    <div class="modal-title" id="omTitle">Savdo tafsiloti</div>
+    <div id="omBody"></div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+var orders = [
+  {id:1089,acc:'@travel_uzbekistan',emoji:'✈️',buyer:'Jasur T.',seller:'Nilufar R.',amount:45,comm:5,status:'done',date:'02.06.2024',pay:'Payme'},
+  {id:1088,acc:'@beauty_uz_girl',emoji:'💄',buyer:'Malika S.',seller:'Kamola S.',amount:40,comm:5,status:'checking',date:'02.06.2024',pay:'Click'},
+  {id:1087,acc:'@fitness_uz',emoji:'💪',buyer:'Bobur N.',seller:'Sardor A.',amount:55,comm:7,status:'done',date:'01.06.2024',pay:'USDT'},
+  {id:1086,acc:'@food_toshkent',emoji:'🍔',buyer:'Sherzod M.',seller:'Nilufar R.',amount:65,comm:8,status:'dispute',date:'31.05.2024',pay:'Payme'},
+  {id:1085,acc:'@biznes_uz',emoji:'💼',buyer:'Dilnoza K.',seller:'Jasur T.',amount:90,comm:11,status:'done',date:'30.05.2024',pay:'USDT'},
+  {id:1084,acc:'@tech_uzbek',emoji:'📱',buyer:'Akbar N.',seller:'Bobur M.',amount:35,comm:4,status:'done',date:'29.05.2024',pay:'Click'},
+  {id:1083,acc:'@art_gallery_uz',emoji:'🎨',buyer:'Zulfiya H.',seller:'Kamola S.',amount:42,comm:5,status:'escrow',date:'29.05.2024',pay:'Payme'},
+  {id:1082,acc:'@home_decor_uz',emoji:'🏠',buyer:'Munira B.',seller:'Sardor A.',amount:70,comm:8,status:'done',date:'28.05.2024',pay:'Click'},
+  {id:1081,acc:'@travel_uzbekistan',emoji:'✈️',buyer:'Otabek X.',seller:'Nilufar R.',amount:45,comm:5,status:'refund',date:'27.05.2024',pay:'Payme'},
+  {id:1080,acc:'@fitness_uz',emoji:'💪',buyer:'Jasur T.',seller:'Bobur M.',amount:55,comm:7,status:'done',date:'26.05.2024',pay:'USDT'},
+];
+
+var statusMap = {
+  done:     {html:'<span class="status-badge s-active">✅ Yakunlandi</span>',key:'done'},
+  checking: {html:'<span class="status-badge s-pending">🔍 Tekshirish</span>',key:'checking'},
+  escrow:   {html:'<span class="status-badge" style="background:#fef9c3;color:#713f12;">🔒 Escrow</span>',key:'escrow'},
+  dispute:  {html:'<span class="status-badge s-rejected">⚠️ Nizo</span>',key:'dispute'},
+  refund:   {html:'<span class="status-badge s-sold">↩️ Qaytarildi</span>',key:'refund'},
+};
+
+function renderOrders(list) {
+  document.getElementById('ordersBody').innerHTML = list.map(function(o) {
+    var s = statusMap[o.status] || statusMap.done;
+    var actionHtml = '';
+    if (o.status === 'checking') actionHtml = '<button class="btn btn-xs btn-green" onclick="releaseEscrow('+o.id+')">✅ Tasdiqlash</button>';
+    else if (o.status === 'dispute') actionHtml = '<a href="disputes.html" class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;">⚠️ Hal qilish</a>';
+    else actionHtml = '<button class="btn btn-xs btn-ghost" onclick="viewOrder('+o.id+')">👁 Ko\'rish</button>';
+    return '<tr data-status="'+o.status+'" data-search="'+o.acc.toLowerCase()+' '+o.buyer.toLowerCase()+' '+o.seller.toLowerCase()+'">' +
+      '<td style="font-size:12px;color:var(--text-muted);">#'+o.id+'</td>' +
+      '<td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">'+o.emoji+'</span><span style="font-weight:600;font-size:13px;">'+o.acc+'</span></div></td>' +
+      '<td style="font-size:13px;">'+o.buyer+'</td>' +
+      '<td style="font-size:13px;">'+o.seller+'</td>' +
+      '<td style="font-weight:700;color:var(--text);">$'+o.amount+'</td>' +
+      '<td style="font-size:13px;color:var(--green-dark);">+$'+o.comm+'</td>' +
+      '<td>'+s.html+'</td>' +
+      '<td style="font-size:12px;color:var(--text-muted);">'+o.date+'</td>' +
+      '<td>'+actionHtml+'</td></tr>';
+  }).join('');
+}
+
+function filterOrders(q) {
+  document.querySelectorAll('#ordersBody tr').forEach(function(r) {
+    r.style.display = (r.dataset.search||'').includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+function filterStatus(s) {
+  document.querySelectorAll('#ordersBody tr').forEach(function(r) {
+    r.style.display = (s==='all' || r.dataset.status===s) ? '' : 'none';
+  });
+}
+function releaseEscrow(id) {
+  var o = orders.find(function(x){return x.id===id;});
+  if (o) { o.status = 'done'; renderOrders(orders); showToast('✅ Pul sotuvchiga o\'tkazildi'); }
+}
+function viewOrder(id) {
+  var o = orders.find(function(x){return x.id===id;});
+  if (!o) return;
+  var s = statusMap[o.status] || statusMap.done;
+  document.getElementById('omTitle').textContent = 'Savdo #' + o.id;
+  document.getElementById('omBody').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">' +
+    [['Account',o.emoji+' '+o.acc],['Xaridor',o.buyer],['Sotuvchi',o.seller],['Summa','$'+o.amount],['Komissiya','$'+o.comm],["To'lov",o.pay],['Sana',o.date],['Holat',s.html]].map(function(p) {
+      return '<div style="background:var(--bg);border-radius:8px;padding:12px;border:1px solid var(--border-light);">' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">'+p[0]+'</div>' +
+        '<div style="font-weight:600;font-size:14px;">'+p[1]+'</div></div>';
+    }).join('') + '</div>' +
+    '<button class="btn btn-ghost btn-sm" style="float:right;" onclick="closeModal(\'orderModal\')">Yopish</button>';
+  openModal('orderModal');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderOrders(orders);
+  document.querySelectorAll('.modal-overlay').forEach(function(m) {
+    m.addEventListener('click', function(e) { if(e.target===m) m.classList.remove('open'); });
+  });
+});
+</script>
+</body>
+</html>

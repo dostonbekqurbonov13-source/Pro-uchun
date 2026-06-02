@@ -6,340 +6,261 @@
   <title>Account — InstaMarket.uz</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .page-body { padding-top: 64px; background: var(--bg); min-height: 100vh; }
+    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; font-size: 13px; color: var(--text-muted); }
+    .breadcrumb a { color: var(--text-muted); }
+    .breadcrumb a:hover { color: var(--primary); }
+    .pay-opt { border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; transition: all 0.18s; }
+    .pay-opt:hover { border-color: var(--primary); }
+    .pay-opt.selected { border-color: var(--primary); background: rgba(193,53,132,0.04); }
+    .pay-opt input { accent-color: var(--primary); }
+    .similar-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-light); text-decoration: none; color: inherit; }
+    .similar-item:last-child { border: none; }
+    .similar-ava { width: 38px; height: 38px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #1e40af; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+    .alert-warn { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #92400e; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+  </style>
 </head>
 <body>
 <nav class="navbar">
   <a href="../index.html" class="navbar-brand">
-    <img src="../images/logo.svg" width="36" height="36" alt="InstaMarket" style="border-radius:9px;display:block;"/>
+    <img src="../images/logo.svg" width="32" height="32" alt="logo" style="border-radius:8px;"/>
     <span>InstaMarket</span>
   </a>
   <div class="nav-links">
     <a href="../index.html">Bosh sahifa</a>
     <a href="marketplace.html">Bozor</a>
+    <a href="sell.html">Sotish</a>
     <a href="login.html" class="btn-nav-login">Kirish</a>
     <a href="register.html" class="btn-nav-register">Ro'yxatdan o'tish</a>
   </div>
   <button class="nav-mobile-btn" onclick="toggleMenu()">☰</button>
 </nav>
 
-<!-- BREADCRUMB -->
-<div style="background:white; border-bottom:1px solid var(--border); padding:12px 24px; margin-top:68px;">
-  <div style="max-width:1100px; margin:0 auto; font-size:14px; color:var(--text-light);">
-    <a href="../index.html" style="color:var(--text-light); text-decoration:none;">Bosh sahifa</a>
-    <span style="margin:0 8px;">›</span>
-    <a href="marketplace.html" style="color:var(--text-light); text-decoration:none;">Bozor</a>
-    <span style="margin:0 8px;">›</span>
-    <span id="breadcrumbName" style="color:var(--text); font-weight:600;">Account</span>
+<div class="page-body">
+  <div class="breadcrumb">
+    <a href="../index.html">Bosh sahifa</a> ›
+    <a href="marketplace.html">Bozor</a> ›
+    <span id="bcName">Account</span>
   </div>
+  <div class="detail-layout" id="detailLayout"></div>
 </div>
-
-<div class="detail-layout" id="detailLayout" style="padding-top:32px;"></div>
-<div class="toast-container" id="toastContainer"></div>
 
 <!-- BUY MODAL -->
 <div class="modal-overlay" id="buyModal">
-  <div class="modal" style="position:relative;">
+  <div class="modal" style="max-width:460px;">
     <button class="modal-close" onclick="closeModal('buyModal')">✕</button>
     <div class="modal-title">🛒 Xarid qilish</div>
-    <p style="color:var(--text-light); font-size:14px; margin-bottom:24px;">Escrow himoya tizimi orqali xavfsiz xarid</p>
-    <div id="modalAccountInfo" style="background:var(--bg); border-radius:12px; padding:16px; margin-bottom:20px;"></div>
-    <div style="margin-bottom:20px;">
-      <label style="font-size:14px; font-weight:600; display:block; margin-bottom:10px;">To'lov usulini tanlang:</label>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <label style="border:2px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; transition:all 0.2s;" id="paymeLabel">
-          <input type="radio" name="payment" value="payme" onchange="selectPayment(this)" style="accent-color:var(--primary);"/> 💳 Payme
-        </label>
-        <label style="border:2px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; transition:all 0.2s;" id="clickLabel">
-          <input type="radio" name="payment" value="click" onchange="selectPayment(this)"/> ⚡ Click
-        </label>
-        <label style="border:2px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; transition:all 0.2s;" id="usdtLabel">
-          <input type="radio" name="payment" value="usdt" onchange="selectPayment(this)"/> 🪙 USDT
-        </label>
-        <label style="border:2px solid var(--border); border-radius:12px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; transition:all 0.2s;" id="cardLabel">
-          <input type="radio" name="payment" value="card" onchange="selectPayment(this)"/> 💰 Karta
-        </label>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px;">Escrow tizimi orqali xavfsiz xarid</p>
+    <div id="buyAccInfo" style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:18px;border:1px solid var(--border-light);"></div>
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">To'lov usuli:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="payOpts">
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="payme"/> 💳 Payme</label>
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="click"/> ⚡ Click</label>
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="usdt"/> 🪙 USDT</label>
+        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="card"/> 💰 Karta</label>
       </div>
     </div>
-    <div style="background:#e8f9f0; border-radius:12px; padding:14px; margin-bottom:20px; font-size:13px; color:#2d6a4f; display:flex; gap:10px;">
-      <span style="font-size:18px;">🔒</span>
-      <span>Pulingiz <strong>Escrow</strong> tizimida ushlanadi. Account tekshirib bo'lganingizdan keyingina sotuvchiga o'tadi. 72 soat tekshirish muddati beriladi.</span>
+    <div class="alert-info" style="margin-bottom:18px;">
+      <span>🔒</span>
+      <span>Pulingiz <strong>Escrow</strong> tizimida ushlanadi. Account tekshirib bo'lgach sotuvchiga o'tadi. <strong>72 soat</strong> tekshirish vaqti beriladi.</span>
     </div>
-    <button class="btn btn-primary" style="width:100%; justify-content:center; font-size:16px;" onclick="confirmPurchase()">
-      To'lovni amalga oshirish →
-    </button>
+    <button class="btn btn-primary" style="width:100%;font-size:15px;padding:14px;" onclick="confirmBuy()">To'lovni amalga oshirish →</button>
   </div>
 </div>
 
 <!-- SAFE DEAL MODAL -->
-<div class="modal-overlay" id="safeDealModal">
-  <div class="modal" style="position:relative;">
-    <button class="modal-close" onclick="closeModal('safeDealModal')">✕</button>
+<div class="modal-overlay" id="safeModal">
+  <div class="modal" style="max-width:440px;">
+    <button class="modal-close" onclick="closeModal('safeModal')">✕</button>
     <div class="modal-title">🛡️ Safe Deal</div>
-    <p style="color:var(--text-light); font-size:14px; margin-bottom:20px;">Qo'shimcha himoya va kafolat paketi</p>
-    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
-      <div style="display:flex; align-items:flex-start; gap:12px; background:var(--green-light); border-radius:12px; padding:14px;">
-        <span style="font-size:20px; margin-top:2px;">✅</span>
-        <div><strong style="font-size:14px;">Moderator shaxsan tekshiradi</strong><p style="font-size:13px; color:var(--text-light); margin-top:4px;">Accountni bizning mutaxassis ko'rib chiqadi</p></div>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px;">Qo'shimcha himoya va kafolat paketi</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
+        <span style="font-size:18px;flex-shrink:0;">✅</span>
+        <div><strong style="font-size:14px;">Moderator shaxsan tekshiradi</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Account bizning mutaxassis tomonidan ko'rib chiqiladi</p></div>
       </div>
-      <div style="display:flex; align-items:flex-start; gap:12px; background:var(--green-light); border-radius:12px; padding:14px;">
-        <span style="font-size:20px; margin-top:2px;">📅</span>
-        <div><strong style="font-size:14px;">30 kunlik kafolat</strong><p style="font-size:13px; color:var(--text-light); margin-top:4px;">Muammo chiqsa 30 kun mobaynida hal qilinadi</p></div>
+      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
+        <span style="font-size:18px;flex-shrink:0;">📅</span>
+        <div><strong style="font-size:14px;">30 kunlik kafolat</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Muammo bo'lsa 30 kun mobaynida hal qilinadi</p></div>
       </div>
-      <div style="display:flex; align-items:flex-start; gap:12px; background:var(--green-light); border-radius:12px; padding:14px;">
-        <span style="font-size:20px; margin-top:2px;">💰</span>
-        <div><strong style="font-size:14px;">100% qaytarish kafolati</strong><p style="font-size:13px; color:var(--text-light); margin-top:4px;">Muammo hal bo'lmasa — to'liq qaytariladi</p></div>
+      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
+        <span style="font-size:18px;flex-shrink:0;">💰</span>
+        <div><strong style="font-size:14px;">100% qaytarish kafolati</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Muammo hal bo'lmasa to'liq qaytariladi</p></div>
       </div>
     </div>
-    <div id="safeDealPrice" style="font-size:18px; font-weight:800; margin-bottom:20px;"></div>
-    <button class="btn btn-green" style="width:100%; justify-content:center; font-size:16px;" onclick="openModal('buyModal'); closeModal('safeDealModal');">
-      Safe Deal bilan davom etish →
-    </button>
+    <div id="safePriceInfo" style="margin-bottom:16px;"></div>
+    <button class="btn btn-green" style="width:100%;font-size:15px;padding:14px;" onclick="closeModal('safeModal');openModal('buyModal');">Safe Deal bilan davom etish →</button>
   </div>
 </div>
 
+<div class="toast-container" id="toastContainer"></div>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
-
 <script>
-let currentAccount = null;
+var acc = null;
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('DOMContentLoaded', function() {
+  var id = parseInt(getParam('id')) || 1;
+  acc = accounts.find(function(a) { return a.id === id; }) || accounts[0];
+  document.title = '@' + acc.username + ' — InstaMarket.uz';
+  var bc = document.getElementById('bcName');
+  if (bc) bc.textContent = '@' + acc.username;
 
-function selectPayment(el) {
-  document.querySelectorAll('[id$="Label"]').forEach(l => l.style.borderColor = 'var(--border)');
-  el.closest('label').style.borderColor = 'var(--primary)';
+  var scoreColor = acc.score >= 90 ? 'var(--green-dark)' : acc.score >= 80 ? '#d97706' : '#dc2626';
+  var erColor = acc.er >= 5 ? 'var(--green-dark)' : acc.er >= 3 ? '#d97706' : '#dc2626';
+  var safeDeal = Math.round(acc.price * 1.15);
+
+  document.getElementById('safePriceInfo').innerHTML =
+    '<div style="background:var(--bg);border-radius:10px;padding:14px;border:1.5px solid var(--border);text-align:center;">' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Safe Deal narxi</div>' +
+    '<div style="font-size:26px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$' + safeDeal + '</div>' +
+    '<div style="font-size:12px;color:var(--text-muted);">($' + acc.price + ' + $' + (safeDeal - acc.price) + ' himoya)</div></div>';
+
+  document.getElementById('buyAccInfo').innerHTML =
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
+    '<div style="width:42px;height:42px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">' + acc.emoji + '</div>' +
+    '<div><div style="font-weight:700;">@' + acc.username + '</div><div style="font-size:12px;color:var(--text-muted);">' + acc.niche + '</div></div></div>' +
+    '<div style="display:flex;justify-content:space-between;font-size:14px;padding-top:8px;border-top:1px solid var(--border-light);">' +
+    '<span style="color:var(--text-muted);">To\'lov summasi:</span>' +
+    '<span style="font-weight:900;font-size:18px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$' + acc.price + '</span></div>';
+
+  var similar = accounts.filter(function(a) { return a.category === acc.category && a.id !== acc.id; }).slice(0, 3);
+
+  document.getElementById('detailLayout').innerHTML =
+  '<div class="detail-main">' +
+    // Profile
+    '<div class="detail-card">' +
+      '<div class="detail-profile">' +
+        '<div class="detail-avatar">' + acc.emoji + '</div>' +
+        '<div>' +
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+            '<span class="detail-username">@' + acc.username + '</span>' +
+            (acc.badge === 'top' ? '<span class="badge badge-top">⭐ TOP</span>' : '<span class="badge badge-verified">✅ Verified</span>') +
+          '</div>' +
+          '<div class="detail-niche">' + acc.niche + '</div>' +
+          '<div style="display:flex;gap:14px;margin-top:8px;font-size:13px;color:var(--text-muted);flex-wrap:wrap;">' +
+            '<span>📅 ' + acc.age + '</span><span>📸 ' + acc.posts + ' post</span><span>🌍 ' + acc.audience + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="stats-grid-3">' +
+        '<div class="stat-box"><div class="val" style="color:var(--primary);">' + formatNum(acc.followers) + '</div><div class="key">👥 Followers</div></div>' +
+        '<div class="stat-box"><div class="val" style="color:' + erColor + ';">' + acc.er + '%</div><div class="key">❤️ Eng. Rate</div></div>' +
+        '<div class="stat-box"><div class="val" style="color:' + scoreColor + ';">' + acc.score + '/100</div><div class="key">⭐ Sifat</div></div>' +
+      '</div>' +
+    '</div>' +
+    // Nakrutka
+    '<div class="detail-card">' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:18px;">🤖 Nakrutka Tahlili</h3>' +
+      '<div style="display:flex;flex-direction:column;gap:14px;">' +
+        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="font-weight:600;">Real followers</span><span style="font-weight:700;color:var(--green-dark);">' + acc.realFollowers + '%</span></div><div class="progress-bar"><div class="progress-fill green" style="width:' + acc.realFollowers + '%"></div></div></div>' +
+        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="font-weight:600;">Umumiy sifat</span><span style="font-weight:700;color:var(--primary);">' + acc.score + '/100</span></div><div class="progress-bar"><div class="progress-fill" style="width:' + acc.score + '%"></div></div></div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">' +
+        ['O\'sish tabiiy','Bot comment yo\'q','Auditoriya sifatli','Moderator tekshirdi'].map(function(t) {
+          return '<div style="background:var(--green-light);border-radius:8px;padding:10px;text-align:center;font-size:13px;color:var(--green-dark);font-weight:600;">✅ ' + t + '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>' +
+    // Tavsif
+    '<div class="detail-card">' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:12px;">📝 Account haqida</h3>' +
+      '<p style="color:var(--text-light);font-size:14px;line-height:1.75;">' + acc.description + '</p>' +
+      '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;">' +
+        acc.tags.map(function(t) { return '<span style="background:rgba(193,53,132,0.07);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">#' + t + '</span>'; }).join('') +
+      '</div>' +
+    '</div>' +
+    // Chat
+    '<div class="detail-card">' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:12px;">💬 Sotuvchi bilan gaplash</h3>' +
+      '<div class="alert-warn" style="margin-bottom:14px;"><span>⚠️</span><span>Barcha muloqot faqat sayt ichida. Tashqi aloqa (Telegram, WhatsApp) so\'ramang — bu firibgarlik belgisi!</span></div>' +
+      '<div class="chat-wrap">' +
+        '<div class="chat-head">' +
+          '<div style="width:38px;height:38px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">' + acc.seller.emoji + '</div>' +
+          '<div style="flex:1;"><div style="font-weight:700;font-size:14px;">' + acc.seller.name + '</div><div style="font-size:11px;color:var(--green-dark);">● Faol</div></div>' +
+          '<div style="font-size:12px;color:var(--text-muted);">⭐' + acc.seller.rating + ' · ' + acc.seller.sales + ' savdo</div>' +
+        '</div>' +
+        '<div class="chat-msgs" id="chatMsgs">' +
+          '<div class="msg msg-in"><div class="msg-bubble">Salom! @' + acc.username + ' account haqida savollaringiz bo\'lsa javob beraman 🙏</div><div class="msg-time">' + acc.seller.name + '</div></div>' +
+        '</div>' +
+        '<div class="chat-inp">' +
+          '<input type="text" id="chatInp" placeholder="Xabar yozing..." onkeypress="if(event.key===\'Enter\')sendMsg()"/>' +
+          '<button class="chat-send" onclick="sendMsg()">➤</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>' +
+  // SIDEBAR
+  '<div class="detail-sidebar">' +
+    '<div class="buy-box">' +
+      '<div class="buy-price">$' + acc.price + '</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Bir martalik to\'lov · Escrow himoyali</div>' +
+      '<ul class="buy-features">' +
+        ['Login va parol to\'liq beriladi','72 soat tekshirish muddati','Escrow tizimi himoyasi','Sayt ichida yordam','Muammo bo\'lsa pul qaytariladi'].map(function(t) {
+          return '<li><span class="chk">✅</span>' + t + '</li>';
+        }).join('') +
+      '</ul>' +
+      '<button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:10px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — $' + acc.price + '</button>' +
+      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — $' + Math.round(acc.price*1.15) + '</button>' +
+      '<div class="seller-mini">' +
+        '<div class="seller-ava">' + acc.seller.emoji + '</div>' +
+        '<div><div style="font-weight:700;font-size:14px;">' + acc.seller.name + '</div><div style="font-size:12px;color:var(--text-muted);">⭐' + acc.seller.rating + ' · ' + acc.seller.sales + ' muvaffaqiyatli savdo</div></div>' +
+      '</div>' +
+      '<div style="margin-top:14px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">🔒 Xavfsiz to\'lov: Payme, Click, USDT<br/>⚡ O\'rtacha javob: 1-2 soat</div>' +
+    '</div>' +
+    '<div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-top:20px;">' +
+      '<h4 style="font-size:15px;font-weight:700;margin-bottom:14px;">🔥 O\'xshash accountlar</h4>' +
+      (similar.length ? similar.map(function(s) {
+        return '<a href="account.html?id=' + s.id + '" class="similar-item"><div class="similar-ava">' + s.emoji + '</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@' + s.username + '</div><div style="font-size:11px;color:var(--text-muted);">' + formatNum(s.followers) + ' · ' + s.er + '% ER</div></div><div style="font-weight:800;font-size:14px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">$' + s.price + '</div></a>';
+      }).join('') : '<p style="font-size:13px;color:var(--text-muted);">Hozircha yo\'q</p>') +
+    '</div>' +
+  '</div>';
+});
+
+function selectPay(label) {
+  document.querySelectorAll('.pay-opt').forEach(function(l) { l.classList.remove('selected'); });
+  label.classList.add('selected');
+  label.querySelector('input').checked = true;
 }
 
-function confirmPurchase() {
-  const user = loadUser();
-  if (!user) { window.location.href = 'login.html'; return; }
-  const pay = document.querySelector('input[name="payment"]:checked');
+function confirmBuy() {
+  var user = loadUser();
+  if (!user) { closeModal('buyModal'); window.location.href = 'login.html'; return; }
+  var pay = document.querySelector('input[name="pay"]:checked');
   if (!pay) { showToast('To\'lov usulini tanlang!', 'error'); return; }
-  closeModal('buyModal');
-  showToast('✅ To\'lov muvaffaqiyatli! Account tekshiruvi boshlandi.', 'success');
-  setTimeout(() => showToast('📧 Tasdiqlash xabari emailingizga yuborildi', 'success'), 2000);
-}
-
-function sendMessage() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  const user = loadUser();
-  if (!user) { window.location.href = 'login.html'; return; }
-  const msgs = document.getElementById('chatMessages');
-  const el = document.createElement('div');
-  el.className = 'msg msg-out';
-  el.innerHTML = `<div class="msg-bubble">${msg}</div><div class="msg-time">Hozir</div>`;
-  msgs.appendChild(el);
-  input.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(() => {
-    const reply = document.createElement('div');
-    reply.className = 'msg msg-in';
-    reply.innerHTML = `<div class="msg-bubble">Xabaringiz uchun rahmat! Tez orada javob beraman. 🙏</div><div class="msg-time">Hozir</div>`;
-    msgs.appendChild(reply);
-    msgs.scrollTop = msgs.scrollHeight;
+  var btn = event.target; btn.textContent = 'Yuklanmoqda...'; btn.disabled = true;
+  setTimeout(function() {
+    closeModal('buyModal');
+    showToast('✅ To\'lov muvaffaqiyatli! Account tekshiruvi boshlandi.');
+    setTimeout(function() { showToast('📧 Tasdiqlash xabari emailingizga yuborildi'); }, 2000);
+    btn.textContent = 'To\'lovni amalga oshirish →'; btn.disabled = false;
   }, 1500);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const id = parseInt(getParam('id')) || 1;
-  currentAccount = accounts.find(a => a.id === id) || accounts[0];
-  document.title = `@${currentAccount.username} — InstaMarket.uz`;
-  document.getElementById('breadcrumbName').textContent = '@' + currentAccount.username;
-
-  const safeDealExtra = Math.round(currentAccount.price * 0.15);
-  document.getElementById('safeDealPrice').innerHTML =
-    `Asosiy narx: <span style="text-decoration:line-through; color:var(--text-light);">$${currentAccount.price}</span>
-     &nbsp; Safe Deal: <span style="color:var(--green); font-weight:900;">$${currentAccount.price + safeDealExtra}</span>
-     <span style="font-size:13px; color:var(--text-light);"> (+$${safeDealExtra} qo'shimcha himoya)</span>`;
-
-  document.getElementById('modalAccountInfo').innerHTML = `
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-      <div style="width:44px; height:44px; background:var(--gradient); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px;">${currentAccount.emoji}</div>
-      <div><div style="font-weight:700;">@${currentAccount.username}</div><div style="font-size:13px; color:var(--text-light);">${currentAccount.niche}</div></div>
-    </div>
-    <div style="display:flex; justify-content:space-between; font-size:14px;">
-      <span style="color:var(--text-light);">Jami summa:</span>
-      <span style="font-weight:800; font-size:18px; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">$${currentAccount.price}</span>
-    </div>`;
-
-  const erColor = currentAccount.er >= 5 ? 'var(--green)' : currentAccount.er >= 3 ? 'var(--secondary)' : 'var(--primary)';
-  const scoreWidth = currentAccount.score;
-  const realWidth = currentAccount.realFollowers;
-
-  document.getElementById('detailLayout').innerHTML = `
-    <div class="detail-main">
-      <!-- Profile Header -->
-      <div class="detail-header">
-        <div class="detail-profile">
-          <div class="detail-avatar">${currentAccount.emoji}</div>
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <span class="detail-username">@${currentAccount.username}</span>
-              ${currentAccount.badge==='top' ? '<span class="card-badge badge-top">⭐ TOP</span>' : '<span class="card-badge badge-verified">✅ Verified</span>'}
-            </div>
-            <div class="detail-niche">${currentAccount.niche}</div>
-            <div style="display:flex; gap:8px; margin-top:8px; font-size:13px; color:var(--text-light);">
-              <span>📅 ${currentAccount.age}</span>
-              <span>•</span>
-              <span>📸 ${currentAccount.posts} post</span>
-              <span>•</span>
-              <span>🌍 ${currentAccount.audience}</span>
-            </div>
-          </div>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="val" style="color:var(--primary);">${(currentAccount.followers/1000).toFixed(1)}K</div>
-            <div class="key">👥 Followers</div>
-          </div>
-          <div class="stat-box green">
-            <div class="val" style="color:${erColor};">${currentAccount.er}%</div>
-            <div class="key">❤️ Engagement</div>
-          </div>
-          <div class="stat-box">
-            <div class="val" style="color:#833AB4;">${currentAccount.score}/100</div>
-            <div class="key">⭐ Sifat bali</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Nakrutka Tahlili -->
-      <div style="background:white; border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); margin-bottom:24px;">
-        <h3 style="font-size:18px; font-weight:700; margin-bottom:20px;">🤖 Nakrutka Tahlili</h3>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px;">
-              <span style="font-weight:600;">Real followers</span>
-              <span style="font-weight:700; color:var(--green);">${currentAccount.realFollowers}%</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill green" style="width:${realWidth}%"></div></div>
-          </div>
-          <div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px;">
-              <span style="font-weight:600;">Umumiy sifat bali</span>
-              <span style="font-weight:700; color:var(--primary);">${currentAccount.score}/100</span>
-            </div>
-            <div class="progress-bar"><div class="progress-fill" style="width:${scoreWidth}%"></div></div>
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
-            <div style="background:var(--green-light); border-radius:10px; padding:12px; text-align:center;">
-              <div style="font-size:20px; font-weight:800; color:var(--green);">✅</div>
-              <div style="font-size:12px; color:var(--text-light); margin-top:4px;">O'sish tabiiy</div>
-            </div>
-            <div style="background:var(--green-light); border-radius:10px; padding:12px; text-align:center;">
-              <div style="font-size:20px; font-weight:800; color:var(--green);">✅</div>
-              <div style="font-size:12px; color:var(--text-light); margin-top:4px;">Bot comment yo'q</div>
-            </div>
-            <div style="background:var(--green-light); border-radius:10px; padding:12px; text-align:center;">
-              <div style="font-size:20px; font-weight:800; color:var(--green);">✅</div>
-              <div style="font-size:12px; color:var(--text-light); margin-top:4px;">Auditoriya sifatli</div>
-            </div>
-            <div style="background:var(--green-light); border-radius:10px; padding:12px; text-align:center;">
-              <div style="font-size:20px; font-weight:800; color:var(--green);">✅</div>
-              <div style="font-size:12px; color:var(--text-light); margin-top:4px;">Moderator tekshirdi</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tavsif -->
-      <div style="background:white; border-radius:var(--radius); padding:28px; box-shadow:var(--shadow); margin-bottom:24px;">
-        <h3 style="font-size:18px; font-weight:700; margin-bottom:14px;">📝 Account haqida</h3>
-        <p style="color:var(--text-light); line-height:1.8;">${currentAccount.description}</p>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;">
-          ${currentAccount.tags.map(t => `<span style="background:rgba(225,48,108,0.08); color:var(--primary); padding:4px 12px; border-radius:20px; font-size:13px; font-weight:600;">#${t}</span>`).join('')}
-        </div>
-      </div>
-
-      <!-- Chat -->
-      <div style="background:white; border-radius:var(--radius); padding:28px; box-shadow:var(--shadow);">
-        <h3 style="font-size:18px; font-weight:700; margin-bottom:16px;">💬 Sotuvchi bilan gaplashish</h3>
-        <div style="background:#fff3cd; border-radius:10px; padding:12px 16px; font-size:13px; color:#856404; margin-bottom:16px; display:flex; gap:8px;">
-          <span>⚠️</span> Barcha muloqot sayt ichida amalga oshiriladi. Tashqi aloqa (Telegram, WhatsApp) so'ralmaydi.
-        </div>
-        <div class="chat-box">
-          <div class="chat-header">
-            <div style="width:40px; height:40px; background:var(--gradient); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px;">${currentAccount.seller.emoji}</div>
-            <div>
-              <div style="font-weight:700; font-size:15px;">${currentAccount.seller.name}</div>
-              <div style="font-size:12px; color:var(--green);">● Faol</div>
-            </div>
-            <div style="margin-left:auto; font-size:13px; color:var(--text-light);">⭐ ${currentAccount.seller.rating} · ${currentAccount.seller.sales} savdo</div>
-          </div>
-          <div class="chat-messages" id="chatMessages">
-            <div class="msg msg-in">
-              <div class="msg-bubble">Salom! @${currentAccount.username} accounti haqida savollaringiz bo'lsa, javob berishga tayyorman. 🙏</div>
-              <div class="msg-time">${currentAccount.seller.name}</div>
-            </div>
-          </div>
-          <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Xabar yozing..." onkeypress="if(event.key==='Enter') sendMessage()"/>
-            <button class="chat-send" onclick="sendMessage()">➤</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BUY SIDEBAR -->
-    <div class="detail-sidebar">
-      <div class="buy-box">
-        <div class="buy-price">$${currentAccount.price}</div>
-        <div class="buy-price-label">Bir martalik to'lov · Escrow himoyali</div>
-        <ul class="buy-features">
-          <li><span class="check-icon">✅</span> Login va parol to'liq beriladi</li>
-          <li><span class="check-icon">✅</span> 72 soat tekshirish muddati</li>
-          <li><span class="check-icon">✅</span> Escrow tizimi himoyasi</li>
-          <li><span class="check-icon">✅</span> Sayt ichida yordam</li>
-          <li><span class="check-icon">✅</span> Nizo bo'lsa pul qaytariladi</li>
-        </ul>
-        <button class="btn btn-primary" style="width:100%; justify-content:center; font-size:16px; margin-bottom:12px;" onclick="openModal('buyModal')">
-          🛒 Sotib olish — $${currentAccount.price}
-        </button>
-        <button onclick="openModal('safeDealModal')" style="width:100%; background:var(--green-light); color:var(--green); border:2px solid var(--green); border-radius:10px; padding:12px; font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-          🛡️ Safe Deal bilan sotib olish
-        </button>
-
-        <div class="seller-box">
-          <div class="seller-avatar">${currentAccount.seller.emoji}</div>
-          <div>
-            <div class="seller-name">${currentAccount.seller.name}</div>
-            <div class="seller-rating"><span class="stars">★★★★★</span> ${currentAccount.seller.rating} · ${currentAccount.seller.sales} muvaffaqiyatli savdo</div>
-          </div>
-        </div>
-
-        <div style="margin-top:16px; font-size:13px; color:var(--text-light); text-align:center; line-height:1.7;">
-          🔒 Xavfsiz to'lov · Payme, Click, USDT<br/>
-          ⚡ O'rtacha javob: 2 soat
-        </div>
-      </div>
-
-      <!-- Shunga o'xshash accountlar -->
-      <div style="background:white; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); margin-top:20px;">
-        <h4 style="font-size:16px; font-weight:700; margin-bottom:16px;">🔥 O'xshash accountlar</h4>
-        <div id="similarAccounts"></div>
-      </div>
-    </div>`;
-
-  // O'xshash accountlar
-  const similar = accounts.filter(a => a.category === currentAccount.category && a.id !== currentAccount.id).slice(0, 3);
-  document.getElementById('similarAccounts').innerHTML = similar.map(a => `
-    <a href="account.html?id=${a.id}" style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); text-decoration:none; color:inherit;">
-      <div style="width:40px; height:40px; background:var(--gradient); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px;">${a.emoji}</div>
-      <div style="flex:1;">
-        <div style="font-weight:600; font-size:14px;">@${a.username}</div>
-        <div style="font-size:12px; color:var(--text-light);">${(a.followers/1000).toFixed(0)}K · ${a.er}% ER</div>
-      </div>
-      <div style="font-weight:800; font-size:15px; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">$${a.price}</div>
-    </a>`).join('') || '<p style="font-size:14px; color:var(--text-light);">Hozircha yo\'q</p>';
-
-  // Modal overlay yopish
-  document.querySelectorAll('.modal-overlay').forEach(m => {
-    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
-  });
-});
+function sendMsg() {
+  var inp = document.getElementById('chatInp');
+  var msg = inp.value.trim();
+  if (!msg) return;
+  var user = loadUser();
+  if (!user) { window.location.href = 'login.html'; return; }
+  var msgs = document.getElementById('chatMsgs');
+  var el = document.createElement('div');
+  el.className = 'msg msg-out';
+  el.innerHTML = '<div class="msg-bubble">' + msg + '</div><div class="msg-time">Hozir</div>';
+  msgs.appendChild(el);
+  inp.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(function() {
+    var r = document.createElement('div');
+    r.className = 'msg msg-in';
+    r.innerHTML = '<div class="msg-bubble">Xabaringiz uchun rahmat! Tez orada javob beraman 🙏</div><div class="msg-time">Hozir</div>';
+    msgs.appendChild(r);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1400);
+}
 </script>
 </body>
 </html>
