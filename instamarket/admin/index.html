@@ -256,13 +256,37 @@
 <script src="../js/main.js"></script>
 <script>
   document.getElementById('currentDate').textContent = new Date().toLocaleDateString('uz-UZ', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-  // Admin tekshiruvi
-  document.addEventListener('DOMContentLoaded', () => {
-    const user = loadUser();
-    if (!user || user.role !== 'admin') {
-      document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:Inter,sans-serif;"><div style="font-size:64px;margin-bottom:16px;">🔒</div><h2 style="margin-bottom:8px;">Ruxsat yo\'q</h2><p style="color:#6b7280;margin-bottom:20px;">Bu sahifa faqat adminlar uchun</p><a href="../pages/login.html" style="background:linear-gradient(135deg,#E1306C,#F58529);color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;">Admin sifatida kirish</a></div>';
-    }
-  });
+  // Admin parol himoyasi
+  const ADMIN_PASS = 'instamarket2024admin';
+  if (sessionStorage.getItem('admin_auth') !== ADMIN_PASS) {
+    document.body.innerHTML = `
+      <div style="min-height:100vh;background:linear-gradient(135deg,#1A1A2E,#16213E);display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;">
+        <div style="background:white;border-radius:24px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+          <div style="text-align:center;margin-bottom:32px;">
+            <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+            <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Admin Panel</h2>
+            <p style="color:#6b7280;font-size:14px;">InstaMarket.uz — Faqat adminlar uchun</p>
+          </div>
+          <div id="errMsg" style="display:none;background:#fde8e8;color:#c53030;border-radius:10px;padding:12px;font-size:14px;margin-bottom:16px;text-align:center;">❌ Parol noto'g'ri!</div>
+          <input type="password" id="adminPassInput" placeholder="Admin parolini kiriting..."
+            style="width:100%;padding:14px 16px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;"
+            onkeypress="if(event.key==='Enter')checkPass()"
+            onfocus="this.style.borderColor='#E1306C'" onblur="this.style.borderColor='#e5e7eb'"/>
+          <button onclick="checkPass()"
+            style="width:100%;background:linear-gradient(135deg,#E1306C,#F58529);color:white;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;">
+            Kirish →
+          </button>
+        </div>
+      </div>`;
+    window.checkPass = function() {
+      const v = document.getElementById('adminPassInput').value;
+      if (v === ADMIN_PASS) { sessionStorage.setItem('admin_auth', ADMIN_PASS); location.reload(); }
+      else {
+        document.getElementById('errMsg').style.display = 'block';
+        setTimeout(() => document.getElementById('errMsg').style.display = 'none', 2500);
+      }
+    };
+  }
 </script>
 </body>
 </html>

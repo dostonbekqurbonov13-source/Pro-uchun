@@ -136,6 +136,10 @@
   </div>
 </div>
 <div class="toast-container" id="toastContainer"></div>
+<script>
+const _AP="instamarket2024admin";
+if(sessionStorage.getItem("admin_auth")!==_AP){document.body.innerHTML='<div style="min-height:100vh;background:linear-gradient(135deg,#1A1A2E,#16213E);display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;"><div style="background:white;border-radius:24px;padding:40px;width:100%;max-width:400px;"><div style="text-align:center;margin-bottom:24px;"><div style="font-size:48px;">🔐</div><h2 style="font-weight:800;margin:12px 0 8px;">Admin Panel</h2></div><input type="password" id="ap" placeholder="Parol..." style="width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:12px;" onkeypress="if(event.key===Enter)cp()"/><button onclick="cp()" style="width:100%;background:linear-gradient(135deg,#E1306C,#F58529);color:white;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;">Kirish</button></div></div>';window.cp=function(){if(document.getElementById("ap").value===_AP){sessionStorage.setItem("admin_auth",_AP);location.reload();}else{alert("Parol noto`g`ri!");}};}  
+</script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
