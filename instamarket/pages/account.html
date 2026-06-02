@@ -5,33 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Account — InstaMarket.uz</title>
   <link rel="stylesheet" href="../css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .page-body { padding-top: 64px; background: var(--bg); min-height: 100vh; }
-    .breadcrumb { background: white; border-bottom: 1px solid var(--border); padding: 12px 24px; font-size: 13px; color: var(--text-muted); }
-    .breadcrumb a { color: var(--text-muted); }
-    .breadcrumb a:hover { color: var(--primary); }
-    .pay-opt { border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; transition: all 0.18s; }
-    .pay-opt:hover { border-color: var(--primary); }
-    .pay-opt.selected { border-color: var(--primary); background: rgba(193,53,132,0.04); }
-    .pay-opt input { accent-color: var(--primary); }
-    .similar-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-light); text-decoration: none; color: inherit; }
-    .similar-item:last-child { border: none; }
-    .similar-ava { width: 38px; height: 38px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-    .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #1e40af; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
-    .alert-warn { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #92400e; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+    .page-body{padding-top:64px;background:var(--bg);min-height:100vh;}
+    .breadcrumb{background:white;border-bottom:1px solid var(--border);padding:11px 24px;font-size:13px;color:var(--text-muted);}
+    .breadcrumb a{color:var(--text-muted);}
+    .breadcrumb a:hover{color:var(--primary);}
+    .pay-opt{border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;display:flex;align-items:center;gap:9px;font-weight:600;font-size:14px;transition:all 0.18s;}
+    .pay-opt.sel{border-color:var(--primary);background:rgba(193,53,132,0.04);}
+    .sim-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border-light);color:inherit;}
+    .sim-item:last-child{border:none;}
+    .sim-ava{width:36px;height:36px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+    .online-dot{width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block;box-shadow:0 0 5px var(--green);}
+    .typing{font-size:12px;color:var(--text-muted);font-style:italic;padding:4px 0;}
+    .alert-warn{background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:11px 14px;font-size:13px;color:#92400e;display:flex;gap:8px;line-height:1.5;}
   </style>
 </head>
 <body>
 <nav class="navbar">
   <a href="../index.html" class="navbar-brand">
-    <img src="../images/logo.svg" width="32" height="32" alt="logo" style="border-radius:8px;"/>
+    <img src="../images/logo.svg" width="32" height="32" style="border-radius:8px;" alt="logo"/>
     <span>InstaMarket</span>
   </a>
   <div class="nav-links">
     <a href="../index.html">Bosh sahifa</a>
     <a href="marketplace.html">Bozor</a>
-    <a href="sell.html">Sotish</a>
+    <a href="sell.html" style="color:var(--primary);font-weight:600;">💰 Sotish</a>
     <a href="login.html" class="btn-nav-login">Kirish</a>
     <a href="register.html" class="btn-nav-register">Ro'yxatdan o'tish</a>
   </div>
@@ -44,223 +43,326 @@
     <a href="marketplace.html">Bozor</a> ›
     <span id="bcName">Account</span>
   </div>
-  <div class="detail-layout" id="detailLayout"></div>
+
+  <div id="pageContent">
+    <div style="text-align:center;padding:80px 20px;">
+      <div style="font-size:40px;margin-bottom:12px;">⏳</div>
+      <p style="color:var(--text-muted);">Yuklanmoqda...</p>
+    </div>
+  </div>
 </div>
 
 <!-- BUY MODAL -->
 <div class="modal-overlay" id="buyModal">
-  <div class="modal" style="max-width:460px;">
+  <div class="modal" style="max-width:440px;">
     <button class="modal-close" onclick="closeModal('buyModal')">✕</button>
     <div class="modal-title">🛒 Xarid qilish</div>
-    <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px;">Escrow tizimi orqali xavfsiz xarid</p>
-    <div id="buyAccInfo" style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:18px;border:1px solid var(--border-light);"></div>
-    <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">To'lov usuli:</div>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:18px;">Escrow tizimi orqali xavfsiz xarid</p>
+    <div id="buyInfo" style="background:var(--bg);border-radius:10px;padding:13px;margin-bottom:16px;border:1px solid var(--border-light);"></div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:9px;">To'lov usuli:</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="payOpts">
-        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="payme"/> 💳 Payme</label>
-        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="click"/> ⚡ Click</label>
-        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="usdt"/> 🪙 USDT</label>
-        <label class="pay-opt" onclick="selectPay(this)"><input type="radio" name="pay" value="card"/> 💰 Karta</label>
+        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="payme" style="accent-color:var(--primary);"/> 💳 Payme</label>
+        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="click"/> ⚡ Click</label>
+        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="usdt"/> 🪙 USDT</label>
+        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="card"/> 💰 Karta</label>
       </div>
     </div>
-    <div class="alert-info" style="margin-bottom:18px;">
-      <span>🔒</span>
-      <span>Pulingiz <strong>Escrow</strong> tizimida ushlanadi. Account tekshirib bo'lgach sotuvchiga o'tadi. <strong>72 soat</strong> tekshirish vaqti beriladi.</span>
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:11px 14px;font-size:13px;color:#1e40af;margin-bottom:16px;display:flex;gap:8px;">
+      <span>🔒</span><span>Pul <strong>Escrow</strong>da ushlanadi. Account tekshirib bo'lgach sotuvchiga o'tadi. <strong>72 soat</strong> beriladi.</span>
     </div>
-    <button class="btn btn-primary" style="width:100%;font-size:15px;padding:14px;" onclick="confirmBuy()">To'lovni amalga oshirish →</button>
+    <button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;" onclick="confirmBuy()">To'lovni amalga oshirish →</button>
   </div>
 </div>
 
 <!-- SAFE DEAL MODAL -->
 <div class="modal-overlay" id="safeModal">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal" style="max-width:420px;">
     <button class="modal-close" onclick="closeModal('safeModal')">✕</button>
     <div class="modal-title">🛡️ Safe Deal</div>
-    <p style="color:var(--text-muted);font-size:13px;margin-bottom:20px;">Qo'shimcha himoya va kafolat paketi</p>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
-      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
-        <span style="font-size:18px;flex-shrink:0;">✅</span>
-        <div><strong style="font-size:14px;">Moderator shaxsan tekshiradi</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Account bizning mutaxassis tomonidan ko'rib chiqiladi</p></div>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:18px;">Qo'shimcha himoya va kafolat</p>
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+        <span style="font-size:17px;flex-shrink:0;">✅</span><div><strong style="font-size:13px;">Moderator shaxsan tekshiradi</strong></div>
       </div>
-      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
-        <span style="font-size:18px;flex-shrink:0;">📅</span>
-        <div><strong style="font-size:14px;">30 kunlik kafolat</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Muammo bo'lsa 30 kun mobaynida hal qilinadi</p></div>
+      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+        <span style="font-size:17px;flex-shrink:0;">📅</span><div><strong style="font-size:13px;">30 kunlik kafolat</strong></div>
       </div>
-      <div style="background:var(--green-light);border-radius:10px;padding:14px;display:flex;gap:10px;">
-        <span style="font-size:18px;flex-shrink:0;">💰</span>
-        <div><strong style="font-size:14px;">100% qaytarish kafolati</strong><p style="font-size:12px;color:var(--text-muted);margin-top:3px;">Muammo hal bo'lmasa to'liq qaytariladi</p></div>
+      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+        <span style="font-size:17px;flex-shrink:0;">💰</span><div><strong style="font-size:13px;">100% qaytarish kafolati</strong></div>
       </div>
     </div>
-    <div id="safePriceInfo" style="margin-bottom:16px;"></div>
-    <button class="btn btn-green" style="width:100%;font-size:15px;padding:14px;" onclick="closeModal('safeModal');openModal('buyModal');">Safe Deal bilan davom etish →</button>
+    <div id="safePriceBox" style="text-align:center;margin-bottom:16px;"></div>
+    <button class="btn btn-green" style="width:100%;font-size:15px;padding:13px;" onclick="closeModal('safeModal');openModal('buyModal')">Safe Deal bilan davom etish →</button>
   </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-var acc = null;
+var firebaseOk = initFirebase();
+var currentAcc = null;
+var chatUnsubscribe = null;
 
-document.addEventListener('DOMContentLoaded', function() {
-  var id = parseInt(getParam('id')) || 1;
-  acc = accounts.find(function(a) { return a.id === id; }) || accounts[0];
-  document.title = '@' + acc.username + ' — InstaMarket.uz';
+function selPay(lbl){
+  document.querySelectorAll('.pay-opt').forEach(function(l){l.classList.remove('sel');});
+  lbl.classList.add('sel');
+  lbl.querySelector('input').checked=true;
+}
+
+async function loadAccount(){
+  var id = getParam('id');
+  var acc = null;
+
+  // Avval Firebase dan qidirish
+  if(firebaseOk && id && !id.startsWith('demo_')){
+    acc = await getListing(id);
+    if(acc) incrementViews(id);
+  }
+
+  // Demo ma'lumotlardan olish
+  if(!acc){
+    var intId = parseInt(id)||1;
+    var demo = accounts.find(function(a){return a.id===intId;}) || accounts[0];
+    acc = {
+      id: 'demo_'+demo.id, username:demo.username, emoji:demo.emoji, niche:demo.niche,
+      category:demo.category, followers:demo.followers, er:demo.er, posts:demo.posts,
+      age:demo.age, realFollowers:demo.realFollowers, score:demo.score, price:demo.price,
+      audience:demo.audience, badge:demo.badge, description:demo.description,
+      sellerName:demo.seller.name, sellerRating:demo.seller.rating, sellerSales:demo.seller.sales,
+      sellerEmoji:demo.seller.emoji, tags:demo.tags,
+    };
+  }
+
+  currentAcc = acc;
+  document.title = '@'+(acc.username||'Account')+' — InstaMarket.uz';
   var bc = document.getElementById('bcName');
-  if (bc) bc.textContent = '@' + acc.username;
+  if(bc) bc.textContent = '@'+(acc.username||'');
 
-  var scoreColor = acc.score >= 90 ? 'var(--green-dark)' : acc.score >= 80 ? '#d97706' : '#dc2626';
-  var erColor = acc.er >= 5 ? 'var(--green-dark)' : acc.er >= 3 ? '#d97706' : '#dc2626';
-  var safeDeal = Math.round(acc.price * 1.15);
+  renderPage(acc);
+}
 
-  document.getElementById('safePriceInfo').innerHTML =
-    '<div style="background:var(--bg);border-radius:10px;padding:14px;border:1.5px solid var(--border);text-align:center;">' +
-    '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Safe Deal narxi</div>' +
-    '<div style="font-size:26px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$' + safeDeal + '</div>' +
-    '<div style="font-size:12px;color:var(--text-muted);">($' + acc.price + ' + $' + (safeDeal - acc.price) + ' himoya)</div></div>';
+function renderPage(acc){
+  var erColor  = (acc.er||0)>=5?'var(--green-dark)':(acc.er||0)>=3?'#d97706':'#dc2626';
+  var scrColor = (acc.score||0)>=90?'var(--green-dark)':(acc.score||0)>=80?'#d97706':'#dc2626';
+  var safePrice = Math.round((acc.price||0)*1.15);
+  var badge = acc.badge==='top'
+    ? '<span class="badge badge-top">⭐ TOP</span>'
+    : '<span class="badge badge-verified">✅ Verified</span>';
 
-  document.getElementById('buyAccInfo').innerHTML =
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">' +
-    '<div style="width:42px;height:42px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">' + acc.emoji + '</div>' +
-    '<div><div style="font-weight:700;">@' + acc.username + '</div><div style="font-size:12px;color:var(--text-muted);">' + acc.niche + '</div></div></div>' +
+  document.getElementById('buyInfo').innerHTML =
+    '<div style="display:flex;align-items:center;gap:11px;margin-bottom:10px;">' +
+    '<div style="width:40px;height:40px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;">'+(acc.emoji||'📱')+'</div>' +
+    '<div><div style="font-weight:700;">@'+(acc.username||'')+'</div><div style="font-size:12px;color:var(--text-muted);">'+(acc.niche||'')+'</div></div></div>' +
     '<div style="display:flex;justify-content:space-between;font-size:14px;padding-top:8px;border-top:1px solid var(--border-light);">' +
-    '<span style="color:var(--text-muted);">To\'lov summasi:</span>' +
-    '<span style="font-weight:900;font-size:18px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$' + acc.price + '</span></div>';
+    '<span style="color:var(--text-muted);">Jami summa:</span>' +
+    '<span style="font-weight:900;font-size:18px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$'+(acc.price||0)+'</span></div>';
 
-  var similar = accounts.filter(function(a) { return a.category === acc.category && a.id !== acc.id; }).slice(0, 3);
+  document.getElementById('safePriceBox').innerHTML =
+    '<div style="font-size:11px;color:var(--text-muted);">Safe Deal narxi</div>' +
+    '<div style="font-size:26px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$'+safePrice+'</div>' +
+    '<div style="font-size:12px;color:var(--text-muted);">($'+(acc.price||0)+' + $'+(safePrice-(acc.price||0))+' himoya)</div>';
 
-  document.getElementById('detailLayout').innerHTML =
+  var similar = accounts.filter(function(a){return a.category===(acc.category||'')&&('demo_'+a.id)!==acc.id;}).slice(0,3);
+
+  document.getElementById('pageContent').innerHTML =
+  '<div class="detail-layout">' +
+  // --- MAIN ---
   '<div class="detail-main">' +
     // Profile
     '<div class="detail-card">' +
       '<div class="detail-profile">' +
-        '<div class="detail-avatar">' + acc.emoji + '</div>' +
+        '<div class="detail-avatar">'+(acc.emoji||'📱')+'</div>' +
         '<div>' +
           '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-            '<span class="detail-username">@' + acc.username + '</span>' +
-            (acc.badge === 'top' ? '<span class="badge badge-top">⭐ TOP</span>' : '<span class="badge badge-verified">✅ Verified</span>') +
+            '<span class="detail-username">@'+(acc.username||'')+'</span>'+badge+
           '</div>' +
-          '<div class="detail-niche">' + acc.niche + '</div>' +
-          '<div style="display:flex;gap:14px;margin-top:8px;font-size:13px;color:var(--text-muted);flex-wrap:wrap;">' +
-            '<span>📅 ' + acc.age + '</span><span>📸 ' + acc.posts + ' post</span><span>🌍 ' + acc.audience + '</span>' +
+          '<div class="detail-niche">'+(acc.niche||'')+'</div>' +
+          '<div style="display:flex;gap:14px;margin-top:7px;font-size:13px;color:var(--text-muted);flex-wrap:wrap;">' +
+            '<span>📅 '+(acc.age||'—')+'</span><span>📸 '+(acc.posts||0)+' post</span><span>🌍 '+(acc.audience||'—')+'</span>' +
           '</div>' +
         '</div>' +
       '</div>' +
       '<div class="stats-grid-3">' +
-        '<div class="stat-box"><div class="val" style="color:var(--primary);">' + formatNum(acc.followers) + '</div><div class="key">👥 Followers</div></div>' +
-        '<div class="stat-box"><div class="val" style="color:' + erColor + ';">' + acc.er + '%</div><div class="key">❤️ Eng. Rate</div></div>' +
-        '<div class="stat-box"><div class="val" style="color:' + scoreColor + ';">' + acc.score + '/100</div><div class="key">⭐ Sifat</div></div>' +
+        '<div class="stat-box"><div class="val" style="color:var(--primary);">'+formatNum(acc.followers||0)+'</div><div class="key">👥 Followers</div></div>' +
+        '<div class="stat-box"><div class="val" style="color:'+erColor+';">'+(acc.er||0)+'%</div><div class="key">❤️ Engagement</div></div>' +
+        '<div class="stat-box"><div class="val" style="color:'+scrColor+';">'+(acc.score||0)+'/100</div><div class="key">⭐ Sifat</div></div>' +
       '</div>' +
     '</div>' +
     // Nakrutka
     '<div class="detail-card">' +
-      '<h3 style="font-size:17px;font-weight:700;margin-bottom:18px;">🤖 Nakrutka Tahlili</h3>' +
-      '<div style="display:flex;flex-direction:column;gap:14px;">' +
-        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="font-weight:600;">Real followers</span><span style="font-weight:700;color:var(--green-dark);">' + acc.realFollowers + '%</span></div><div class="progress-bar"><div class="progress-fill green" style="width:' + acc.realFollowers + '%"></div></div></div>' +
-        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;"><span style="font-weight:600;">Umumiy sifat</span><span style="font-weight:700;color:var(--primary);">' + acc.score + '/100</span></div><div class="progress-bar"><div class="progress-fill" style="width:' + acc.score + '%"></div></div></div>' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:16px;">🤖 Nakrutka Tahlili</h3>' +
+      '<div style="display:flex;flex-direction:column;gap:13px;">' +
+        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;"><span style="font-weight:600;">Real followers</span><span style="font-weight:700;color:var(--green-dark);">'+(acc.realFollowers||0)+'%</span></div><div class="progress-bar"><div class="progress-fill green" style="width:'+(acc.realFollowers||0)+'%"></div></div></div>' +
+        '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;"><span style="font-weight:600;">Sifat bali</span><span style="font-weight:700;color:var(--primary);">'+(acc.score||0)+'/100</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+(acc.score||0)+'%"></div></div></div>' +
       '</div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">' +
-        ['O\'sish tabiiy','Bot comment yo\'q','Auditoriya sifatli','Moderator tekshirdi'].map(function(t) {
-          return '<div style="background:var(--green-light);border-radius:8px;padding:10px;text-align:center;font-size:13px;color:var(--green-dark);font-weight:600;">✅ ' + t + '</div>';
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;">' +
+        ["O'sish tabiiy","Bot comment yo'q","Auditoriya sifatli","Moderator tasdiqladi"].map(function(t){
+          return '<div style="background:var(--green-light);border-radius:8px;padding:10px;text-align:center;font-size:12px;color:var(--green-dark);font-weight:600;">✅ '+t+'</div>';
         }).join('') +
       '</div>' +
     '</div>' +
     // Tavsif
     '<div class="detail-card">' +
       '<h3 style="font-size:17px;font-weight:700;margin-bottom:12px;">📝 Account haqida</h3>' +
-      '<p style="color:var(--text-light);font-size:14px;line-height:1.75;">' + acc.description + '</p>' +
-      '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;">' +
-        acc.tags.map(function(t) { return '<span style="background:rgba(193,53,132,0.07);color:var(--primary);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">#' + t + '</span>'; }).join('') +
-      '</div>' +
+      '<p style="font-size:14px;color:var(--text-light);line-height:1.75;">'+(acc.description||'Tavsif mavjud emas')+'</p>' +
+      (acc.tags&&acc.tags.length?'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:13px;">' +
+        acc.tags.map(function(t){return '<span style="background:rgba(193,53,132,0.07);color:var(--primary);padding:3px 11px;border-radius:20px;font-size:12px;font-weight:600;">#'+t+'</span>';}).join('') +
+      '</div>':'') +
     '</div>' +
-    // Chat
+    // Real-time chat
     '<div class="detail-card">' +
-      '<h3 style="font-size:17px;font-weight:700;margin-bottom:12px;">💬 Sotuvchi bilan gaplash</h3>' +
-      '<div class="alert-warn" style="margin-bottom:14px;"><span>⚠️</span><span>Barcha muloqot faqat sayt ichida. Tashqi aloqa (Telegram, WhatsApp) so\'ramang — bu firibgarlik belgisi!</span></div>' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:11px;">💬 Sotuvchi bilan gaplash</h3>' +
+      '<div class="alert-warn" style="margin-bottom:13px;"><span>⚠️</span><span>Barcha muloqot sayt ichida. Tashqi aloqa (Telegram, WhatsApp) <strong>qat\'iy taqiqlanadi</strong>!</span></div>' +
       '<div class="chat-wrap">' +
         '<div class="chat-head">' +
-          '<div style="width:38px;height:38px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">' + acc.seller.emoji + '</div>' +
-          '<div style="flex:1;"><div style="font-weight:700;font-size:14px;">' + acc.seller.name + '</div><div style="font-size:11px;color:var(--green-dark);">● Faol</div></div>' +
-          '<div style="font-size:12px;color:var(--text-muted);">⭐' + acc.seller.rating + ' · ' + acc.seller.sales + ' savdo</div>' +
+          '<div style="width:38px;height:38px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;">'+(acc.sellerEmoji||'👤')+'</div>' +
+          '<div style="flex:1;"><div style="font-weight:700;font-size:14px;">'+(acc.sellerName||'Sotuvchi')+'</div>' +
+          '<div style="font-size:11px;display:flex;align-items:center;gap:5px;"><span class="online-dot"></span><span style="color:var(--green-dark);">Faol</span></div></div>' +
+          '<div style="font-size:12px;color:var(--text-muted);">⭐'+(acc.sellerRating||5.0)+' · '+(acc.sellerSales||0)+' savdo</div>' +
         '</div>' +
         '<div class="chat-msgs" id="chatMsgs">' +
-          '<div class="msg msg-in"><div class="msg-bubble">Salom! @' + acc.username + ' account haqida savollaringiz bo\'lsa javob beraman 🙏</div><div class="msg-time">' + acc.seller.name + '</div></div>' +
+          '<div class="msg msg-in"><div class="msg-bubble">Salom! @'+(acc.username||'')+' haqida savolingiz bo\'lsa javob beraman 🙏</div><div class="msg-time">'+(acc.sellerName||'Sotuvchi')+'</div></div>' +
         '</div>' +
+        '<div id="typingInd" style="padding:0 18px 4px;display:none;"><span class="typing">Sotuvchi yozmoqda...</span></div>' +
         '<div class="chat-inp">' +
-          '<input type="text" id="chatInp" placeholder="Xabar yozing..." onkeypress="if(event.key===\'Enter\')sendMsg()"/>' +
+          '<input type="text" id="chatInput" placeholder="Xabar yozing..." onkeypress="if(event.key===\'Enter\')sendMsg()"/>' +
           '<button class="chat-send" onclick="sendMsg()">➤</button>' +
         '</div>' +
       '</div>' +
     '</div>' +
   '</div>' +
-  // SIDEBAR
+  // --- SIDEBAR ---
   '<div class="detail-sidebar">' +
     '<div class="buy-box">' +
-      '<div class="buy-price">$' + acc.price + '</div>' +
-      '<div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Bir martalik to\'lov · Escrow himoyali</div>' +
+      '<div class="buy-price">$'+(acc.price||0)+'</div>' +
+      '<div style="font-size:12px;color:var(--text-muted);margin-bottom:15px;">Bir martalik · Escrow himoyali</div>' +
       '<ul class="buy-features">' +
-        ['Login va parol to\'liq beriladi','72 soat tekshirish muddati','Escrow tizimi himoyasi','Sayt ichida yordam','Muammo bo\'lsa pul qaytariladi'].map(function(t) {
-          return '<li><span class="chk">✅</span>' + t + '</li>';
+        ["Login va parol to'liq beriladi","72 soat tekshirish muddati","Escrow tizimi himoyasi","Sayt ichida yordam","Muammo bo'lsa pul qaytariladi"].map(function(t){
+          return '<li><span class="chk">✅</span>'+t+'</li>';
         }).join('') +
       '</ul>' +
-      '<button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:10px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — $' + acc.price + '</button>' +
-      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — $' + Math.round(acc.price*1.15) + '</button>' +
-      '<div class="seller-mini">' +
-        '<div class="seller-ava">' + acc.seller.emoji + '</div>' +
-        '<div><div style="font-weight:700;font-size:14px;">' + acc.seller.name + '</div><div style="font-size:12px;color:var(--text-muted);">⭐' + acc.seller.rating + ' · ' + acc.seller.sales + ' muvaffaqiyatli savdo</div></div>' +
+      '<button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;margin-bottom:9px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — $'+(acc.price||0)+'</button>' +
+      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — $'+safePrice+'</button>' +
+      '<div class="seller-mini" style="margin-top:14px;">' +
+        '<div class="seller-ava">'+(acc.sellerEmoji||'👤')+'</div>' +
+        '<div><div style="font-weight:700;font-size:13px;">'+(acc.sellerName||'Sotuvchi')+'</div>' +
+        '<div style="font-size:12px;color:var(--text-muted);">⭐'+(acc.sellerRating||5.0)+' · '+(acc.sellerSales||0)+' savdo</div></div>' +
       '</div>' +
-      '<div style="margin-top:14px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">🔒 Xavfsiz to\'lov: Payme, Click, USDT<br/>⚡ O\'rtacha javob: 1-2 soat</div>' +
+      '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">🔒 Payme · Click · USDT<br/>⚡ O\'rtacha javob: 1-2 soat</div>' +
     '</div>' +
-    '<div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-top:20px;">' +
-      '<h4 style="font-size:15px;font-weight:700;margin-bottom:14px;">🔥 O\'xshash accountlar</h4>' +
-      (similar.length ? similar.map(function(s) {
-        return '<a href="account.html?id=' + s.id + '" class="similar-item"><div class="similar-ava">' + s.emoji + '</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@' + s.username + '</div><div style="font-size:11px;color:var(--text-muted);">' + formatNum(s.followers) + ' · ' + s.er + '% ER</div></div><div style="font-weight:800;font-size:14px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">$' + s.price + '</div></a>';
-      }).join('') : '<p style="font-size:13px;color:var(--text-muted);">Hozircha yo\'q</p>') +
+    '<div style="background:white;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-top:18px;">' +
+      '<h4 style="font-size:14px;font-weight:700;margin-bottom:13px;">🔥 O\'xshash accountlar</h4>' +
+      (similar.length?similar.map(function(s){
+        return '<a href="account.html?id='+s.id+'" class="sim-item">' +
+          '<div class="sim-ava">'+s.emoji+'</div>' +
+          '<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@'+s.username+'</div>' +
+          '<div style="font-size:11px;color:var(--text-muted);">'+formatNum(s.followers)+' · '+s.er+'% ER</div></div>' +
+          '<div style="font-weight:800;font-size:13px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">$'+s.price+'</div></a>';
+      }).join(''):'<p style="font-size:13px;color:var(--text-muted);">Hozircha yo\'q</p>') +
     '</div>' +
+  '</div>' +
   '</div>';
-});
 
-function selectPay(label) {
-  document.querySelectorAll('.pay-opt').forEach(function(l) { l.classList.remove('selected'); });
-  label.classList.add('selected');
-  label.querySelector('input').checked = true;
+  // Real-time chat yuklash
+  startChat(acc.id);
 }
 
-function confirmBuy() {
+function startChat(listingId){
+  if(chatUnsubscribe){ chatUnsubscribe(); }
+  if(!firebaseOk||!listingId||listingId.startsWith('demo_')) return;
+
+  chatUnsubscribe = listenChat(listingId, function(msgs){
+    var container = document.getElementById('chatMsgs');
+    if(!container) return;
+    var user = loadUser();
+    var newMsgs = msgs.map(function(m){
+      var isMe = user && m.uid === user.uid;
+      return '<div class="msg '+(isMe?'msg-out':'msg-in')+'">' +
+        '<div class="msg-bubble">'+(m.text||'')+'</div>' +
+        '<div class="msg-time">'+(isMe?'Sen':m.name||'Sotuvchi')+'</div>' +
+      '</div>';
+    }).join('');
+    if(newMsgs){
+      container.innerHTML = newMsgs;
+      container.scrollTop = container.scrollHeight;
+    }
+  });
+}
+
+async function sendMsg(){
+  var inp = document.getElementById('chatInput');
+  var msg = inp&&inp.value.trim();
+  if(!msg) return;
+
   var user = loadUser();
-  if (!user) { closeModal('buyModal'); window.location.href = 'login.html'; return; }
-  var pay = document.querySelector('input[name="pay"]:checked');
-  if (!pay) { showToast('To\'lov usulini tanlang!', 'error'); return; }
-  var btn = event.target; btn.textContent = 'Yuklanmoqda...'; btn.disabled = true;
-  setTimeout(function() {
+  if(!user){ window.location.href='login.html'; return; }
+
+  inp.value='';
+
+  if(firebaseOk && currentAcc && !currentAcc.id.startsWith('demo_')){
+    var res = await sendChatMessage(currentAcc.id, msg);
+    if(!res.success){
+      showToast(res.error||'Xabar yuborilmadi','error');
+      inp.value=msg;
+      return;
+    }
+  } else {
+    // Demo: lokal ko'rsatish
+    var msgs = document.getElementById('chatMsgs');
+    if(msgs){
+      var el=document.createElement('div');
+      el.className='msg msg-out';
+      el.innerHTML='<div class="msg-bubble">'+msg+'</div><div class="msg-time">Sen</div>';
+      msgs.appendChild(el);
+      msgs.scrollTop=msgs.scrollHeight;
+      // Demo javob
+      var typing=document.getElementById('typingInd');
+      if(typing){ typing.style.display='block'; }
+      setTimeout(function(){
+        if(typing) typing.style.display='none';
+        var r=document.createElement('div');
+        r.className='msg msg-in';
+        r.innerHTML='<div class="msg-bubble">Xabaringiz uchun rahmat! Tez orada javob beraman 🙏</div><div class="msg-time">'+(currentAcc&&currentAcc.sellerName||'Sotuvchi')+'</div>';
+        if(msgs){ msgs.appendChild(r); msgs.scrollTop=msgs.scrollHeight; }
+      },1400);
+    }
+  }
+}
+
+async function confirmBuy(){
+  var user=loadUser();
+  if(!user){ closeModal('buyModal'); window.location.href='login.html'; return; }
+  var pay=document.querySelector('input[name="pay"]:checked');
+  if(!pay){ showToast("To'lov usulini tanlang!",'error'); return; }
+
+  var btn=event.target; btn.textContent='⏳ Yuklanmoqda...'; btn.disabled=true;
+
+  if(firebaseOk && currentAcc && !currentAcc.id.startsWith('demo_')){
+    var res=await createOrder(currentAcc.id, pay.value);
+    if(!res.success){ showToast(res.error||"Xato",'error'); btn.textContent="To'lovni amalga oshirish →"; btn.disabled=false; return; }
+  }
+
+  setTimeout(function(){
     closeModal('buyModal');
-    showToast('✅ To\'lov muvaffaqiyatli! Account tekshiruvi boshlandi.');
-    setTimeout(function() { showToast('📧 Tasdiqlash xabari emailingizga yuborildi'); }, 2000);
-    btn.textContent = 'To\'lovni amalga oshirish →'; btn.disabled = false;
-  }, 1500);
+    showToast("✅ To'lov muvaffaqiyatli! Escrow tizimiga qabul qilindi.");
+    setTimeout(function(){ showToast("📧 Tasdiqlash ma'lumotlari emailga yuborildi"); },2000);
+    btn.textContent="To'lovni amalga oshirish →"; btn.disabled=false;
+  },1200);
 }
 
-function sendMsg() {
-  var inp = document.getElementById('chatInp');
-  var msg = inp.value.trim();
-  if (!msg) return;
-  var user = loadUser();
-  if (!user) { window.location.href = 'login.html'; return; }
-  var msgs = document.getElementById('chatMsgs');
-  var el = document.createElement('div');
-  el.className = 'msg msg-out';
-  el.innerHTML = '<div class="msg-bubble">' + msg + '</div><div class="msg-time">Hozir</div>';
-  msgs.appendChild(el);
-  inp.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
-  setTimeout(function() {
-    var r = document.createElement('div');
-    r.className = 'msg msg-in';
-    r.innerHTML = '<div class="msg-bubble">Xabaringiz uchun rahmat! Tez orada javob beraman 🙏</div><div class="msg-time">Hozir</div>';
-    msgs.appendChild(r);
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 1400);
-}
+document.addEventListener('DOMContentLoaded',function(){
+  loadAccount();
+  document.querySelectorAll('.modal-overlay').forEach(function(m){
+    m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
+  });
+});
 </script>
 </body>
 </html>

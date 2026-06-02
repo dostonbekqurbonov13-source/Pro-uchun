@@ -5,56 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Account sotish — InstaMarket.uz</title>
   <link rel="stylesheet" href="../css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .sell-page { padding-top: 64px; min-height: 100vh; background: var(--bg); }
-    .sell-hero { background: var(--dark); padding: 48px 32px; text-align: center; }
-    .sell-hero h1 { font-size: 36px; font-weight: 900; color: white; margin-bottom: 10px; }
-    .sell-hero p { color: rgba(255,255,255,0.5); font-size: 16px; }
-    .sell-layout { max-width: 800px; margin: 0 auto; padding: 36px 24px; }
-    .sell-steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 36px; flex-wrap: wrap; }
-    .sell-step { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; color: var(--text-muted); background: white; border: 1.5px solid var(--border); }
-    .sell-step.active { background: var(--gradient); color: white; border-color: transparent; }
-    .sell-step.done { background: var(--green-light); color: var(--green-dark); border-color: transparent; }
-    .step-arrow { color: var(--text-muted); margin: 0 6px; font-size: 16px; }
-    .sell-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); border: 1.5px solid var(--border); margin-bottom: 20px; }
-    .sell-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-    .sell-card .card-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
-    .price-calc { background: var(--bg); border-radius: 10px; padding: 16px; border: 1.5px solid var(--border); margin-top: 16px; }
-    .price-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--border-light); }
-    .price-row:last-child { border: none; font-weight: 700; font-size: 15px; }
-    .price-row span:last-child { font-weight: 600; color: var(--primary); }
-    .rules-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .rules-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text-light); line-height: 1.5; }
-    .rule-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 28px; text-align: center; cursor: pointer; transition: all 0.2s; }
-    .upload-area:hover { border-color: var(--primary); background: rgba(193,53,132,0.02); }
-    .upload-area .upload-icon { font-size: 36px; margin-bottom: 8px; }
-    .upload-area p { font-size: 14px; color: var(--text-muted); }
-    .upload-area strong { color: var(--primary); }
-    .checker-box { background: var(--bg); border-radius: 10px; padding: 16px; border: 1.5px solid var(--border); }
-    .checker-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border-light); }
-    .checker-row:last-child { border: none; }
-    .checker-val { font-weight: 700; }
-    .checker-val.green { color: var(--green-dark); }
-    .checker-val.red { color: #dc2626; }
-    .checker-val.pending { color: var(--accent); }
-    select.form-input { background: white; cursor: pointer; }
-    .nav-sell { padding: 0 4px; color: var(--primary) !important; font-weight: 600 !important; }
+    .sell-page{padding-top:64px;min-height:100vh;background:var(--bg);}
+    .sell-hero{background:var(--dark);padding:48px 32px;text-align:center;}
+    .sell-hero h1{font-size:34px;font-weight:900;color:white;margin-bottom:10px;}
+    .sell-hero p{color:rgba(255,255,255,0.5);font-size:15px;}
+    .sell-wrap{max-width:760px;margin:0 auto;padding:32px 24px;}
+    .steps-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px;flex-wrap:wrap;}
+    .sbar-item{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--text-muted);background:white;border:1.5px solid var(--border);}
+    .sbar-item.active{background:var(--gradient);color:white;border-color:transparent;}
+    .sbar-item.done{background:var(--green-light);color:var(--green-dark);border-color:transparent;}
+    .sbar-arrow{color:var(--text-muted);margin:0 5px;}
+    .sell-card{background:white;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-bottom:18px;}
+    .sell-card h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+    .sell-card .sdesc{font-size:13px;color:var(--text-muted);margin-bottom:20px;}
+    .form-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .price-calc{background:var(--bg);border-radius:10px;padding:14px;border:1.5px solid var(--border);margin-top:14px;}
+    .pcalc-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border-light);}
+    .pcalc-row:last-child{border:none;font-weight:700;font-size:14px;}
+    .rule-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text-light);padding:6px 0;}
+    .upload-zone{border:2px dashed var(--border);border-radius:10px;padding:26px;text-align:center;cursor:pointer;transition:all 0.2s;}
+    .upload-zone:hover{border-color:var(--primary);background:rgba(193,53,132,0.02);}
+    .checker-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:9px 0;border-bottom:1px solid var(--border-light);}
+    .checker-row:last-child{border:none;}
+    .cv-ok{color:var(--green-dark);font-weight:700;}
+    .cv-fail{color:#dc2626;font-weight:700;}
+    select.form-input{background:white;cursor:pointer;}
   </style>
 </head>
 <body>
 <nav class="navbar">
   <a href="../index.html" class="navbar-brand">
-    <img src="../images/logo.svg" width="32" height="32" alt="logo" style="border-radius:8px;"/>
+    <img src="../images/logo.svg" width="32" height="32" style="border-radius:8px;" alt="logo"/>
     <span>InstaMarket</span>
   </a>
   <div class="nav-links">
     <a href="../index.html">Bosh sahifa</a>
     <a href="marketplace.html">Bozor</a>
-    <a href="sell.html" class="nav-sell">Account sotish</a>
+    <a href="sell.html" style="color:var(--primary);font-weight:700;">💰 Sotish</a>
     <a href="login.html" class="btn-nav-login">Kirish</a>
     <a href="register.html" class="btn-nav-register">Ro'yxatdan o'tish</a>
   </div>
@@ -64,342 +53,245 @@
 <div class="sell-page">
   <div class="sell-hero">
     <h1>💰 Account sotish</h1>
-    <p>Accountingizni ishonchli platforma orqali soting — bepul e'lon, xavfsiz to'lov</p>
+    <p>Bepul e'lon, 12% komissiya, xavfsiz to'lov</p>
   </div>
-
-  <div class="sell-layout">
-    <!-- Qadamlar -->
-    <div class="sell-steps">
-      <div class="sell-step active" id="step1btn">① Ma'lumot</div>
-      <div class="step-arrow">›</div>
-      <div class="sell-step" id="step2btn">② Tasdiqlash</div>
-      <div class="step-arrow">›</div>
-      <div class="sell-step" id="step3btn">③ Nashr</div>
-    </div>
-
-    <!-- QADAM 1: Account ma'lumotlari -->
-    <div id="step1">
-      <!-- Qoidalar -->
-      <div class="sell-card">
-        <h3>📋 E'lon qo'yishdan oldin</h3>
-        <p class="card-desc">Quyidagi talablarga javob beradigan accountlar qabul qilinadi</p>
-        <ul class="rules-list">
-          <li><span class="rule-icon">✅</span> Minimal 1,000 ta haqiqiy follower</li>
-          <li><span class="rule-icon">✅</span> Engagement rate kamida 3% bo'lishi kerak</li>
-          <li><span class="rule-icon">✅</span> Account yoshi kamida 3 oy</li>
-          <li><span class="rule-icon">✅</span> Post soni kamida 20 ta</li>
-          <li><span class="rule-icon">❌</span> Nakrutka (sotib olingan followers) qabul qilinmaydi</li>
-          <li><span class="rule-icon">❌</span> Taqiqlangan (banned) accountlar qabul qilinmaydi</li>
-          <li><span class="rule-icon">ℹ️</span> Har savdodan 12% komissiya olinadi</li>
-        </ul>
-      </div>
-
-      <!-- Account ma'lumotlari -->
-      <div class="sell-card">
-        <h3>📱 Account ma'lumotlari</h3>
-        <p class="card-desc">Instagram account haqida to'liq ma'lumot kiriting</p>
-
-        <div class="form-group">
-          <label>Instagram username *</label>
-          <div style="position:relative;">
-            <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:15px;font-weight:600;">@</span>
-            <input type="text" class="form-input" id="username" placeholder="sizning_username" style="padding-left:32px;" oninput="checkUsername(this.value)" required/>
-          </div>
-          <div class="form-hint" id="usernameHint">Instagram username @siz qo'ymasdan kiriting</div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Followers soni *</label>
-            <input type="number" class="form-input" id="followers" placeholder="masalan: 1500" min="1000" oninput="calcPrice()" required/>
-            <div class="form-hint">Hozirgi followers soni</div>
-          </div>
-          <div class="form-group">
-            <label>Post soni *</label>
-            <input type="number" class="form-input" id="posts" placeholder="masalan: 45" min="20" required/>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Engagement Rate (%) *</label>
-            <input type="number" class="form-input" id="er" placeholder="masalan: 5.2" min="1" max="100" step="0.1" oninput="calcPrice()" required/>
-            <div class="form-hint">Oxirgi 10 postning o'rtacha ER</div>
-          </div>
-          <div class="form-group">
-            <label>Account yoshi *</label>
-            <select class="form-input" id="age" required>
-              <option value="">Tanlang...</option>
-              <option value="3-6 oy">3-6 oy</option>
-              <option value="6-12 oy">6-12 oy</option>
-              <option value="1-2 yil">1-2 yil</option>
-              <option value="2+ yil">2+ yil</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Kategoriya *</label>
-            <select class="form-input" id="category" required>
-              <option value="">Tanlang...</option>
-              <option value="food">🍔 Ovqat & Restoran</option>
-              <option value="travel">✈️ Sayohat</option>
-              <option value="fitness">💪 Fitness & Sport</option>
-              <option value="beauty">💄 Go'zallik & Moda</option>
-              <option value="business">💼 Biznes</option>
-              <option value="tech">📱 Texnologiya</option>
-              <option value="art">🎨 San'at</option>
-              <option value="home">🏠 Uy & Interyer</option>
-              <option value="other">📌 Boshqa</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Asosiy auditoriya joylashuvi</label>
-            <select class="form-input" id="audience">
-              <option value="O'zbekiston 80%+">🇺🇿 O'zbekiston 80%+</option>
-              <option value="O'zbekiston 50-80%">🇺🇿 O'zbekiston 50-80%</option>
-              <option value="Aralash">🌍 Aralash (xalqaro)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Account tavsifi *</label>
-          <textarea class="form-input" id="description" rows="4" placeholder="Account qanday kontentlar haqida? Auditoriya kimlar? Nima uchun qimmatli?..." style="resize:vertical;" required></textarea>
-          <div class="form-hint" id="descCount">0 / 300 belgi</div>
-        </div>
-
-        <div class="form-group">
-          <label>So'ralayotgan narx ($) *</label>
-          <input type="number" class="form-input" id="price" placeholder="masalan: 50" min="10" oninput="calcPrice()" required/>
-        </div>
-
-        <!-- Narx kalkulyatori -->
-        <div class="price-calc" id="priceCalc" style="display:none;">
-          <div style="font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:10px;">💰 NARX HISOBI</div>
-          <div class="price-row"><span>Siz so'raydigan narx</span><span id="pc-price">—</span></div>
-          <div class="price-row"><span>InstaMarket komissiyasi (12%)</span><span id="pc-comm" style="color:#ef4444!important;">—</span></div>
-          <div class="price-row"><span>Sizga tushadigan summa</span><span id="pc-net" style="color:var(--green-dark)!important;">—</span></div>
-        </div>
-      </div>
-
-      <!-- Screenshot yuklash -->
-      <div class="sell-card">
-        <h3>📸 Screenshot yuklash</h3>
-        <p class="card-desc">Instagram Insights dan statistika screenshotlari (ixtiyoriy, lekin tasdiqlash tezlashadi)</p>
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-          <div class="upload-icon">📊</div>
-          <p><strong>Rasm yuklash uchun bosing</strong> yoki bu yerga tashlang</p>
-          <p style="font-size:12px;margin-top:6px;">PNG, JPG — max 5MB</p>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" onchange="handleFiles(this.files)"/>
-        <div id="fileList" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;"></div>
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;">
-        <button class="btn btn-primary btn-lg" onclick="goStep2()">Keyingisi — Tasdiqlash →</button>
-      </div>
-    </div>
-
-    <!-- QADAM 2: Tekshirish natijasi -->
-    <div id="step2" style="display:none;">
-      <div class="sell-card">
-        <h3>🤖 Avtomatik tekshiruv natijasi</h3>
-        <p class="card-desc">Tizim ma'lumotlaringizni tahlil qildi</p>
-        <div class="checker-box" id="checkerResult"></div>
-      </div>
-
-      <div class="sell-card">
-        <h3>📄 Shartlar va qoidalar</h3>
-        <p class="card-desc">E'lon berish uchun quyidagi shartlarga rozilik bildiring</p>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <label style="display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;color:var(--text-light);">
-            <input type="checkbox" id="agree1" style="margin-top:2px;accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;"/>
-            Men account egasiman va uni sotish huquqiga egaman
-          </label>
-          <label style="display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;color:var(--text-light);">
-            <input type="checkbox" id="agree2" style="margin-top:2px;accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;"/>
-            Ko'rsatilgan ma'lumotlar to'liq va haqiqiy ekanligini tasdiqlaymen
-          </label>
-          <label style="display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;color:var(--text-light);">
-            <input type="checkbox" id="agree3" style="margin-top:2px;accent-color:var(--primary);width:16px;height:16px;flex-shrink:0;"/>
-            InstaMarket <a href="#" style="color:var(--primary);font-weight:600;">foydalanish shartlari</a> va <a href="#" style="color:var(--primary);font-weight:600;">komissiya siyosati</a> bilan roziman
-          </label>
-        </div>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;gap:12px;">
-        <button class="btn btn-ghost btn-lg" onclick="goStep1()">← Orqaga</button>
-        <button class="btn btn-primary btn-lg" onclick="goStep3()">E'lonni yuborish 🚀</button>
-      </div>
-    </div>
-
-    <!-- QADAM 3: Muvaffaqiyat -->
-    <div id="step3" style="display:none;">
-      <div class="sell-card" style="text-align:center;padding:48px 32px;">
-        <div style="font-size:64px;margin-bottom:16px;">🎉</div>
-        <h2 style="font-size:26px;font-weight:800;margin-bottom:10px;">E'lon yuborildi!</h2>
-        <p style="color:var(--text-light);font-size:15px;margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.7;">
-          Moderator 24 soat ichida e'loningizni tekshiradi va tasdiqlaydi. Natija haqida xabar olasiz.
-        </p>
-        <div style="background:var(--bg);border-radius:12px;padding:20px;margin-bottom:28px;max-width:380px;margin-left:auto;margin-right:auto;border:1.5px solid var(--border);">
-          <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;font-weight:600;">KEYINGI QADAMLAR</div>
-          <div style="font-size:14px;color:var(--text-light);line-height:2;">
-            ① Moderator tekshiradi (24 soat)<br/>
-            ② E'lon saytda chiqadi<br/>
-            ③ Xaridor topilganda xabar keladi<br/>
-            ④ To'lov escrow ga tushadi<br/>
-            ⑤ 72 soat tekshiruvdan so'ng pul sizga
-          </div>
-        </div>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="marketplace.html" class="btn btn-primary btn-lg">Bozorni ko'rish</a>
-          <a href="sell.html" class="btn btn-ghost btn-lg">Yana e'lon berish</a>
-        </div>
-      </div>
+  <div class="sell-wrap" id="sellWrap">
+    <!-- Auth tekshiruvi va kontent JS orqali to'ldiriladi -->
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="font-size:40px;margin-bottom:12px;">⏳</div>
+      <p style="color:var(--text-muted);">Yuklanmoqda...</p>
     </div>
   </div>
 </div>
-
 <div class="toast-container" id="toastContainer"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-// Kirish tekshiruvi
-document.addEventListener('DOMContentLoaded', function() {
-  var user = loadUser();
-  if (!user) {
-    document.querySelector('.sell-layout').innerHTML = `
-      <div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">
-        <div style="font-size:56px;margin-bottom:16px;">🔐</div>
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Kirish talab qilinadi</h2>
-        <p style="color:var(--text-light);margin-bottom:24px;">Account sotish uchun tizimga kiring yoki ro'yxatdan o'ting</p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="login.html" class="btn btn-primary">Kirish</a>
-          <a href="register.html?role=seller" class="btn btn-ghost">Sotuvchi sifatida ro'yxatdan o'tish</a>
-        </div>
-      </div>`;
-    return;
-  }
-  if (user.role === 'buyer') {
-    document.querySelector('.sell-layout').innerHTML = `
-      <div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">
-        <div style="font-size:56px;margin-bottom:16px;">💡</div>
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Sotuvchi hisob kerak</h2>
-        <p style="color:var(--text-light);margin-bottom:24px;">Siz xaridor sifatida ro'yxatdan o'tgansiz. Account sotish uchun sotuvchi hisob oching.</p>
-        <a href="register.html?role=seller" class="btn btn-primary">Sotuvchi sifatida ro'yxatdan o'tish</a>
-      </div>`;
-    return;
-  }
-});
+var firebaseOk = initFirebase();
+var currentStep = 1;
+var formData = {};
 
-// Tavsif belgisi sanash
-var desc = document.getElementById('description');
-if (desc) {
-  desc.addEventListener('input', function() {
-    var c = document.getElementById('descCount');
-    if (c) c.textContent = this.value.length + ' / 300 belgi';
-  });
+function renderSteps(){
+  return '<div class="steps-bar">' +
+    '<div class="sbar-item '+(currentStep>1?'done':currentStep===1?'active':'')+'" id="s1">① Ma\'lumot</div>' +
+    '<div class="sbar-arrow">›</div>' +
+    '<div class="sbar-item '+(currentStep>2?'done':currentStep===2?'active':'')+'" id="s2">② Tekshiruv</div>' +
+    '<div class="sbar-arrow">›</div>' +
+    '<div class="sbar-item '+(currentStep===3?'active':'')+'" id="s3">③ Nashr</div>' +
+  '</div>';
 }
 
-// Username tekshiruv
-function checkUsername(val) {
-  var hint = document.getElementById('usernameHint');
-  if (!hint) return;
-  val = val.replace('@', '');
-  if (val.length < 3) { hint.textContent = 'Kamida 3 ta belgi kiriting'; hint.style.color = '#ef4444'; }
-  else if (/^[a-zA-Z0-9._]+$/.test(val)) { hint.textContent = '✅ @' + val; hint.style.color = 'var(--green-dark)'; }
-  else { hint.textContent = 'Faqat harf, raqam, nuqta, pastki chiziq'; hint.style.color = '#ef4444'; }
+function renderStep1(){
+  return renderSteps() +
+  '<div class="sell-card">' +
+    '<h3>📋 Qoidalar</h3><p class="sdesc">Qabul qilinadigan accountlar</p>' +
+    ['✅ Minimal 1,000 haqiqiy follower','✅ Engagement rate kamida 3%','✅ Account yoshi kamida 3 oy','✅ Kamida 20 ta post','❌ Nakrutka (sotib olingan) followers qabul qilinmaydi','ℹ️ Har savdodan 12% komissiya'].map(function(r){
+      return '<div class="rule-item"><span>'+r.slice(0,2)+'</span><span>'+r.slice(2)+'</span></div>';
+    }).join('') +
+  '</div>' +
+  '<div class="sell-card">' +
+    '<h3>📱 Account ma\'lumotlari</h3><p class="sdesc">Instagram account haqida to\'liq kiriting</p>' +
+    '<div class="form-group"><label>Instagram username *</label>' +
+    '<div style="position:relative;"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;">@</span>' +
+    '<input type="text" class="form-input" id="f_username" placeholder="username" style="padding-left:30px;" required/></div></div>' +
+    '<div class="form-row2">' +
+      '<div class="form-group" style="margin:0;"><label>Followers soni *</label><input type="number" class="form-input" id="f_followers" placeholder="masalan: 1500" min="1000" oninput="calcPrice()" required/></div>' +
+      '<div class="form-group" style="margin:0;"><label>Post soni *</label><input type="number" class="form-input" id="f_posts" placeholder="masalan: 45" min="20" required/></div>' +
+    '</div>' +
+    '<div class="form-row2" style="margin-top:14px;">' +
+      '<div class="form-group" style="margin:0;"><label>Engagement Rate % *</label><input type="number" class="form-input" id="f_er" placeholder="masalan: 5.2" min="1" max="100" step="0.1" oninput="calcPrice()" required/></div>' +
+      '<div class="form-group" style="margin:0;"><label>Account yoshi *</label><select class="form-input" id="f_age" required><option value="">Tanlang...</option><option>3-6 oy</option><option>6-12 oy</option><option>1-2 yil</option><option>2+ yil</option></select></div>' +
+    '</div>' +
+    '<div class="form-row2" style="margin-top:14px;">' +
+      '<div class="form-group" style="margin:0;"><label>Kategoriya *</label><select class="form-input" id="f_category" required><option value="">Tanlang...</option><option value="food">🍔 Ovqat</option><option value="travel">✈️ Sayohat</option><option value="fitness">💪 Fitness</option><option value="beauty">💄 Go\'zallik</option><option value="business">💼 Biznes</option><option value="tech">📱 Tech</option><option value="art">🎨 San\'at</option><option value="home">🏠 Uy</option><option value="other">📌 Boshqa</option></select></div>' +
+      '<div class="form-group" style="margin:0;"><label>Auditoriya</label><select class="form-input" id="f_audience"><option>🇺🇿 O\'zbekiston 80%+</option><option>🇺🇿 O\'zbekiston 50-80%</option><option>🌍 Aralash</option></select></div>' +
+    '</div>' +
+    '<div class="form-group" style="margin-top:14px;"><label>Tavsif * (kamida 30 belgi)</label>' +
+    '<textarea class="form-input" id="f_desc" rows="4" placeholder="Account qanday kontentlar haqida? Auditoriya kim? Nima uchun qimmatli?..." style="resize:vertical;" oninput="document.getElementById(\'descLen\').textContent=this.value.length+\'/300\'" required></textarea>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;" id="descLen">0/300</div></div>' +
+    '<div class="form-group"><label>Narx (USD) *</label><input type="number" class="form-input" id="f_price" placeholder="masalan: 50" min="10" oninput="calcPrice()" required/>' +
+    '<div class="price-calc" id="priceCalc" style="display:none;">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;">💰 NARX HISOBI</div>' +
+      '<div class="pcalc-row"><span>Siz so\'raydigan narx</span><span id="pc1">—</span></div>' +
+      '<div class="pcalc-row"><span>Komissiya 12%</span><span id="pc2" style="color:#dc2626;">—</span></div>' +
+      '<div class="pcalc-row"><span>✅ Sizga tushadigan summa</span><span id="pc3" style="color:var(--green-dark);">—</span></div>' +
+    '</div></div>' +
+  '</div>' +
+  '<div class="sell-card">' +
+    '<h3>📸 Screenshot (ixtiyoriy)</h3><p class="sdesc">Instagram Insights statistikasi — tasdiqlashni tezlashtiradi</p>' +
+    '<div class="upload-zone" onclick="document.getElementById(\'fileInp\').click()"><div style="font-size:36px;margin-bottom:8px;">📊</div><p style="font-size:14px;color:var(--text-muted);"><strong style="color:var(--primary);">Rasm yuklash</strong> yoki bu yerga tashlang</p><p style="font-size:12px;color:var(--text-muted);margin-top:5px;">PNG, JPG — max 5MB</p></div>' +
+    '<input type="file" id="fileInp" accept="image/*" multiple style="display:none;" onchange="showFiles(this.files)"/>' +
+    '<div id="fileList" style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;"></div>' +
+  '</div>' +
+  '<div style="display:flex;justify-content:flex-end;">' +
+    '<button class="btn btn-primary btn-lg" onclick="goStep2()">Keyingisi →</button>' +
+  '</div>';
 }
 
-// Narx kalkulyator
-function calcPrice() {
-  var price = parseFloat(document.getElementById('price').value);
-  var pc = document.getElementById('priceCalc');
-  if (!price || price < 1) { if (pc) pc.style.display = 'none'; return; }
-  var comm = Math.round(price * 0.12);
-  var net = price - comm;
-  if (pc) pc.style.display = 'block';
-  document.getElementById('pc-price').textContent = '$' + price;
-  document.getElementById('pc-comm').textContent = '-$' + comm;
-  document.getElementById('pc-net').textContent = '$' + net;
-}
-
-// Fayl yuklash
-function handleFiles(files) {
-  var list = document.getElementById('fileList');
-  if (!list) return;
-  Array.from(files).forEach(function(f) {
-    var div = document.createElement('div');
-    div.style.cssText = 'background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;display:flex;align-items:center;gap:6px;';
-    div.innerHTML = '📎 ' + f.name + ' <span style="color:var(--text-muted);font-size:11px;">(' + (f.size/1024).toFixed(0) + ' KB)</span>';
-    list.appendChild(div);
-  });
-}
-
-// QADAM 1 → 2
-function goStep2() {
-  var u = document.getElementById('username').value.trim();
-  var f = parseInt(document.getElementById('followers').value);
-  var er = parseFloat(document.getElementById('er').value);
-  var p = parseInt(document.getElementById('posts').value);
-  var cat = document.getElementById('category').value;
-  var price = parseFloat(document.getElementById('price').value);
-  var d = document.getElementById('description').value.trim();
-
-  if (!u) { showToast('Username kiriting!', 'error'); return; }
-  if (!f || f < 1000) { showToast('Minimum 1,000 followers bo\'lishi kerak!', 'error'); return; }
-  if (!er || er < 1) { showToast('Engagement rate kiriting (min 1%)!', 'error'); return; }
-  if (!p || p < 20) { showToast('Minimum 20 ta post bo\'lishi kerak!', 'error'); return; }
-  if (!cat) { showToast('Kategoriya tanlang!', 'error'); return; }
-  if (!price || price < 10) { showToast('Minimal narx $10!', 'error'); return; }
-  if (d.length < 30) { showToast('Tavsif kamida 30 ta belgi bo\'lsin!', 'error'); return; }
-
-  // Checker natijasi
+function renderStep2(){
+  var f = formData;
   var checks = [
-    { label: 'Followers soni', val: f >= 1000, text: f.toLocaleString() + ' ta', ok: f >= 1000 },
-    { label: 'Engagement Rate', val: er >= 3, text: er + '%', ok: er >= 3 },
-    { label: 'Post soni', val: p >= 20, text: p + ' ta', ok: p >= 20 },
-    { label: 'Username formati', val: /^[a-zA-Z0-9._]+$/.test(u), text: '@' + u, ok: /^[a-zA-Z0-9._]+$/.test(u) },
-    { label: 'Narx diapazon', val: price >= 10 && price <= 2000, text: '$' + price, ok: price >= 10 && price <= 2000 },
+    {label:'Followers soni',ok:f.followers>=1000,val:f.followers+' ta'},
+    {label:'Engagement Rate',ok:f.er>=3,val:f.er+'%'},
+    {label:'Post soni',ok:f.posts>=20,val:f.posts+' ta'},
+    {label:'Username format',ok:/^[a-zA-Z0-9._]+$/.test(f.username),val:'@'+f.username},
+    {label:'Narx diapazon',ok:f.price>=10&&f.price<=2000,val:'$'+f.price},
+    {label:'Tavsif uzunligi',ok:f.desc.length>=30,val:f.desc.length+' belgi'},
   ];
-  var allOk = checks.every(function(c) { return c.ok; });
-  var html = checks.map(function(c) {
-    return '<div class="checker-row"><span>' + c.label + '</span><span class="checker-val ' + (c.ok ? 'green' : 'red') + '">' + (c.ok ? '✅ ' : '❌ ') + c.text + '</span></div>';
-  }).join('');
-  html += '<div class="checker-row" style="margin-top:4px;"><span style="font-weight:700;">Umumiy holat</span><span class="checker-val ' + (allOk ? 'green' : 'red') + '" style="font-size:14px;">' + (allOk ? '✅ Qabul qilindi' : '❌ Talablar bajarilmadi') + '</span></div>';
-  document.getElementById('checkerResult').innerHTML = html;
-
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
-  document.getElementById('step1btn').className = 'sell-step done';
-  document.getElementById('step2btn').className = 'sell-step active';
-  window.scrollTo({ top: 200, behavior: 'smooth' });
+  var allOk = checks.every(function(c){return c.ok;});
+  return renderSteps() +
+  '<div class="sell-card">' +
+    '<h3>🤖 Avtomatik tekshiruv natijasi</h3><p class="sdesc">Tizim ma\'lumotlaringizni tahlil qildi</p>' +
+    '<div style="border:1.5px solid var(--border);border-radius:10px;overflow:hidden;">' +
+      checks.map(function(c){
+        return '<div class="checker-row" style="padding:10px 14px;"><span>'+c.label+'</span>' +
+          '<span class="'+(c.ok?'cv-ok':'cv-fail')+'">'+(c.ok?'✅ ':'❌ ')+c.val+'</span></div>';
+      }).join('') +
+      '<div class="checker-row" style="padding:10px 14px;background:'+(allOk?'var(--green-light)':'#fee2e2')+';"><span style="font-weight:700;">Umumiy natija</span>' +
+      '<span class="'+(allOk?'cv-ok':'cv-fail')+'" style="font-size:14px;">'+(allOk?'✅ Qabul qilindi':'❌ Talablar bajarilmadi')+'</span></div>' +
+    '</div>' +
+  '</div>' +
+  '<div class="sell-card">' +
+    '<h3>📄 Shartlarga rozilik</h3><p class="sdesc">E\'lon berish uchun tasdiqlang</p>' +
+    ['Men account egasiman va sotish huquqiga egaman','Ko\'rsatilgan ma\'lumotlar to\'liq va haqiqiy','InstaMarket foydalanish shartlari va komissiya siyosatiga roziman'].map(function(t,i){
+      return '<label style="display:flex;align-items:flex-start;gap:9px;font-size:13px;cursor:pointer;color:var(--text-light);padding:8px 0;border-bottom:1px solid var(--border-light);">' +
+        '<input type="checkbox" id="agree'+i+'" style="margin-top:2px;accent-color:var(--primary);width:15px;height:15px;flex-shrink:0;"/>'+t+'</label>';
+    }).join('') +
+  '</div>' +
+  '<div style="display:flex;justify-content:space-between;gap:12px;">' +
+    '<button class="btn btn-ghost btn-lg" onclick="currentStep=1;render()">← Orqaga</button>' +
+    '<button class="btn btn-primary btn-lg" id="submitBtn" onclick="submitListing()">🚀 E\'lonni yuborish</button>' +
+  '</div>';
 }
 
-function goStep1() {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step1').style.display = 'block';
-  document.getElementById('step1btn').className = 'sell-step active';
-  document.getElementById('step2btn').className = 'sell-step';
-  window.scrollTo({ top: 200, behavior: 'smooth' });
+function renderStep3(){
+  return renderSteps() +
+  '<div class="sell-card" style="text-align:center;padding:48px 28px;">' +
+    '<div style="font-size:64px;margin-bottom:16px;">🎉</div>' +
+    '<h2 style="font-size:26px;font-weight:900;margin-bottom:10px;">E\'lon yuborildi!</h2>' +
+    '<p style="color:var(--text-light);font-size:15px;margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;">' +
+    'Moderator <strong>24 soat</strong> ichida e\'loningizni tekshiradi va tasdiqlaydi. Natija haqida xabar olasiz.</p>' +
+    '<div style="background:var(--bg);border-radius:12px;padding:18px;margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;border:1.5px solid var(--border);text-align:left;">' +
+      '<div style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:10px;text-transform:uppercase;">KEYINGI QADAMLAR</div>' +
+      ['Moderator tekshiradi (24 soat)','E\'lon saytda chiqadi','Xaridor topilsa xabar keladi','To\'lov escrow ga tushadi','72 soat tekshiruvdan so\'ng pul sizga'].map(function(s,i){
+        return '<div style="font-size:13px;color:var(--text-light);padding:5px 0;">'+( i+1)+'. '+s+'</div>';
+      }).join('') +
+    '</div>' +
+    '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' +
+      '<a href="marketplace.html" class="btn btn-primary">Bozorni ko\'rish</a>' +
+      '<a href="sell.html" class="btn btn-ghost">Yana e\'lon berish</a>' +
+    '</div>' +
+  '</div>';
 }
 
-function goStep3() {
-  if (!document.getElementById('agree1').checked || !document.getElementById('agree2').checked || !document.getElementById('agree3').checked) {
-    showToast('Barcha shartlarga rozi bo\'ling!', 'error'); return;
+function render(){
+  var wrap = document.getElementById('sellWrap');
+  if(!wrap) return;
+  if(currentStep===1) wrap.innerHTML = renderStep1();
+  else if(currentStep===2) wrap.innerHTML = renderStep2();
+  else wrap.innerHTML = renderStep3();
+}
+
+function calcPrice(){
+  var price = parseFloat(document.getElementById('f_price')&&document.getElementById('f_price').value||0);
+  var pc = document.getElementById('priceCalc');
+  if(!pc) return;
+  if(!price||price<1){pc.style.display='none';return;}
+  pc.style.display='block';
+  var comm = Math.round(price*0.12);
+  document.getElementById('pc1').textContent='$'+price;
+  document.getElementById('pc2').textContent='-$'+comm;
+  document.getElementById('pc3').textContent='$'+(price-comm);
+}
+
+function showFiles(files){
+  var list=document.getElementById('fileList');
+  if(!list)return;
+  Array.from(files).forEach(function(f){
+    var d=document.createElement('div');
+    d.style.cssText='background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:7px 11px;font-size:12px;';
+    d.textContent='📎 '+f.name;
+    list.appendChild(d);
+  });
+}
+
+function goStep2(){
+  var u=document.getElementById('f_username')&&document.getElementById('f_username').value.trim();
+  var fl=parseInt(document.getElementById('f_followers')&&document.getElementById('f_followers').value||0);
+  var er=parseFloat(document.getElementById('f_er')&&document.getElementById('f_er').value||0);
+  var p=parseInt(document.getElementById('f_posts')&&document.getElementById('f_posts').value||0);
+  var cat=document.getElementById('f_category')&&document.getElementById('f_category').value;
+  var price=parseFloat(document.getElementById('f_price')&&document.getElementById('f_price').value||0);
+  var desc=document.getElementById('f_desc')&&document.getElementById('f_desc').value.trim();
+  var age=document.getElementById('f_age')&&document.getElementById('f_age').value;
+
+  if(!u){showToast('Username kiriting!','error');return;}
+  if(fl<1000){showToast('Minimum 1,000 followers bo\'lishi kerak!','error');return;}
+  if(er<1){showToast('Engagement rate kiriting (min 1%)!','error');return;}
+  if(p<20){showToast('Minimum 20 ta post!','error');return;}
+  if(!cat){showToast('Kategoriya tanlang!','error');return;}
+  if(price<10){showToast('Minimal narx $10!','error');return;}
+  if(!desc||desc.length<30){showToast('Tavsif kamida 30 ta belgi bo\'lsin!','error');return;}
+  if(!age){showToast('Account yoshini tanlang!','error');return;}
+
+  formData={username:u,followers:fl,er:er,posts:p,category:cat,price:price,desc:desc,age:age,
+    audience:document.getElementById('f_audience').value};
+  currentStep=2;render();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function submitListing(){
+  if(![0,1,2].every(function(i){return document.getElementById('agree'+i)&&document.getElementById('agree'+i).checked;})){
+    showToast('Barcha shartlarga rozi bo\'ling!','error');return;
   }
-  var btn = event.target;
-  btn.textContent = 'Yuklanmoqda...'; btn.disabled = true;
-  setTimeout(function() {
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'block';
-    document.getElementById('step2btn').className = 'sell-step done';
-    document.getElementById('step3btn').className = 'sell-step active';
-    window.scrollTo({ top: 200, behavior: 'smooth' });
-  }, 1200);
+  var btn=document.getElementById('submitBtn');
+  btn.textContent='⏳ Yuklanmoqda...';btn.disabled=true;
+
+  var user=loadUser();
+  if(firebaseOk&&user&&user.uid&&!user.uid.startsWith('demo')){
+    var res=await addListing({
+      username:formData.username,followers:formData.followers,er:formData.er,posts:formData.posts,
+      category:formData.category,price:formData.price,description:formData.desc,age:formData.age,
+      audience:formData.audience,emoji:getCatEmoji(formData.category),niche:getCatName(formData.category),
+      badge:'pending',score:0,realFollowers:0,
+    });
+    if(!res.success){showToast(res.error||'Xato!','error');btn.textContent='🚀 E\'lonni yuborish';btn.disabled=false;return;}
+  }
+  setTimeout(function(){currentStep=3;render();window.scrollTo({top:0,behavior:'smooth'});},1000);
 }
+
+function getCatEmoji(c){return{food:'🍔',travel:'✈️',fitness:'💪',beauty:'💄',business:'💼',tech:'📱',art:'🎨',home:'🏠',other:'📌'}[c]||'📌';}
+function getCatName(c){return{food:'Ovqat & Restoran',travel:'Sayohat',fitness:'Fitness & Sport',beauty:"Go'zallik",business:'Biznes',tech:'Texnologiya',art:"San'at",home:'Uy & Interyer',other:'Boshqa'}[c]||c;}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var user=loadUser();
+  if(!user){
+    document.getElementById('sellWrap').innerHTML=
+      '<div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">' +
+      '<div style="font-size:52px;margin-bottom:14px;">🔐</div>' +
+      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Kirish talab qilinadi</h2>' +
+      '<p style="color:var(--text-muted);margin-bottom:22px;">Account sotish uchun tizimga kiring</p>' +
+      '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' +
+      '<a href="login.html" class="btn btn-primary">Kirish</a>' +
+      '<a href="register.html?role=seller" class="btn btn-ghost">Sotuvchi bo\'lib ro\'yxatdan o\'tish</a>' +
+      '</div></div>';
+    return;
+  }
+  if(user.role==='buyer'){
+    document.getElementById('sellWrap').innerHTML=
+      '<div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">' +
+      '<div style="font-size:52px;margin-bottom:14px;">💡</div>' +
+      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Sotuvchi hisob kerak</h2>' +
+      '<p style="color:var(--text-muted);margin-bottom:22px;">Siz xaridor sifatida kirgansiz. Sotish uchun yangi sotuvchi hisob oching.</p>' +
+      '<a href="register.html?role=seller" class="btn btn-primary">Sotuvchi bo\'lib ro\'yxatdan o\'tish</a></div>';
+    return;
+  }
+  render();
+});
 </script>
 </body>
 </html>

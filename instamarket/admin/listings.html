@@ -3,100 +3,76 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>E'lonlar — Admin Panel</title>
+  <title>E'lonlar — Admin</title>
   <link rel="stylesheet" href="../css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
 <div class="admin-layout">
   <aside class="admin-sidebar">
     <div class="admin-logo">
       <a href="../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
-        <img src="../images/logo.svg" width="30" height="30" alt="InstaMarket" style="border-radius:8px;display:block;"/>
-        <span>InstaMarket</span>
-      </a>
-      <small>Admin Panel</small>
+        <img src="../images/logo.svg" width="28" height="28" style="border-radius:7px;" alt="logo"/>
+        <span class="brand">InstaMarket</span>
+      </a><small>Admin Panel</small>
     </div>
     <nav class="admin-nav">
-      <div class="nav-label">Asosiy</div>
-      <a href="index.html"><span class="icon">📊</span> Dashboard</a>
-      <a href="listings.html" class="active"><span class="icon">📱</span> E'lonlar</a>
-      <a href="users.html"><span class="icon">👥</span> Foydalanuvchilar</a>
-      <div class="nav-label">Savdo</div>
-      <a href="orders.html"><span class="icon">💰</span> Savdolar</a>
-      <a href="disputes.html"><span class="icon">⚠️</span> Nizolar</a>
-      <a href="finance.html"><span class="icon">📈</span> Moliya</a>
-      <div class="nav-label">Tizim</div>
-      <a href="settings.html"><span class="icon">⚙️</span> Sozlamalar</a>
-      <a href="../index.html"><span class="icon">🌐</span> Saytga qaytish</a>
+      <div class="nav-section">Asosiy</div>
+      <a href="index.html"><span class="icon">📊</span>Dashboard</a>
+      <a href="listings.html" class="active"><span class="icon">📱</span>E'lonlar</a>
+      <a href="users.html"><span class="icon">👥</span>Foydalanuvchilar</a>
+      <div class="nav-section">Savdo</div>
+      <a href="orders.html"><span class="icon">💰</span>Savdolar</a>
+      <a href="disputes.html"><span class="icon">⚠️</span>Nizolar</a>
+      <a href="finance.html"><span class="icon">📈</span>Moliya</a>
+      <div class="nav-section">Tizim</div>
+      <a href="settings.html"><span class="icon">⚙️</span>Sozlamalar</a>
+      <a href="../index.html"><span class="icon">🌐</span>Saytga qaytish</a>
     </nav>
   </aside>
-
   <div class="admin-content">
-    <div class="admin-header">
+    <div class="admin-topbar">
       <h1>📱 E'lonlar boshqaruvi</h1>
-      <div style="display:flex;gap:10px;">
-        <input type="text" placeholder="🔍 Qidirish..." style="border:2px solid var(--border);border-radius:10px;padding:8px 16px;font-size:14px;outline:none;font-family:inherit;" oninput="filterTable(this.value)" id="searchInput"/>
-        <select style="border:2px solid var(--border);border-radius:10px;padding:8px 14px;font-size:14px;font-family:inherit;outline:none;" onchange="filterByStatus(this.value)">
+      <div style="display:flex;gap:9px;">
+        <input type="text" placeholder="🔍 Qidirish..." oninput="filterTable(this.value)"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:7px 13px;font-size:13px;outline:none;font-family:inherit;width:200px;"/>
+        <select onchange="filterStatus(this.value)"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;outline:none;">
           <option value="all">Barchasi</option>
           <option value="pending">Kutayotgan</option>
           <option value="active">Aktiv</option>
           <option value="rejected">Rad etilgan</option>
+          <option value="sold">Sotilgan</option>
         </select>
       </div>
     </div>
-
     <div class="admin-body">
-      <!-- Stats row -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
-        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--secondary);">
-          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">⏳ Kutayotgan</div>
-          <div style="font-size:28px;font-weight:800;color:var(--secondary);">7</div>
-        </div>
-        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--green);">
-          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">✅ Aktiv</div>
-          <div style="font-size:28px;font-weight:800;color:var(--green);">87</div>
-        </div>
-        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--primary);">
-          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">❌ Rad etilgan</div>
-          <div style="font-size:28px;font-weight:800;color:var(--primary);">14</div>
-        </div>
-        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid #833AB4;">
-          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">🏆 Sotilgan</div>
-          <div style="font-size:28px;font-weight:800;color:#833AB4;">248</div>
-        </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;">
+        <div class="dash-card" style="border-color:var(--accent);"><div class="dc-label">⏳ Kutayotgan</div><div class="dc-val" id="cntPending" style="color:var(--accent);">—</div></div>
+        <div class="dash-card" style="border-color:var(--green);"><div class="dc-label">✅ Aktiv</div><div class="dc-val" id="cntActive" style="color:var(--green-dark);">—</div></div>
+        <div class="dash-card" style="border-color:var(--secondary);"><div class="dc-label">❌ Rad etilgan</div><div class="dc-val" id="cntRejected" style="color:var(--secondary);">—</div></div>
+        <div class="dash-card" style="border-color:#7c3aed;"><div class="dc-label">💰 Sotilgan</div><div class="dc-val" id="cntSold" style="color:#7c3aed;">—</div></div>
       </div>
 
-      <!-- Pending listings — Eng muhim qism -->
-      <div class="admin-table-wrap" style="margin-bottom:24px;">
-        <div class="admin-table-header">
-          <h2>⏳ Tekshirish kutayotgan e'lonlar</h2>
-          <span style="background:rgba(245,133,41,0.1);color:var(--secondary);padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">7 ta</span>
+      <!-- Pending — birinchi va muhim -->
+      <div class="admin-table-wrap" style="margin-bottom:20px;">
+        <div class="admin-table-top">
+          <h2>⏳ Tekshirish kutayotgan</h2>
+          <span id="pendingBadge" style="background:rgba(247,119,55,0.1);color:var(--accent);padding:3px 12px;border-radius:20px;font-size:13px;font-weight:700;"></span>
         </div>
-        <div style="overflow-x:auto;" id="pendingTable">
-          <table>
-            <thead>
-              <tr><th>Account</th><th>Sotuvchi</th><th>Followers</th><th>ER</th><th>Bot bali</th><th>Narx</th><th>Yuborildi</th><th>Amallar</th></tr>
-            </thead>
-            <tbody id="pendingBody"></tbody>
-          </table>
-        </div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Account</th><th>Sotuvchi</th><th>Followers</th><th>ER</th><th>Narx</th><th>Vaqt</th><th>Amallar</th></tr></thead>
+          <tbody id="pendingBody"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Yuklanmoqda...</td></tr></tbody>
+        </table></div>
       </div>
 
-      <!-- All listings -->
+      <!-- Barcha e'lonlar -->
       <div class="admin-table-wrap">
-        <div class="admin-table-header">
-          <h2>📋 Barcha e'lonlar</h2>
-          <span style="font-size:13px;color:var(--text-light);" id="totalCount">Jami: 108 ta</span>
-        </div>
-        <div style="overflow-x:auto;">
-          <table id="allTable">
-            <thead>
-              <tr><th>#</th><th>Account</th><th>Kategoriya</th><th>Followers</th><th>ER</th><th>Narx</th><th>Holat</th><th>Amallar</th></tr>
-            </thead>
-            <tbody id="allBody"></tbody>
-          </table>
-        </div>
+        <div class="admin-table-top"><h2>📋 Barcha e'lonlar</h2><span id="allCount" style="font-size:13px;color:var(--text-muted);"></span></div>
+        <div style="overflow-x:auto;"><table>
+          <thead><tr><th>Account</th><th>Kategoriya</th><th>Followers</th><th>ER</th><th>Narx</th><th>Holat</th><th>Amallar</th></tr></thead>
+          <tbody id="allBody"><tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Yuklanmoqda...</td></tr></tbody>
+        </table></div>
       </div>
     </div>
   </div>
@@ -104,123 +80,174 @@
 
 <!-- Review Modal -->
 <div class="modal-overlay" id="reviewModal">
-  <div class="modal" style="max-width:560px;position:relative;">
+  <div class="modal" style="max-width:520px;position:relative;">
     <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
-    <div class="modal-title" id="modalTitle">E'lonni ko'rib chiqish</div>
-    <div id="modalBody" style="margin-bottom:24px;"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <button class="btn btn-green" style="justify-content:center;" onclick="approveAccount()">✅ Tasdiqlash</button>
-      <button class="btn" style="background:var(--primary);color:white;justify-content:center;" onclick="rejectAccount()">❌ Rad etish</button>
-    </div>
-    <div style="margin-top:12px;">
-      <input type="text" id="rejectReason" placeholder="Rad etish sababi (ixtiyoriy)..." style="width:100%;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;"/>
-    </div>
+    <div class="modal-title" id="rmTitle">E'lonni ko'rib chiqish</div>
+    <div id="rmBody"></div>
   </div>
 </div>
-
 <div class="toast-container" id="toastContainer"></div>
-<script>
-const _AP="instamarket2024admin";
-if(sessionStorage.getItem("admin_auth")!==_AP){document.body.innerHTML='<div style="min-height:100vh;background:linear-gradient(135deg,#1A1A2E,#16213E);display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;"><div style="background:white;border-radius:24px;padding:40px;width:100%;max-width:400px;"><div style="text-align:center;margin-bottom:24px;"><div style="font-size:48px;">🔐</div><h2 style="font-weight:800;margin:12px 0 8px;">Admin Panel</h2></div><input type="password" id="ap" placeholder="Parol..." style="width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:12px;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:12px;" onkeypress="if(event.key===Enter)cp()"/><button onclick="cp()" style="width:100%;background:linear-gradient(135deg,#E1306C,#F58529);color:white;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;">Kirish</button></div></div>';window.cp=function(){if(document.getElementById("ap").value===_AP){sessionStorage.setItem("admin_auth",_AP);location.reload();}else{alert("Parol noto`g`ri!");}};}  
-</script>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-const pendingAccounts = [
-  { id:101, username:'cooking_mama_uz', emoji:'🍳', niche:'Ovqat', followers:8200, er:5.1, score:88, price:90, seller:'Hulkar A.', ago:'2 soat oldin' },
-  { id:102, username:'uzb_traveler', emoji:'🗺️', niche:'Sayohat', followers:14500, er:4.8, score:91, price:160, seller:'Sanjar K.', ago:'4 soat oldin' },
-  { id:103, username:'skincare_lover', emoji:'✨', niche:'Go\'zallik', followers:6800, er:7.3, score:95, price:85, seller:'Zulfiya M.', ago:'6 soat oldin' },
-  { id:104, username:'gym_rat_uz', emoji:'🏋️', niche:'Fitness', followers:11200, er:6.1, score:93, price:130, seller:'Bekzod T.', ago:'8 soat oldin' },
-  { id:105, username:'tech_review_uz', emoji:'💻', niche:'Tech', followers:9400, er:5.9, score:90, price:110, seller:'Asilbek N.', ago:'12 soat oldin' },
-  { id:106, username:'fashion_uz_girl', emoji:'👗', niche:'Moda', followers:17800, er:4.2, score:85, price:175, seller:'Mohira S.', ago:'1 kun oldin' },
-  { id:107, username:'homechef_toshkent', emoji:'🥗', niche:'Ovqat', followers:5100, er:8.2, score:97, price:65, seller:'Nasiba B.', ago:'1 kun oldin' },
-];
+var firebaseOk = initFirebase();
+var allListings = [];
+var selectedId = null;
 
-let selectedId = null;
+var statusHtml = {
+  pending:  '<span class="status-badge s-pending">⏳ Kutayotgan</span>',
+  active:   '<span class="status-badge s-active">✅ Aktiv</span>',
+  rejected: '<span class="status-badge s-rejected">❌ Rad</span>',
+  sold:     '<span class="status-badge s-sold">💰 Sotildi</span>',
+};
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+async function loadListings(){
+  var listings = [];
+  if(firebaseOk){
+    try {
+      var snap = await db.collection('listings').orderBy('createdAt','desc').limit(100).get();
+      listings = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+    } catch(e){ console.warn(e); }
+  }
+  // Demo bilan to'ldirish
+  if(listings.length === 0){
+    listings = [
+      {id:'demo1',username:'cooking_mama_uz',emoji:'🍳',niche:"Ovqat",followers:1200,er:5.1,score:88,price:38,sellerName:'Hulkar A.',status:'pending',createdAt:null},
+      {id:'demo2',username:'uzb_traveler',emoji:'🗺️',niche:"Sayohat",followers:1450,er:4.8,score:91,price:48,sellerName:'Sanjar K.',status:'pending',createdAt:null},
+      {id:'demo3',username:'skincare_lover',emoji:'✨',niche:"Go'zallik",followers:1100,er:7.3,score:95,price:35,sellerName:'Zulfiya M.',status:'active',createdAt:null},
+      {id:'demo4',username:'gym_rat_uz',emoji:'🏋️',niche:"Fitness",followers:1600,er:6.1,score:93,price:50,sellerName:'Bekzod T.',status:'active',createdAt:null},
+      {id:'demo5',username:'tech_review_uz',emoji:'💻',niche:"Tech",followers:2100,er:5.9,score:90,price:65,sellerName:'Asilbek N.',status:'rejected',createdAt:null},
+    ];
+  }
+  allListings = listings;
+  renderAll(listings);
+}
 
-function reviewAccount(id) {
+function renderAll(list){
+  var pending  = list.filter(function(l){return l.status==='pending';});
+  var active   = list.filter(function(l){return l.status==='active';});
+  var rejected = list.filter(function(l){return l.status==='rejected';});
+  var sold     = list.filter(function(l){return l.status==='sold';});
+
+  document.getElementById('cntPending').textContent  = pending.length;
+  document.getElementById('cntActive').textContent   = active.length;
+  document.getElementById('cntRejected').textContent = rejected.length;
+  document.getElementById('cntSold').textContent     = sold.length;
+  document.getElementById('pendingBadge').textContent = pending.length+' ta';
+  document.getElementById('allCount').textContent    = 'Jami: '+list.length+' ta';
+
+  // Pending jadval
+  document.getElementById('pendingBody').innerHTML = pending.length === 0
+    ? '<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-muted);">✅ Kutayotgan e\'lon yo\'q</td></tr>'
+    : pending.map(function(l){
+      return '<tr data-id="'+l.id+'">' +
+        '<td><div style="display:flex;align-items:center;gap:9px;">' +
+          '<span style="font-size:19px;">'+(l.emoji||'📱')+'</span>' +
+          '<div><div style="font-weight:700;font-size:13px;">@'+(l.username||'—')+'</div>' +
+          '<div style="font-size:11px;color:var(--text-muted);">'+(l.niche||'')+'</div></div></div></td>' +
+        '<td style="font-size:13px;">'+(l.sellerName||'—')+'</td>' +
+        '<td style="font-weight:700;">'+(l.followers?(l.followers/1000).toFixed(1)+'K':'—')+'</td>' +
+        '<td style="color:var(--green-dark);font-weight:600;">'+(l.er||'—')+'%</td>' +
+        '<td style="font-weight:700;">$'+(l.price||'—')+'</td>' +
+        '<td style="font-size:12px;color:var(--text-muted);">'+(l.createdAt?'Az oldin':'Demo')+'</td>' +
+        '<td><div style="display:flex;gap:5px;">' +
+          '<button class="btn btn-xs btn-green" onclick="approveOne(\''+l.id+'\',this)">✅ Tasdiq</button>' +
+          '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="rejectOne(\''+l.id+'\',this)">❌ Rad</button>' +
+          '<button class="btn btn-xs btn-ghost" onclick="openReview(\''+l.id+'\')">👁 Ko\'rish</button>' +
+        '</div></td></tr>';
+    }).join('');
+
+  // Barcha e'lonlar
+  document.getElementById('allBody').innerHTML = list.map(function(l){
+    return '<tr data-status="'+(l.status||'')+'" data-search="'+(l.username||'').toLowerCase()+' '+(l.sellerName||'').toLowerCase()+'">' +
+      '<td><div style="display:flex;align-items:center;gap:8px;">' +
+        '<span style="font-size:17px;">'+(l.emoji||'📱')+'</span>' +
+        '<span style="font-weight:600;font-size:13px;">@'+(l.username||'—')+'</span></div></td>' +
+      '<td style="font-size:13px;color:var(--text-muted);">'+(l.niche||l.category||'—')+'</td>' +
+      '<td style="font-weight:700;">'+(l.followers?(l.followers/1000).toFixed(1)+'K':'—')+'</td>' +
+      '<td style="color:var(--green-dark);font-weight:600;">'+(l.er||'—')+'%</td>' +
+      '<td style="font-weight:700;">$'+(l.price||'—')+'</td>' +
+      '<td>'+(statusHtml[l.status]||statusHtml.pending)+'</td>' +
+      '<td><div style="display:flex;gap:5px;">' +
+        '<button class="btn btn-xs btn-ghost" onclick="openReview(\''+l.id+'\')">👁 Ko\'rish</button>' +
+        (l.status!=='rejected'?'<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="rejectOne(\''+l.id+'\',this)">🗑 O\'chirish</button>':'') +
+      '</div></td></tr>';
+  }).join('');
+}
+
+function filterTable(q){
+  document.querySelectorAll('#allBody tr[data-search]').forEach(function(r){
+    r.style.display=(r.dataset.search||'').includes(q.toLowerCase())?'':'none';
+  });
+}
+function filterStatus(s){
+  document.querySelectorAll('#allBody tr[data-status]').forEach(function(r){
+    r.style.display=(s==='all'||r.dataset.status===s)?'':'none';
+  });
+}
+
+function openReview(id){
+  var l = allListings.find(function(x){return x.id===id;});
+  if(!l) return;
   selectedId = id;
-  const acc = pendingAccounts.find(a => a.id === id);
-  document.getElementById('modalTitle').textContent = `${acc.emoji} @${acc.username} — Ko'rib chiqish`;
-  const scoreColor = acc.score >= 90 ? 'var(--green)' : acc.score >= 80 ? 'var(--secondary)' : 'var(--primary)';
-  document.getElementById('modalBody').innerHTML = `
-    <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:16px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div><span style="font-size:12px;color:var(--text-light);display:block;">Followers</span><strong style="font-size:18px;">${(acc.followers/1000).toFixed(1)}K</strong></div>
-        <div><span style="font-size:12px;color:var(--text-light);display:block;">Engagement Rate</span><strong style="font-size:18px;color:var(--green);">${acc.er}%</strong></div>
-        <div><span style="font-size:12px;color:var(--text-light);display:block;">Bot tekshiruv bali</span><strong style="font-size:18px;color:${scoreColor};">${acc.score}/100</strong></div>
-        <div><span style="font-size:12px;color:var(--text-light);display:block;">So'ralgan narx</span><strong style="font-size:18px;color:var(--primary);">$${acc.price}</strong></div>
-      </div>
-    </div>
-    <div style="background:${acc.score>=90?'var(--green-light)':'#fff3e0'};border-radius:10px;padding:12px 16px;font-size:13px;color:${acc.score>=90?'#2d6a4f':'#856404'};">
-      ${acc.score>=90?'✅ Bot tahlili: Account sifatli, tasdiqlash tavsiya etiladi.':'⚠️ Bot tahlili: O\'rtacha sifat, qo\'shimcha tekshirish kerak.'}
-    </div>`;
+  document.getElementById('rmTitle').textContent = (l.emoji||'📱')+' @'+(l.username||id);
+  var scoreColor = (l.score||0)>=90?'var(--green-dark)':(l.score||0)>=80?'#d97706':'#dc2626';
+  document.getElementById('rmBody').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">' +
+    [['👥 Followers',(l.followers?(l.followers/1000).toFixed(1)+'K':'—')],
+     ['❤️ ER',(l.er||'—')+'%'],
+     ['⭐ Ball',(l.score||'—')+'/100'],
+     ['💰 Narx','$'+(l.price||'—')],
+     ['📅 Yosh',(l.age||'—')],
+     ['🌍 Auditoriya',(l.audience||'—')],
+     ['👤 Sotuvchi',(l.sellerName||'—')],
+     ['📌 Kategoriya',(l.niche||l.category||'—')]
+    ].map(function(p){
+      return '<div style="background:var(--bg);border-radius:8px;padding:11px 13px;border:1px solid var(--border-light);">' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">'+p[0]+'</div>' +
+        '<div style="font-weight:700;font-size:14px;">'+p[1]+'</div></div>';
+    }).join('') + '</div>' +
+    (l.description?'<div style="background:var(--bg);border-radius:8px;padding:13px;border:1px solid var(--border-light);font-size:13px;color:var(--text-light);line-height:1.6;margin-bottom:16px;">📝 '+l.description+'</div>':'') +
+    '<div style="background:'+(( (l.score||0)>=80)?'var(--green-light)':'#fffbeb')+';" +
+    "style="border-radius:10px;padding:12px 14px;font-size:13px;color:'+(( (l.score||0)>=80)?'var(--green-dark)':'#92400e')+';margin-bottom:16px;">' +
+    ((l.score||0)>=80?'✅ Bot tahlili: Account sifatli':'⚠️ Bot tahlili: Qo\'shimcha tekshirish tavsiya etiladi') +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' +
+    '<button class="btn btn-green" style="justify-content:center;" onclick="approveOne(\''+id+'\',null);closeModal(\'reviewModal\')">✅ Tasdiqlash</button>' +
+    '<button class="btn btn-primary" style="justify-content:center;" onclick="rejectOne(\''+id+'\',null);closeModal(\'reviewModal\')">❌ Rad etish</button>' +
+    '</div>';
   openModal('reviewModal');
 }
 
-function approveAccount() {
-  const row = document.querySelector(`[data-id="${selectedId}"]`);
-  if (row) { row.querySelector('.status-cell').innerHTML = '<span class="status-badge status-active">✅ Aktiv</span>'; row.querySelectorAll('.action-btn').forEach(b=>b.style.display='none'); }
-  closeModal('reviewModal');
-  showToast('✅ E\'lon muvaffaqiyatli tasdiqlandi!', 'success');
+async function approveOne(id, btn){
+  if(firebaseOk){ try{ await moderateListing(id,'active',''); }catch(e){} }
+  var idx = allListings.findIndex(function(l){return l.id===id;});
+  if(idx>=0) allListings[idx].status='active';
+  renderAll(allListings);
+  showToast('✅ E\'lon tasdiqlandi!');
+}
+async function rejectOne(id, btn){
+  if(firebaseOk){ try{ await moderateListing(id,'rejected','Talablar bajarilmadi'); }catch(e){} }
+  var idx = allListings.findIndex(function(l){return l.id===id;});
+  if(idx>=0) allListings[idx].status='rejected';
+  renderAll(allListings);
+  showToast('E\'lon rad etildi.','error');
 }
 
-function rejectAccount() {
-  const row = document.querySelector(`[data-id="${selectedId}"]`);
-  if (row) { row.querySelector('.status-cell').innerHTML = '<span class="status-badge status-rejected">❌ Rad etildi</span>'; row.querySelectorAll('.action-btn').forEach(b=>b.style.display='none'); }
-  closeModal('reviewModal');
-  showToast('❌ E\'lon rad etildi. Sotuvchiga xabar yuborildi.', 'error');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Pending table
-  document.getElementById('pendingBody').innerHTML = pendingAccounts.map(a => `
-    <tr data-id="${a.id}">
-      <td><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">${a.emoji}</span><div><div style="font-weight:600;">@${a.username}</div><div style="font-size:12px;color:var(--text-light);">${a.niche}</div></div></div></td>
-      <td>${a.seller}</td>
-      <td><strong>${(a.followers/1000).toFixed(1)}K</strong></td>
-      <td><span style="color:var(--green);font-weight:700;">${a.er}%</span></td>
-      <td><span style="color:${a.score>=90?'var(--green)':'var(--secondary)'};font-weight:700;">${a.score}/100</span></td>
-      <td><strong>$${a.price}</strong></td>
-      <td style="color:var(--text-light);font-size:13px;">${a.ago}</td>
-      <td class="status-cell"><div class="action-btns"><button class="action-btn action-approve" onclick="approveDirectly(${a.id}, this)">✅ Tasdiq</button><button class="action-btn action-reject" onclick="rejectDirectly(${a.id}, this)">❌ Rad</button><button class="action-btn action-view" onclick="reviewAccount(${a.id})">👁 Ko'rish</button></div></td>
-    </tr>`).join('');
-
-  // All listings table
-  document.getElementById('allBody').innerHTML = accounts.map(a => `
-    <tr>
-      <td style="color:var(--text-light);font-weight:600;">#${a.id}</td>
-      <td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">${a.emoji}</span><span style="font-weight:600;">@${a.username}</span></div></td>
-      <td>${a.niche}</td>
-      <td>${(a.followers/1000).toFixed(1)}K</td>
-      <td style="color:var(--green);font-weight:700;">${a.er}%</td>
-      <td><strong>$${a.price}</strong></td>
-      <td><span class="status-badge status-active">✅ Aktiv</span></td>
-      <td><div class="action-btns"><a href="../pages/account.html?id=${a.id}" class="action-btn action-view">👁 Ko'rish</a><button class="action-btn action-reject" onclick="showToast('E\'lon o\'chirildi','error')">🗑 O'chirish</button></div></td>
-    </tr>`).join('');
-
-  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
-});
-
-function approveDirectly(id, btn) {
-  const row = btn.closest('tr');
-  row.querySelector('.action-btns').innerHTML = '<span class="status-badge status-active">✅ Tasdiqlandi</span>';
-  showToast('✅ E\'lon tasdiqlandi!', 'success');
-}
-function rejectDirectly(id, btn) {
-  const row = btn.closest('tr');
-  row.querySelector('.action-btns').innerHTML = '<span class="status-badge status-rejected">❌ Rad etildi</span>';
-  showToast('❌ E\'lon rad etildi!', 'error');
-}
-function filterTable(q) {
-  document.querySelectorAll('#allBody tr').forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+document.addEventListener('DOMContentLoaded',function(){
+  if(sessionStorage.getItem('im_admin')!=='instamarket2024admin'){
+    window.location.href='index.html'; return;
+  }
+  loadListings();
+  document.querySelectorAll('.modal-overlay').forEach(function(m){
+    m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('open');});
   });
-}
-function filterByStatus(status) { filterTable(status === 'all' ? '' : status); }
+});
 </script>
 </body>
 </html>

@@ -5,97 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kirish — InstaMarket.uz</title>
   <link rel="stylesheet" href="../css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
 <div class="auth-page">
   <div class="auth-box">
     <div class="auth-logo">
-      <a href="../index.html" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
-        <img src="../images/logo.svg" width="36" height="36" alt="InstaMarket" style="border-radius:9px;display:block;"/>
-        <span style="font-size:24px; font-weight:900; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">InstaMarket</span>
+      <a href="../index.html" style="display:inline-flex;align-items:center;gap:10px;">
+        <img src="../images/logo.svg" width="38" height="38" style="border-radius:10px;" alt="logo"/>
+        <span style="font-size:22px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">InstaMarket</span>
       </a>
     </div>
-    <h1 class="auth-title">Xush kelibsiz! 👋</h1>
-    <p class="auth-subtitle">Hisobingizga kiring</p>
+    <h1 class="auth-title">Xush kelibsiz 👋</h1>
+    <p class="auth-sub">Hisobingizga kiring</p>
 
-    <div id="errorMsg" style="display:none; background:#fde8e8; color:#c53030; border-radius:10px; padding:12px 16px; font-size:14px; margin-bottom:16px; display:none;"></div>
+    <div id="errBox" style="display:none;background:#fee2e2;color:#b91c1c;border-radius:10px;padding:12px 16px;font-size:14px;margin-bottom:16px;border:1px solid #fecaca;"></div>
 
     <form id="loginForm" onsubmit="handleLogin(event)">
       <div class="form-group">
         <label>📧 Email</label>
-        <input type="email" class="form-input" id="email" placeholder="sizning@email.com" required/>
+        <input type="email" class="form-input" id="email" placeholder="email@gmail.com" required autocomplete="email"/>
       </div>
       <div class="form-group">
         <label>🔒 Parol</label>
         <div style="position:relative;">
-          <input type="password" class="form-input" id="password" placeholder="Parolingizni kiriting" required style="padding-right:48px;"/>
-          <button type="button" onclick="togglePass()" style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:18px;" id="eyeBtn">👁</button>
+          <input type="password" class="form-input" id="password" placeholder="Parolingiz" required autocomplete="current-password" style="padding-right:48px;"/>
+          <button type="button" onclick="togglePass('password','eyeBtn')" id="eyeBtn"
+            style="position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);">👁</button>
         </div>
       </div>
-      <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
-        <a href="#" style="font-size:14px; color:var(--primary); text-decoration:none; font-weight:500;">Parolni unutdingizmi?</a>
+      <div style="text-align:right;margin-bottom:20px;">
+        <a href="#" onclick="handleReset()" style="font-size:13px;color:var(--primary);font-weight:500;">Parolni unutdingizmi?</a>
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; font-size:16px; padding:14px;" id="loginBtn">
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:13px;" id="loginBtn">
         Kirish →
       </button>
     </form>
 
     <div class="auth-divider"><span>yoki</span></div>
 
-    <div style="text-align:center; font-size:14px; color:var(--text-light);">
-      Hisobingiz yo'qmi?
-      <a href="register.html" style="color:var(--primary); font-weight:700; text-decoration:none;"> Ro'yxatdan o'ting</a>
-    </div>
-
     <!-- Demo kirish -->
-    <div style="margin-top:20px; background:var(--bg); border-radius:12px; padding:16px;">
-      <p style="font-size:13px; color:var(--text-light); margin-bottom:10px; font-weight:600;">🧪 Demo kirish:</p>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button onclick="demoLogin('buyer')" style="background:rgba(225,48,108,0.08); color:var(--primary); border:1px solid rgba(225,48,108,0.2); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer;">👤 Xaridor sifatida kirish</button>
-        <button onclick="demoLogin('seller')" style="background:rgba(0,200,81,0.08); color:var(--green); border:1px solid rgba(0,200,81,0.2); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer;">💰 Sotuvchi sifatida kirish</button>
-        <button onclick="demoLogin('admin')" style="background:rgba(131,58,180,0.08); color:#833AB4; border:1px solid rgba(131,58,180,0.2); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer;">⚙️ Admin sifatida kirish</button>
+    <div style="background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);margin-bottom:20px;">
+      <p style="font-size:12px;color:var(--text-muted);font-weight:600;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">🧪 Demo kirish (Firebase yo'q bo'lsa)</p>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <button onclick="quickDemo('buyer')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;"><span>🛒</span> Xaridor sifatida kirish</button>
+        <button onclick="quickDemo('seller')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;"><span>💰</span> Sotuvchi sifatida kirish</button>
+        <button onclick="quickDemo('admin')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;border-color:rgba(131,58,180,0.3);color:#7c3aed;"><span>⚙️</span> Admin sifatida kirish</button>
       </div>
     </div>
+
+    <p style="text-align:center;font-size:14px;color:var(--text-muted);">
+      Hisob yo'qmi? <a href="register.html" style="color:var(--primary);font-weight:700;">Ro'yxatdan o'ting</a>
+    </p>
   </div>
 </div>
+
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-  function togglePass() {
-    const inp = document.getElementById('password');
-    const btn = document.getElementById('eyeBtn');
-    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
-    else { inp.type = 'password'; btn.textContent = '👁'; }
-  }
+// Firebase ni boshlash
+var firebaseOk = initFirebase();
 
-  function handleLogin(e) {
-    e.preventDefault();
-    const btn = document.getElementById('loginBtn');
-    btn.textContent = 'Kirish...'; btn.disabled = true;
-    setTimeout(() => {
-      const email = document.getElementById('email').value;
-      const user = { name: email.split('@')[0], email, role: 'buyer' };
-      localStorage.setItem('instamarket_user', JSON.stringify(user));
+function showErr(msg) {
+  var b = document.getElementById('errBox');
+  b.textContent = '❌ ' + msg;
+  b.style.display = 'block';
+  setTimeout(function(){b.style.display='none';}, 4000);
+}
+
+function togglePass(inputId, btnId) {
+  var inp = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  var email    = document.getElementById('email').value.trim();
+  var password = document.getElementById('password').value;
+  var btn      = document.getElementById('loginBtn');
+
+  btn.textContent = '⏳ Kirish...'; btn.disabled = true;
+
+  if (firebaseOk) {
+    var res = await loginUser(email, password);
+    if (res.success) {
       showToast('✅ Muvaffaqiyatli kirdingiz!');
-      setTimeout(() => window.location.href = '../index.html', 1000);
-    }, 1200);
+      var user = loadUser();
+      setTimeout(function(){
+        if (user && user.role === 'admin') window.location.href = '../admin/index.html';
+        else window.location.href = '../index.html';
+      }, 800);
+    } else {
+      showErr(res.error);
+      btn.textContent = 'Kirish →'; btn.disabled = false;
+    }
+  } else {
+    // Demo rejim
+    var u = { uid:'demo-'+Date.now(), name: email.split('@')[0], email: email, role:'buyer' };
+    saveUserLocal(u);
+    showToast('✅ Demo rejimda kirdingiz');
+    setTimeout(function(){ window.location.href = '../index.html'; }, 800);
   }
+}
 
-  function demoLogin(role) {
-    const users = {
-      buyer:  { name: 'Jasur Xaridor', email: 'buyer@demo.uz',  role: 'buyer'  },
-      seller: { name: 'Nilufar Sotuvchi', email: 'seller@demo.uz', role: 'seller' },
-      admin:  { name: 'Admin', email: 'admin@instamarket.uz', role: 'admin'  }
-    };
-    localStorage.setItem('instamarket_user', JSON.stringify(users[role]));
-    showToast('✅ Demo kirish muvaffaqiyatli!');
-    setTimeout(() => {
-      if (role === 'admin') window.location.href = '../admin/index.html';
-      else window.location.href = '../index.html';
-    }, 800);
+async function handleReset() {
+  var email = document.getElementById('email').value.trim();
+  if (!email) { showErr('Email kiriting!'); return; }
+  if (firebaseOk) {
+    var res = await resetPassword(email);
+    if (res.success) showToast('📧 Parol tiklash xabari yuborildi!');
+    else showErr(res.error);
+  } else {
+    showToast('📧 Demo: Parol tiklash (Firebase kerak)');
   }
+}
+
+function quickDemo(role) {
+  demoLogin(role);
+  showToast('✅ Demo kirish: ' + role);
+  setTimeout(function(){
+    if (role === 'admin') window.location.href = '../admin/index.html';
+    else window.location.href = '../index.html';
+  }, 600);
+}
 </script>
 </body>
 </html>
