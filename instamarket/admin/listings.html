@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E'lonlar — Admin Panel</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <a href="../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+        <img src="../images/logo.svg" width="30" height="30" alt="logo"/>
+        <span>InstaMarket</span>
+      </a>
+      <small>Admin Panel</small>
+    </div>
+    <nav class="admin-nav">
+      <div class="nav-label">Asosiy</div>
+      <a href="index.html"><span class="icon">📊</span> Dashboard</a>
+      <a href="listings.html" class="active"><span class="icon">📱</span> E'lonlar</a>
+      <a href="users.html"><span class="icon">👥</span> Foydalanuvchilar</a>
+      <div class="nav-label">Savdo</div>
+      <a href="orders.html"><span class="icon">💰</span> Savdolar</a>
+      <a href="disputes.html"><span class="icon">⚠️</span> Nizolar</a>
+      <a href="finance.html"><span class="icon">📈</span> Moliya</a>
+      <div class="nav-label">Tizim</div>
+      <a href="settings.html"><span class="icon">⚙️</span> Sozlamalar</a>
+      <a href="../index.html"><span class="icon">🌐</span> Saytga qaytish</a>
+    </nav>
+  </aside>
+
+  <div class="admin-content">
+    <div class="admin-header">
+      <h1>📱 E'lonlar boshqaruvi</h1>
+      <div style="display:flex;gap:10px;">
+        <input type="text" placeholder="🔍 Qidirish..." style="border:2px solid var(--border);border-radius:10px;padding:8px 16px;font-size:14px;outline:none;font-family:inherit;" oninput="filterTable(this.value)" id="searchInput"/>
+        <select style="border:2px solid var(--border);border-radius:10px;padding:8px 14px;font-size:14px;font-family:inherit;outline:none;" onchange="filterByStatus(this.value)">
+          <option value="all">Barchasi</option>
+          <option value="pending">Kutayotgan</option>
+          <option value="active">Aktiv</option>
+          <option value="rejected">Rad etilgan</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-body">
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--secondary);">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">⏳ Kutayotgan</div>
+          <div style="font-size:28px;font-weight:800;color:var(--secondary);">7</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--green);">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">✅ Aktiv</div>
+          <div style="font-size:28px;font-weight:800;color:var(--green);">87</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--primary);">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">❌ Rad etilgan</div>
+          <div style="font-size:28px;font-weight:800;color:var(--primary);">14</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-left:4px solid #833AB4;">
+          <div style="font-size:13px;color:var(--text-light);margin-bottom:6px;">🏆 Sotilgan</div>
+          <div style="font-size:28px;font-weight:800;color:#833AB4;">248</div>
+        </div>
+      </div>
+
+      <!-- Pending listings — Eng muhim qism -->
+      <div class="admin-table-wrap" style="margin-bottom:24px;">
+        <div class="admin-table-header">
+          <h2>⏳ Tekshirish kutayotgan e'lonlar</h2>
+          <span style="background:rgba(245,133,41,0.1);color:var(--secondary);padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;">7 ta</span>
+        </div>
+        <div style="overflow-x:auto;" id="pendingTable">
+          <table>
+            <thead>
+              <tr><th>Account</th><th>Sotuvchi</th><th>Followers</th><th>ER</th><th>Bot bali</th><th>Narx</th><th>Yuborildi</th><th>Amallar</th></tr>
+            </thead>
+            <tbody id="pendingBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- All listings -->
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <h2>📋 Barcha e'lonlar</h2>
+          <span style="font-size:13px;color:var(--text-light);" id="totalCount">Jami: 108 ta</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table id="allTable">
+            <thead>
+              <tr><th>#</th><th>Account</th><th>Kategoriya</th><th>Followers</th><th>ER</th><th>Narx</th><th>Holat</th><th>Amallar</th></tr>
+            </thead>
+            <tbody id="allBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal" style="max-width:560px;position:relative;">
+    <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+    <div class="modal-title" id="modalTitle">E'lonni ko'rib chiqish</div>
+    <div id="modalBody" style="margin-bottom:24px;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <button class="btn btn-green" style="justify-content:center;" onclick="approveAccount()">✅ Tasdiqlash</button>
+      <button class="btn" style="background:var(--primary);color:white;justify-content:center;" onclick="rejectAccount()">❌ Rad etish</button>
+    </div>
+    <div style="margin-top:12px;">
+      <input type="text" id="rejectReason" placeholder="Rad etish sababi (ixtiyoriy)..." style="width:100%;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;"/>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+const pendingAccounts = [
+  { id:101, username:'cooking_mama_uz', emoji:'🍳', niche:'Ovqat', followers:8200, er:5.1, score:88, price:90, seller:'Hulkar A.', ago:'2 soat oldin' },
+  { id:102, username:'uzb_traveler', emoji:'🗺️', niche:'Sayohat', followers:14500, er:4.8, score:91, price:160, seller:'Sanjar K.', ago:'4 soat oldin' },
+  { id:103, username:'skincare_lover', emoji:'✨', niche:'Go\'zallik', followers:6800, er:7.3, score:95, price:85, seller:'Zulfiya M.', ago:'6 soat oldin' },
+  { id:104, username:'gym_rat_uz', emoji:'🏋️', niche:'Fitness', followers:11200, er:6.1, score:93, price:130, seller:'Bekzod T.', ago:'8 soat oldin' },
+  { id:105, username:'tech_review_uz', emoji:'💻', niche:'Tech', followers:9400, er:5.9, score:90, price:110, seller:'Asilbek N.', ago:'12 soat oldin' },
+  { id:106, username:'fashion_uz_girl', emoji:'👗', niche:'Moda', followers:17800, er:4.2, score:85, price:175, seller:'Mohira S.', ago:'1 kun oldin' },
+  { id:107, username:'homechef_toshkent', emoji:'🥗', niche:'Ovqat', followers:5100, er:8.2, score:97, price:65, seller:'Nasiba B.', ago:'1 kun oldin' },
+];
+
+let selectedId = null;
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function reviewAccount(id) {
+  selectedId = id;
+  const acc = pendingAccounts.find(a => a.id === id);
+  document.getElementById('modalTitle').textContent = `${acc.emoji} @${acc.username} — Ko'rib chiqish`;
+  const scoreColor = acc.score >= 90 ? 'var(--green)' : acc.score >= 80 ? 'var(--secondary)' : 'var(--primary)';
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><span style="font-size:12px;color:var(--text-light);display:block;">Followers</span><strong style="font-size:18px;">${(acc.followers/1000).toFixed(1)}K</strong></div>
+        <div><span style="font-size:12px;color:var(--text-light);display:block;">Engagement Rate</span><strong style="font-size:18px;color:var(--green);">${acc.er}%</strong></div>
+        <div><span style="font-size:12px;color:var(--text-light);display:block;">Bot tekshiruv bali</span><strong style="font-size:18px;color:${scoreColor};">${acc.score}/100</strong></div>
+        <div><span style="font-size:12px;color:var(--text-light);display:block;">So'ralgan narx</span><strong style="font-size:18px;color:var(--primary);">$${acc.price}</strong></div>
+      </div>
+    </div>
+    <div style="background:${acc.score>=90?'var(--green-light)':'#fff3e0'};border-radius:10px;padding:12px 16px;font-size:13px;color:${acc.score>=90?'#2d6a4f':'#856404'};">
+      ${acc.score>=90?'✅ Bot tahlili: Account sifatli, tasdiqlash tavsiya etiladi.':'⚠️ Bot tahlili: O\'rtacha sifat, qo\'shimcha tekshirish kerak.'}
+    </div>`;
+  openModal('reviewModal');
+}
+
+function approveAccount() {
+  const row = document.querySelector(`[data-id="${selectedId}"]`);
+  if (row) { row.querySelector('.status-cell').innerHTML = '<span class="status-badge status-active">✅ Aktiv</span>'; row.querySelectorAll('.action-btn').forEach(b=>b.style.display='none'); }
+  closeModal('reviewModal');
+  showToast('✅ E\'lon muvaffaqiyatli tasdiqlandi!', 'success');
+}
+
+function rejectAccount() {
+  const row = document.querySelector(`[data-id="${selectedId}"]`);
+  if (row) { row.querySelector('.status-cell').innerHTML = '<span class="status-badge status-rejected">❌ Rad etildi</span>'; row.querySelectorAll('.action-btn').forEach(b=>b.style.display='none'); }
+  closeModal('reviewModal');
+  showToast('❌ E\'lon rad etildi. Sotuvchiga xabar yuborildi.', 'error');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Pending table
+  document.getElementById('pendingBody').innerHTML = pendingAccounts.map(a => `
+    <tr data-id="${a.id}">
+      <td><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">${a.emoji}</span><div><div style="font-weight:600;">@${a.username}</div><div style="font-size:12px;color:var(--text-light);">${a.niche}</div></div></div></td>
+      <td>${a.seller}</td>
+      <td><strong>${(a.followers/1000).toFixed(1)}K</strong></td>
+      <td><span style="color:var(--green);font-weight:700;">${a.er}%</span></td>
+      <td><span style="color:${a.score>=90?'var(--green)':'var(--secondary)'};font-weight:700;">${a.score}/100</span></td>
+      <td><strong>$${a.price}</strong></td>
+      <td style="color:var(--text-light);font-size:13px;">${a.ago}</td>
+      <td class="status-cell"><div class="action-btns"><button class="action-btn action-approve" onclick="approveDirectly(${a.id}, this)">✅ Tasdiq</button><button class="action-btn action-reject" onclick="rejectDirectly(${a.id}, this)">❌ Rad</button><button class="action-btn action-view" onclick="reviewAccount(${a.id})">👁 Ko'rish</button></div></td>
+    </tr>`).join('');
+
+  // All listings table
+  document.getElementById('allBody').innerHTML = accounts.map(a => `
+    <tr>
+      <td style="color:var(--text-light);font-weight:600;">#${a.id}</td>
+      <td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">${a.emoji}</span><span style="font-weight:600;">@${a.username}</span></div></td>
+      <td>${a.niche}</td>
+      <td>${(a.followers/1000).toFixed(1)}K</td>
+      <td style="color:var(--green);font-weight:700;">${a.er}%</td>
+      <td><strong>$${a.price}</strong></td>
+      <td><span class="status-badge status-active">✅ Aktiv</span></td>
+      <td><div class="action-btns"><a href="../pages/account.html?id=${a.id}" class="action-btn action-view">👁 Ko'rish</a><button class="action-btn action-reject" onclick="showToast('E\'lon o\'chirildi','error')">🗑 O'chirish</button></div></td>
+    </tr>`).join('');
+
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+});
+
+function approveDirectly(id, btn) {
+  const row = btn.closest('tr');
+  row.querySelector('.action-btns').innerHTML = '<span class="status-badge status-active">✅ Tasdiqlandi</span>';
+  showToast('✅ E\'lon tasdiqlandi!', 'success');
+}
+function rejectDirectly(id, btn) {
+  const row = btn.closest('tr');
+  row.querySelector('.action-btns').innerHTML = '<span class="status-badge status-rejected">❌ Rad etildi</span>';
+  showToast('❌ E\'lon rad etildi!', 'error');
+}
+function filterTable(q) {
+  document.querySelectorAll('#allBody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+function filterByStatus(status) { filterTable(status === 'all' ? '' : status); }
+</script>
+</body>
+</html>

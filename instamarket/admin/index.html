@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — InstaMarket.uz</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .chart-bar { display:flex; align-items:flex-end; gap:6px; height:80px; }
+    .chart-bar span { flex:1; background:var(--gradient); border-radius:4px 4px 0 0; min-width:20px; opacity:0.85; transition:opacity 0.2s; }
+    .chart-bar span:hover { opacity:1; }
+    .notif-dot { width:8px; height:8px; background:var(--primary); border-radius:50%; display:inline-block; margin-left:6px; animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .mini-stat { background:rgba(255,255,255,0.04); border-radius:10px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; }
+    .mini-stat:hover { background:rgba(255,255,255,0.07); }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <a href="../index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+        <img src="../images/logo.svg" width="30" height="30" alt="logo"/>
+        <span>InstaMarket</span>
+      </a>
+      <small>Admin Panel</small>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="nav-label">Asosiy</div>
+      <a href="index.html" class="active">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="listings.html">
+        <span class="icon">📱</span> E'lonlar
+        <span class="notif-dot" id="listingDot"></span>
+      </a>
+      <a href="users.html">
+        <span class="icon">👥</span> Foydalanuvchilar
+      </a>
+
+      <div class="nav-label">Savdo</div>
+      <a href="orders.html">
+        <span class="icon">💰</span> Savdolar
+      </a>
+      <a href="disputes.html">
+        <span class="icon">⚠️</span> Nizolar
+        <span class="notif-dot" id="disputeDot"></span>
+      </a>
+      <a href="finance.html">
+        <span class="icon">📈</span> Moliya
+      </a>
+
+      <div class="nav-label">Tizim</div>
+      <a href="settings.html">
+        <span class="icon">⚙️</span> Sozlamalar
+      </a>
+      <a href="../index.html">
+        <span class="icon">🌐</span> Saytga qaytish
+      </a>
+      <a href="../pages/login.html" onclick="localStorage.removeItem('instamarket_user')">
+        <span class="icon">🚪</span> Chiqish
+      </a>
+    </nav>
+
+    <div style="padding:16px; border-top:1px solid rgba(255,255,255,0.08); font-size:12px; color:rgba(255,255,255,0.3);">
+      v1.0.0 · InstaMarket.uz
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="admin-content">
+
+    <!-- Header -->
+    <div class="admin-header">
+      <div>
+        <h1>Dashboard</h1>
+        <span style="font-size:13px; color:var(--text-light);" id="currentDate"></span>
+      </div>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <div style="position:relative; cursor:pointer;" onclick="showToast('3 ta yangi bildirishnoma bor', 'success')">
+          <span style="font-size:22px;">🔔</span>
+          <span style="position:absolute; top:-2px; right:-4px; background:var(--primary); color:white; font-size:10px; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;">3</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; background:var(--bg); border-radius:10px; padding:8px 14px; cursor:pointer;">
+          <div style="width:32px; height:32px; background:var(--gradient); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:white;">A</div>
+          <div>
+            <div style="font-size:14px; font-weight:600;">Admin</div>
+            <div style="font-size:11px; color:var(--text-light);">Super Admin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-body">
+
+      <!-- STAT CARDS -->
+      <div class="dash-grid">
+        <div class="dash-card">
+          <div class="dc-label">👥 Jami foydalanuvchilar</div>
+          <div class="dc-val" id="totalUsers">1,248</div>
+          <div class="dc-change">↑ +24 bu hafta</div>
+        </div>
+        <div class="dash-card green">
+          <div class="dc-label">📱 Aktiv e'lonlar</div>
+          <div class="dc-val" id="activeListings">87</div>
+          <div class="dc-change" style="color:var(--green);">↑ +12 bu hafta</div>
+        </div>
+        <div class="dash-card orange">
+          <div class="dc-label">💰 Bu oylik daromad</div>
+          <div class="dc-val" id="monthRevenue">$1,840</div>
+          <div class="dc-change" style="color:var(--secondary);">↑ +18% o'tgan oydan</div>
+        </div>
+        <div class="dash-card purple">
+          <div class="dc-label">⏳ Tekshirish kutayotgan</div>
+          <div class="dc-val" id="pendingCount" style="color:#833AB4;">7</div>
+          <div class="dc-change" style="color:#833AB4;">⚡ Tezkor javob kerak</div>
+        </div>
+      </div>
+
+      <!-- ROW: Chart + Quick Actions -->
+      <div style="display:grid; grid-template-columns:1fr 340px; gap:24px; margin-bottom:24px;">
+
+        <!-- Haftalik savdolar grafigi -->
+        <div class="admin-table-wrap" style="padding:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="font-size:17px; font-weight:700;">📈 Haftalik savdolar</h2>
+            <select style="border:2px solid var(--border); border-radius:8px; padding:6px 12px; font-size:13px; outline:none; font-family:inherit;" onchange="updateChart(this.value)">
+              <option value="week">Bu hafta</option>
+              <option value="month">Bu oy</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:8px; align-items:flex-end; height:120px; margin-bottom:8px;" id="chartBars">
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">8</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:48px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Du</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">12</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:72px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Se</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">7</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:42px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Ch</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">15</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:90px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Pa</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">20</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:120px; border:2px solid var(--primary);"></div>
+              <span style="font-size:11px; color:var(--primary); font-weight:700;">Ju</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">18</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:108px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Sh</span>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <span style="font-size:11px; color:var(--text-light); font-weight:600;">10</span>
+              <div style="width:100%; background:var(--gradient); border-radius:4px 4px 0 0; height:60px; opacity:0.8;"></div>
+              <span style="font-size:11px; color:var(--text-light);">Ya</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--text-light); text-align:center;">Jami bu hafta: <strong style="color:var(--text);">90 ta savdo</strong></div>
+        </div>
+
+        <!-- Tezkor harakatlar -->
+        <div class="admin-table-wrap" style="padding:24px;">
+          <h2 style="font-size:17px; font-weight:700; margin-bottom:16px;">⚡ Tezkor harakatlar</h2>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button onclick="window.location.href='listings.html'" style="background:rgba(225,48,108,0.08); border:1px solid rgba(225,48,108,0.2); border-radius:10px; padding:14px 16px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:12px; transition:all 0.2s;" onmouseover="this.style.background='rgba(225,48,108,0.15)'" onmouseout="this.style.background='rgba(225,48,108,0.08)'">
+              <span style="font-size:22px;">📱</span>
+              <div><div style="font-weight:600; font-size:14px; color:var(--text);">E'lonlarni tekshirish</div><div style="font-size:12px; color:var(--primary);">7 ta kutayotgan</div></div>
+            </button>
+            <button onclick="window.location.href='disputes.html'" style="background:rgba(245,133,41,0.08); border:1px solid rgba(245,133,41,0.2); border-radius:10px; padding:14px 16px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:12px; transition:all 0.2s;" onmouseover="this.style.background='rgba(245,133,41,0.15)'" onmouseout="this.style.background='rgba(245,133,41,0.08)'">
+              <span style="font-size:22px;">⚠️</span>
+              <div><div style="font-weight:600; font-size:14px; color:var(--text);">Nizolarni hal qilish</div><div style="font-size:12px; color:var(--secondary);">2 ta aktiv nizo</div></div>
+            </button>
+            <button onclick="window.location.href='finance.html'" style="background:rgba(0,200,81,0.08); border:1px solid rgba(0,200,81,0.2); border-radius:10px; padding:14px 16px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:12px; transition:all 0.2s;" onmouseover="this.style.background='rgba(0,200,81,0.15)'" onmouseout="this.style.background='rgba(0,200,81,0.08)'">
+              <span style="font-size:22px;">💳</span>
+              <div><div style="font-weight:600; font-size:14px; color:var(--text);">To'lovlarni boshqarish</div><div style="font-size:12px; color:var(--green);">$3,200 escrow da</div></div>
+            </button>
+            <button onclick="window.location.href='users.html'" style="background:rgba(131,58,180,0.08); border:1px solid rgba(131,58,180,0.2); border-radius:10px; padding:14px 16px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:12px; transition:all 0.2s;" onmouseover="this.style.background='rgba(131,58,180,0.15)'" onmouseout="this.style.background='rgba(131,58,180,0.08)'">
+              <span style="font-size:22px;">👥</span>
+              <div><div style="font-weight:600; font-size:14px; color:var(--text);">Foydalanuvchilar</div><div style="font-size:12px; color:#833AB4;">5 ta yangi bugun</div></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- So'nggi savdolar jadvali -->
+      <div class="admin-table-wrap" style="margin-bottom:24px;">
+        <div class="admin-table-header">
+          <h2>💰 So'nggi savdolar</h2>
+          <a href="orders.html" style="font-size:13px; color:var(--primary); text-decoration:none; font-weight:600;">Barchasini ko'rish →</a>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Account</th><th>Xaridor</th><th>Sotuvchi</th><th>Summa</th><th>Holat</th><th>Vaqt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-weight:600; color:var(--text-light);">#1089</td><td><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">✈️</span><span style="font-weight:600;">@travel_uzbekistan</span></div></td><td>Jasur T.</td><td>Nilufar R.</td><td><strong style="color:var(--green);">$220</strong></td><td><span class="status-badge status-active">✅ Yakunlandi</span></td><td style="color:var(--text-light); font-size:13px;">2 soat oldin</td></tr>
+              <tr><td style="font-weight:600; color:var(--text-light);">#1088</td><td><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">💄</span><span style="font-weight:600;">@beauty_secrets_uz</span></div></td><td>Malika S.</td><td>Kamola S.</td><td><strong style="color:var(--secondary);">$195</strong></td><td><span class="status-badge status-pending">⏳ Tekshirilmoqda</span></td><td style="color:var(--text-light); font-size:13px;">5 soat oldin</td></tr>
+              <tr><td style="font-weight:600; color:var(--text-light);">#1087</td><td><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">💪</span><span style="font-weight:600;">@fitness_motivation_uz</span></div></td><td>Bobur N.</td><td>Sardor A.</td><td><strong style="color:var(--green);">$310</strong></td><td><span class="status-badge status-active">✅ Yakunlandi</span></td><td style="color:var(--text-light); font-size:13px;">1 kun oldin</td></tr>
+              <tr><td style="font-weight:600; color:var(--text-light);">#1086</td><td><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">🍔</span><span style="font-weight:600;">@food_toshkent</span></div></td><td>Sherzod M.</td><td>Nilufar R.</td><td><strong style="color:var(--primary);">$165</strong></td><td><span class="status-badge status-rejected">⚠️ Nizo</span></td><td style="color:var(--text-light); font-size:13px;">2 kun oldin</td></tr>
+              <tr><td style="font-weight:600; color:var(--text-light);">#1085</td><td><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">💼</span><span style="font-weight:600;">@biznes_akademiya</span></div></td><td>Dilnoza K.</td><td>Jasur T.</td><td><strong style="color:var(--green);">$480</strong></td><td><span class="status-badge status-active">✅ Yakunlandi</span></td><td style="color:var(--text-light); font-size:13px;">3 kun oldin</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ROW: Top kategoriyalar + Sayt holati -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+        <div class="admin-table-wrap" style="padding:24px;">
+          <h2 style="font-size:17px; font-weight:700; margin-bottom:16px;">🏆 Top kategoriyalar</h2>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div><div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;"><span style="font-weight:600;">💄 Go'zallik</span><span style="color:var(--primary); font-weight:700;">32%</span></div><div style="height:8px; background:var(--border); border-radius:4px;"><div style="height:100%; width:32%; background:var(--gradient); border-radius:4px;"></div></div></div>
+            <div><div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;"><span style="font-weight:600;">✈️ Sayohat</span><span style="color:var(--secondary); font-weight:700;">24%</span></div><div style="height:8px; background:var(--border); border-radius:4px;"><div style="height:100%; width:24%; background:linear-gradient(90deg,var(--secondary),#fbbf24); border-radius:4px;"></div></div></div>
+            <div><div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;"><span style="font-weight:600;">💪 Fitness</span><span style="color:var(--green); font-weight:700;">19%</span></div><div style="height:8px; background:var(--border); border-radius:4px;"><div style="height:100%; width:19%; background:var(--green); border-radius:4px;"></div></div></div>
+            <div><div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;"><span style="font-weight:600;">🍔 Ovqat</span><span style="color:#833AB4; font-weight:700;">15%</span></div><div style="height:8px; background:var(--border); border-radius:4px;"><div style="height:100%; width:15%; background:#833AB4; border-radius:4px;"></div></div></div>
+            <div><div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;"><span style="font-weight:600;">💼 Biznes</span><span style="color:var(--text-light); font-weight:700;">10%</span></div><div style="height:8px; background:var(--border); border-radius:4px;"><div style="height:100%; width:10%; background:var(--text-light); border-radius:4px;"></div></div></div>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap" style="padding:24px;">
+          <h2 style="font-size:17px; font-weight:700; margin-bottom:16px;">🌐 Sayt holati</h2>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">🟢 Server holati</span><span style="font-weight:700; color:var(--green); font-size:14px;">Ishlayapti</span></div>
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">⚡ Yuklanish tezligi</span><span style="font-weight:700; font-size:14px;">1.2s</span></div>
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">📊 Bugungi tashrif</span><span style="font-weight:700; font-size:14px;">348</span></div>
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">🔄 Aktiv sessiyalar</span><span style="font-weight:700; font-size:14px;">42</span></div>
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">💾 Escrow jamg'armasi</span><span style="font-weight:700; color:var(--secondary); font-size:14px;">$3,200</span></div>
+            <div class="mini-stat"><span style="font-size:14px; color:var(--text-light);">📱 Mobil foydalanuvchi</span><span style="font-weight:700; font-size:14px;">68%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('uz-UZ', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  // Admin tekshiruvi
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = loadUser();
+    if (!user || user.role !== 'admin') {
+      document.body.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:Inter,sans-serif;"><div style="font-size:64px;margin-bottom:16px;">🔒</div><h2 style="margin-bottom:8px;">Ruxsat yo\'q</h2><p style="color:#6b7280;margin-bottom:20px;">Bu sahifa faqat adminlar uchun</p><a href="../pages/login.html" style="background:linear-gradient(135deg,#E1306C,#F58529);color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;">Admin sifatida kirish</a></div>';
+    }
+  });
+</script>
+</body>
+</html>

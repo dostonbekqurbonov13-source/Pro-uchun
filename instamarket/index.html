@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InstaMarket.uz — Ishonchli Instagram Account Bozori</title>
+  <meta name="description" content="O'zbekistondagi birinchi ishonchli Instagram account bozori. Verified accountlar, Escrow himoya, nakrutka tekshiruvi."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .page-top { padding-top: 68px; }
+  </style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <img src="images/logo.svg" width="36" height="36" alt="InstaMarket logo"/>
+    <span>InstaMarket</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Bosh sahifa</a>
+    <a href="pages/marketplace.html">Bozor</a>
+    <a href="#qanday-ishlaydi">Qanday ishlaydi</a>
+    <a href="#aloqa">Aloqa</a>
+    <a href="pages/login.html" class="btn-nav-login">Kirish</a>
+    <a href="pages/register.html" class="btn-nav-register">Ro'yxatdan o'tish</a>
+  </div>
+  <button class="nav-mobile-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span>🇺🇿</span> O'zbekistondagi №1 platform
+      </div>
+      <h1>Instagram <span>accountingni</span> sotib ol yoki sot</h1>
+      <p>Verified accountlar, nakrutka tekshiruvi va Escrow himoya bilan O'zbekistondagi eng ishonchli Instagram bozori.</p>
+
+      <div style="margin-bottom:36px;">
+        <div class="search-bar" style="background:rgba(255,255,255,0.1); border:2px solid rgba(255,255,255,0.2); max-width:520px;">
+          <input type="text" placeholder="Kategoriya, niche yoki followers soni..." style="color:white; background:transparent;" id="heroSearch"/>
+          <button onclick="searchAccounts()" style="background:var(--gradient);">🔍 Qidirish</button>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <a href="pages/marketplace.html" class="btn btn-primary btn-lg">
+          🛒 Accountlarni ko'rish
+        </a>
+        <a href="pages/register.html?role=seller" class="btn btn-secondary btn-lg" style="color:white; border-color:rgba(255,255,255,0.4);">
+          💰 Account sotish
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num" id="stat-accounts">500+</div>
+          <div class="label">Verified Account</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" id="stat-users">1,200+</div>
+          <div class="label">Foydalanuvchi</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">98%</div>
+          <div class="label">Muvaffaqiyatli savdo</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">24/7</div>
+          <div class="label">Yordam xizmati</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <!-- Floating Card 1 — Asosiy account card -->
+      <div class="floating-card fc-main">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
+          <div class="fc-avatar">✈️</div>
+          <div>
+            <div class="fc-name">@travel_uzbekistan</div>
+            <div class="fc-niche">Travel & Lifestyle</div>
+          </div>
+        </div>
+        <div class="fc-row"><span class="fc-key">Followers</span><span class="fc-val">24,800</span></div>
+        <div class="fc-row"><span class="fc-key">Engagement</span><span class="fc-val" style="color:#00C851;">6.4%</span></div>
+        <div class="fc-row"><span class="fc-key">Account yoshi</span><span class="fc-val">2 yil</span></div>
+        <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:22px; font-weight:900; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">$220</span>
+          <span style="background:rgba(0,200,81,0.2); color:#00C851; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">✅ Verified</span>
+        </div>
+      </div>
+
+      <!-- Floating Card 2 — Stats -->
+      <div class="floating-card fc-stat">
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:8px;">📊 Bugungi savdolar</div>
+        <div style="font-size:28px; font-weight:900; color:#00C851;">+12</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5);">Kecha: 8 ta</div>
+        <div style="margin-top:10px; height:4px; background:rgba(255,255,255,0.1); border-radius:2px;">
+          <div style="height:100%; width:75%; background:var(--gradient); border-radius:2px;"></div>
+        </div>
+      </div>
+
+      <!-- Floating Card 3 — Verified -->
+      <div class="floating-card fc-verified">
+        <div class="verified-badge">
+          <div class="verified-dot"></div>
+          <span style="font-weight:700;">Nakrutka yo'q</span>
+        </div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px;">94% real followers</div>
+        <div style="font-size:20px; font-weight:900; color:white; margin-top:8px;">96 ball</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ====== STATS BAR ====== -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="num">500+</div>
+      <div class="label">Aktiv e'lon</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">$50K+</div>
+      <div class="label">Jami savdo hajmi</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">98%</div>
+      <div class="label">Muvaffaqiyatli savdo</div>
+    </div>
+    <div class="stat-item">
+      <div class="num">0</div>
+      <div class="label">Hal etilmagan nizo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== KATEGORIYALAR ====== -->
+<section class="section" style="background:white; padding: 60px 24px;">
+  <div class="container">
+    <h2 class="section-title">Kategoriyalar bo'yicha qidiring</h2>
+    <p class="section-subtitle">Har bir niche uchun sifatli va tekshirilgan accountlar</p>
+    <div class="categories">
+      <a href="pages/marketplace.html?cat=all" class="cat-chip active"><span>🏪</span> Barchasi</a>
+      <a href="pages/marketplace.html?cat=food" class="cat-chip"><span>🍔</span> Ovqat & Restoran</a>
+      <a href="pages/marketplace.html?cat=travel" class="cat-chip"><span>✈️</span> Sayohat</a>
+      <a href="pages/marketplace.html?cat=fitness" class="cat-chip"><span>💪</span> Fitness & Sport</a>
+      <a href="pages/marketplace.html?cat=beauty" class="cat-chip"><span>💄</span> Go'zallik</a>
+      <a href="pages/marketplace.html?cat=business" class="cat-chip"><span>💼</span> Biznes</a>
+      <a href="pages/marketplace.html?cat=tech" class="cat-chip"><span>📱</span> Texnologiya</a>
+      <a href="pages/marketplace.html?cat=art" class="cat-chip"><span>🎨</span> San'at</a>
+      <a href="pages/marketplace.html?cat=education" class="cat-chip"><span>📚</span> Ta'lim</a>
+      <a href="pages/marketplace.html?cat=gaming" class="cat-chip"><span>🎮</span> Gaming</a>
+      <a href="pages/marketplace.html?cat=fashion" class="cat-chip"><span>👗</span> Moda</a>
+      <a href="pages/marketplace.html?cat=home" class="cat-chip"><span>🏠</span> Uy dizayni</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SO'NGGI E'LONLAR ====== -->
+<section class="section">
+  <div class="container">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+      <h2 class="section-title" style="text-align:left; margin-bottom:0;">🔥 Eng yangi e'lonlar</h2>
+      <a href="pages/marketplace.html" class="btn btn-secondary btn-sm">Barchasini ko'rish →</a>
+    </div>
+    <p class="section-subtitle" style="text-align:left;">Yangi qo'shilgan va tekshirilgan accountlar</p>
+    <div class="cards-grid" id="featuredCards">
+      <!-- Cards JS bilan to'ldiriladi -->
+    </div>
+  </div>
+</section>
+
+<!-- ====== QANDAY ISHLAYDI ====== -->
+<section class="section" id="qanday-ishlaydi" style="background:white;">
+  <div class="container">
+    <h2 class="section-title">Qanday ishlaydi?</h2>
+    <p class="section-subtitle">Atigi 4 qadamda xavfsiz xarid qiling</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Accountni tanlang</h3>
+        <p>Kategoriya, narx va followers soni bo'yicha filter qiling. Har bir accountning to'liq statistikasini ko'ring.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Sotuvchi bilan gaplashing</h3>
+        <p>Sayt ichidagi chat orqali sotuvchiga savol bering. Tashqi aloqa talab qilinmaydi — hamma narsa saytda!</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Xavfsiz to'lov qiling</h3>
+        <p>Payme yoki Click orqali to'lang. Pulingiz Escrow tizimida ushlanadi — sotuvchiga faqat siz tasdiqlasangiz o'tadi.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Accountni qabul qiling</h3>
+        <p>Login va parolni oling, 72 soat mobaynida tekshiring. Muammo yo'qmi — savdo yakunlandi!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== ISHONCH TIZIMI ====== -->
+<section class="section section-dark">
+  <div class="container">
+    <h2 class="section-title" style="color:white;">Nima uchun <span class="gradient-text">InstaMarket?</span></h2>
+    <p class="section-subtitle">Boshqa platformalardan farqimiz — ishonch va xavfsizlik</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon">🤖</div>
+        <h3>Avtomatik nakrutka tekshiruvi</h3>
+        <p>Har bir account AI bot tomonidan tekshiriladi. Engagement rate, followers sifati va o'sish grafigi analizlanadi.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔒</div>
+        <h3>Escrow himoya tizimi</h3>
+        <p>Pulingiz sotuvchiga to'g'ridan-to'g'ri o'tmaydi. 72 soat tekshirish vaqti beriladi. Muammo bo'lsa — 100% qaytariladi.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">✅</div>
+        <h3>Qo'lda moderatsiya</h3>
+        <p>Bot tekshiruvidan keyin moderator ham ko'rib chiqadi. Faqat 90+ ball olgan accountlar saytda chiqadi.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">💬</div>
+        <h3>Sayt ichida chat</h3>
+        <p>Barcha muloqot sayt ichida. Tashqi aloqa talab qilinmaydi. Nizo bo'lsa — barcha suhbat saqlanadi.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🛡️</div>
+        <h3>Safe Deal kafolati</h3>
+        <p>Safe Deal paketini tanlasangiz — moderator shaxsan nazorat qiladi va 30 kunlik kafolat beriladi.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">⚡</div>
+        <h3>Tez va qulay</h3>
+        <p>O'rtacha 24 soat ichida account tekshiriladi. Tezkor tekshiruv opsiyasi bilan atigi 2 soat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CTA ====== -->
+<section class="section" style="background: linear-gradient(135deg, #833AB4, #E1306C, #F58529); text-align:center; padding: 80px 24px;">
+  <h2 style="font-size:40px; font-weight:900; color:white; margin-bottom:16px;">Hoziroq boshlang!</h2>
+  <p style="font-size:18px; color:rgba(255,255,255,0.85); margin-bottom:36px; max-width:500px; margin-left:auto; margin-right:auto;">
+    Account sotib oling yoki o'zingizning accountingizni soting — bepul ro'yxatdan o'ting!
+  </p>
+  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+    <a href="pages/marketplace.html" class="btn btn-lg" style="background:white; color:var(--primary); font-weight:700;">🛒 Accountlarni ko'rish</a>
+    <a href="pages/register.html" class="btn btn-lg" style="background:rgba(255,255,255,0.15); color:white; border:2px solid rgba(255,255,255,0.4);">✨ Bepul ro'yxatdan o'tish</a>
+  </div>
+</section>
+
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer" id="aloqa">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="navbar-brand" style="margin-bottom:12px; display:flex;">
+        <img src="images/logo.svg" width="32" height="32" alt="logo"/>
+        <span style="font-size:20px; font-weight:800; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-left:8px;">InstaMarket</span>
+      </a>
+      <p>O'zbekistondagi birinchi ishonchli Instagram account bozori. Xavfsiz xarid, kafolatlangan sifat.</p>
+      <div style="display:flex; gap:12px; margin-top:20px;">
+        <a href="#" style="width:38px; height:38px; background:rgba(255,255,255,0.08); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; text-decoration:none;">📷</a>
+        <a href="#" style="width:38px; height:38px; background:rgba(255,255,255,0.08); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; text-decoration:none;">✈️</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Platforma</h4>
+      <a href="pages/marketplace.html">Accountlar bozori</a>
+      <a href="pages/register.html?role=seller">Account sotish</a>
+      <a href="#qanday-ishlaydi">Qanday ishlaydi</a>
+      <a href="#">Narxlar</a>
+    </div>
+    <div class="footer-col">
+      <h4>Yordam</h4>
+      <a href="#">Ko'p so'raladigan savollar</a>
+      <a href="#">Qoidalar</a>
+      <a href="#">Xavfsizlik</a>
+      <a href="#">Aloqa</a>
+    </div>
+    <div class="footer-col">
+      <h4>Aloqa</h4>
+      <a href="#">📧 info@instamarket.uz</a>
+      <a href="#">✈️ Telegram kanal</a>
+      <a href="#">📱 Instagram</a>
+      <a href="#">🕐 9:00 — 21:00</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 InstaMarket.uz — Barcha huquqlar himoyalangan</span>
+    <div style="display:flex; gap:24px;">
+      <a href="#" style="color:rgba(255,255,255,0.4); text-decoration:none;">Maxfiylik siyosati</a>
+      <a href="#" style="color:rgba(255,255,255,0.4); text-decoration:none;">Foydalanish shartlari</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ====== TOAST CONTAINER ====== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ====== JS ====== -->
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Bosh sahifaga featured cards chiqarish
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('featuredCards');
+    const featured = accounts.slice(0, 8);
+    container.innerHTML = featured.map(acc => renderAccountCard(acc)).join('');
+  });
+
+  function searchAccounts() {
+    const q = document.getElementById('heroSearch').value;
+    window.location.href = 'pages/marketplace.html?q=' + encodeURIComponent(q);
+  }
+
+  document.getElementById('heroSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') searchAccounts();
+  });
+</script>
+</body>
+</html>
