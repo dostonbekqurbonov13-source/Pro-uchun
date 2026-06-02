@@ -1,32 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56">
   <defs>
-    <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#F58529"/>
       <stop offset="50%" stop-color="#E1306C"/>
       <stop offset="100%" stop-color="#833AB4"/>
     </linearGradient>
+    <linearGradient id="cart" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E676"/>
+      <stop offset="100%" stop-color="#00B248"/>
+    </linearGradient>
   </defs>
-  <!-- Kamera asosi (yumaloq to'rtburchak) -->
-  <rect x="4" y="10" width="38" height="36" rx="8" fill="url(#ig-grad)"/>
-  <!-- Kamera ichki oq border -->
-  <rect x="7" y="13" width="32" height="30" rx="6" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-  <!-- Linza (doira) -->
-  <circle cx="23" cy="29" r="9" fill="none" stroke="white" stroke-width="2.5"/>
-  <circle cx="23" cy="29" r="4" fill="white" opacity="0.9"/>
-  <!-- Flash nuqta -->
-  <circle cx="35" cy="17" r="2.5" fill="white" opacity="0.9"/>
-  <!-- Yashil aravacha (o'ng yuqori) -->
-  <g transform="translate(30, 2)">
-    <!-- Aravacha tanasi -->
-    <rect x="2" y="5" width="20" height="14" rx="3" fill="#00C851"/>
-    <!-- Ajratuvchi chiziq -->
-    <line x1="2" y1="10" x2="22" y2="10" stroke="white" stroke-width="1.5" opacity="0.7"/>
-    <!-- Dollar belgisi -->
-    <text x="12" y="20" font-size="8" fill="white" font-weight="900" text-anchor="middle" font-family="Arial">$</text>
-    <!-- G'ildiraklar -->
-    <circle cx="7" cy="22" r="3" fill="#00C851" stroke="white" stroke-width="1.5"/>
-    <circle cx="17" cy="22" r="3" fill="#00C851" stroke="white" stroke-width="1.5"/>
-    <!-- Aravacha dastasi -->
-    <path d="M2 8 L0 5 L-2 5" stroke="#00C851" stroke-width="2" fill="none" stroke-linecap="round"/>
-  </g>
+
+  <!-- Instagram belgisi (to'liq, original shakl) -->
+  <rect x="2" y="2" width="52" height="52" rx="14" fill="url(#ig)"/>
+  <!-- Ichki border -->
+  <rect x="6" y="6" width="44" height="44" rx="11" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+
+  <!-- Aravacha tanasi (yashil, Instagram ichida) -->
+  <rect x="10" y="18" width="28" height="18" rx="4" fill="url(#cart)"/>
+  <!-- Aravacha ichki ajratgich -->
+  <line x1="10" y1="25" x2="38" y2="25" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+  <!-- Dollar belgisi -->
+  <text x="24" y="34" font-size="9" fill="white" font-weight="900" text-anchor="middle" font-family="Arial, sans-serif">$</text>
+
+  <!-- Aravacha dastasi (chap yuqori) -->
+  <path d="M10 22 L8 18 L5 18" stroke="url(#cart)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- G'ildiraklar -->
+  <circle cx="16" cy="42" r="4" fill="url(#cart)"/>
+  <circle cx="16" cy="42" r="2" fill="white" opacity="0.9"/>
+  <circle cx="30" cy="42" r="4" fill="url(#cart)"/>
+  <circle cx="30" cy="42" r="2" fill="white" opacity="0.9"/>
+
+  <!-- Yuqori o'ng nuqta (Instagram flash) -->
+  <circle cx="43" cy="13" r="3" fill="white" opacity="0.9"/>
 </svg>
