@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/instamarket/index.html" },
+    { "source": "/(.*)", "destination": "/instamarket/$1" }
+  ]
+}
