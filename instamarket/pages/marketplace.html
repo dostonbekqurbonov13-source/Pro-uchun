@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bozor — InstaMarket.uz</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="../index.html" class="navbar-brand">
+    <img src="../images/logo.svg" width="36" height="36" alt="logo"/>
+    <span>InstaMarket</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html">Bosh sahifa</a>
+    <a href="marketplace.html" style="color:var(--primary); font-weight:700;">Bozor</a>
+    <a href="../index.html#qanday-ishlaydi">Qanday ishlaydi</a>
+    <a href="login.html" class="btn-nav-login">Kirish</a>
+    <a href="register.html" class="btn-nav-register">Ro'yxatdan o'tish</a>
+  </div>
+  <button class="nav-mobile-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div style="background:linear-gradient(135deg,#1A1A2E,#16213E); padding:80px 24px 40px; margin-top:68px;">
+  <div class="container" style="max-width:1200px; margin:0 auto;">
+    <h1 style="color:white; font-size:36px; font-weight:900; margin-bottom:12px;">Instagram Account <span class="gradient-text">Bozori</span></h1>
+    <p style="color:rgba(255,255,255,0.6); font-size:16px; margin-bottom:28px;">Tekshirilgan va kafolatlangan accountlar — o'zingizga mosini toping</p>
+    <div class="search-bar" style="max-width:560px; background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.15);">
+      <input type="text" id="searchInput" placeholder="Username, niche yoki kategoriya..." style="color:white; background:transparent;" oninput="filterAccounts()"/>
+      <button onclick="filterAccounts()" style="background:var(--gradient);">🔍 Qidirish</button>
+    </div>
+    <!-- Category chips -->
+    <div class="categories" style="margin-top:20px; margin-bottom:0; justify-content:flex-start;">
+      <button class="cat-chip active" onclick="setCategory('all', this)"><span>🏪</span> Barchasi</button>
+      <button class="cat-chip" onclick="setCategory('food', this)"><span>🍔</span> Ovqat</button>
+      <button class="cat-chip" onclick="setCategory('travel', this)"><span>✈️</span> Sayohat</button>
+      <button class="cat-chip" onclick="setCategory('fitness', this)"><span>💪</span> Fitness</button>
+      <button class="cat-chip" onclick="setCategory('beauty', this)"><span>💄</span> Go'zallik</button>
+      <button class="cat-chip" onclick="setCategory('business', this)"><span>💼</span> Biznes</button>
+      <button class="cat-chip" onclick="setCategory('tech', this)"><span>📱</span> Tech</button>
+      <button class="cat-chip" onclick="setCategory('art', this)"><span>🎨</span> San'at</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="marketplace-layout" style="padding-top:32px;">
+
+  <!-- FILTER SIDEBAR -->
+  <aside class="filter-sidebar">
+    <div class="filter-title">
+      Filterlar
+      <span class="filter-clear" onclick="clearFilters()">Tozalash</span>
+    </div>
+
+    <div class="filter-group">
+      <label>Narx ($)</label>
+      <input type="range" class="range-slider" id="priceRange" min="0" max="1000" value="1000" oninput="updateRange('price', this.value)"/>
+      <div class="range-vals"><span>$0</span><span id="priceVal">$1000</span></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Followers soni</label>
+      <input type="range" class="range-slider" id="followersRange" min="5000" max="100000" step="1000" value="100000" oninput="updateRange('followers', this.value)"/>
+      <div class="range-vals"><span>5K</span><span id="followersVal">100K+</span></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Eng. Rate (min %)</label>
+      <input type="range" class="range-slider" id="erRange" min="1" max="15" value="1" oninput="updateRange('er', this.value)"/>
+      <div class="range-vals"><span>1%</span><span id="erVal">1%+</span></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Account holati</label>
+      <div class="checkbox-list">
+        <label><input type="checkbox" id="chkVerified" onchange="filterAccounts()"/> ✅ Verified accountlar</label>
+        <label><input type="checkbox" id="chkTop" onchange="filterAccounts()"/> ⭐ TOP accountlar</label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Auditoriya joylashuvi</label>
+      <div class="checkbox-list">
+        <label><input type="checkbox" id="chkUz" onchange="filterAccounts()"/> 🇺🇿 O'zbekiston 70%+</label>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="filterAccounts()">
+      Filterlarni qo'llash
+    </button>
+  </aside>
+
+  <!-- RESULTS -->
+  <main class="marketplace-main">
+    <div class="marketplace-header">
+      <div class="result-count">
+        Ko'rsatilmoqda: <strong id="resultCount">8</strong> ta account
+      </div>
+      <select class="sort-select" id="sortSelect" onchange="filterAccounts()">
+        <option value="default">Saralash: Standart</option>
+        <option value="price_asc">Narx: Arzondan qimmatga</option>
+        <option value="price_desc">Narx: Qimmatdan arzonga</option>
+        <option value="followers_desc">Eng ko'p followers</option>
+        <option value="er_desc">Eng yuqori ER</option>
+        <option value="score_desc">Eng yuqori ball</option>
+      </select>
+    </div>
+    <div class="cards-grid" id="accountsList"></div>
+    <div id="emptyState" style="display:none; text-align:center; padding:80px 24px;">
+      <div style="font-size:64px; margin-bottom:16px;">🔍</div>
+      <h3 style="font-size:22px; margin-bottom:8px;">Hech narsa topilmadi</h3>
+      <p style="color:var(--text-light);">Filter shartlarini o'zgartiring yoki boshqa kategoriyani tanlang</p>
+      <button class="btn btn-primary" style="margin-top:20px;" onclick="clearFilters()">Filtlarni tozalash</button>
+    </div>
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  let activeCategory = 'all';
+  let maxPrice = 1000, maxFollowers = 100000, minER = 1;
+
+  function setCategory(cat, el) {
+    activeCategory = cat;
+    document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    filterAccounts();
+  }
+
+  function updateRange(type, val) {
+    if (type === 'price') { maxPrice = parseInt(val); document.getElementById('priceVal').textContent = '$' + val; }
+    if (type === 'followers') { maxFollowers = parseInt(val); document.getElementById('followersVal').textContent = parseInt(val) >= 100000 ? '100K+' : (val/1000).toFixed(0) + 'K'; }
+    if (type === 'er') { minER = parseFloat(val); document.getElementById('erVal').textContent = val + '%+'; }
+    filterAccounts();
+  }
+
+  function filterAccounts() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const sort = document.getElementById('sortSelect').value;
+    const chkVerified = document.getElementById('chkVerified').checked;
+    const chkTop = document.getElementById('chkTop').checked;
+
+    let filtered = accounts.filter(acc => {
+      if (activeCategory !== 'all' && acc.category !== activeCategory) return false;
+      if (acc.price > maxPrice) return false;
+      if (acc.followers > maxFollowers) return false;
+      if (acc.er < minER) return false;
+      if (chkVerified && acc.badge !== 'verified') return false;
+      if (chkTop && acc.badge !== 'top') return false;
+      if (q && !acc.username.includes(q) && !acc.niche.toLowerCase().includes(q) && !acc.category.includes(q)) return false;
+      return true;
+    });
+
+    if (sort === 'price_asc') filtered.sort((a,b) => a.price - b.price);
+    else if (sort === 'price_desc') filtered.sort((a,b) => b.price - a.price);
+    else if (sort === 'followers_desc') filtered.sort((a,b) => b.followers - a.followers);
+    else if (sort === 'er_desc') filtered.sort((a,b) => b.er - a.er);
+    else if (sort === 'score_desc') filtered.sort((a,b) => b.score - a.score);
+
+    document.getElementById('resultCount').textContent = filtered.length;
+    const list = document.getElementById('accountsList');
+    const empty = document.getElementById('emptyState');
+
+    if (filtered.length === 0) {
+      list.innerHTML = ''; empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      list.innerHTML = filtered.map(acc => renderAccountCard(acc)).join('');
+    }
+  }
+
+  function clearFilters() {
+    activeCategory = 'all';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('priceRange').value = 1000;
+    document.getElementById('followersRange').value = 100000;
+    document.getElementById('erRange').value = 1;
+    document.getElementById('priceVal').textContent = '$1000';
+    document.getElementById('followersVal').textContent = '100K+';
+    document.getElementById('erVal').textContent = '1%+';
+    document.getElementById('chkVerified').checked = false;
+    document.getElementById('chkTop').checked = false;
+    document.querySelectorAll('.cat-chip').forEach((c,i) => c.classList.toggle('active', i===0));
+    maxPrice = 1000; maxFollowers = 100000; minER = 1;
+    filterAccounts();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // URL dan kategoriya olish
+    const cat = getParam('cat');
+    if (cat && cat !== 'all') {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-chip').forEach(c => {
+        c.classList.toggle('active', c.textContent.toLowerCase().includes(cat));
+      });
+    }
+    filterAccounts();
+  });
+</script>
+</body>
+</html>

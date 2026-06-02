@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sozlamalar — Admin Panel</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <a href="../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;"><img src="../images/logo.svg" width="30" height="30" alt="logo"/><span>InstaMarket</span></a><small>Admin Panel</small>
+    </div>
+    <nav class="admin-nav">
+      <div class="nav-label">Asosiy</div>
+      <a href="index.html"><span class="icon">📊</span> Dashboard</a>
+      <a href="listings.html"><span class="icon">📱</span> E'lonlar</a>
+      <a href="users.html"><span class="icon">👥</span> Foydalanuvchilar</a>
+      <div class="nav-label">Savdo</div>
+      <a href="orders.html"><span class="icon">💰</span> Savdolar</a>
+      <a href="disputes.html"><span class="icon">⚠️</span> Nizolar</a>
+      <a href="finance.html"><span class="icon">📈</span> Moliya</a>
+      <div class="nav-label">Tizim</div>
+      <a href="settings.html" class="active"><span class="icon">⚙️</span> Sozlamalar</a>
+      <a href="../index.html"><span class="icon">🌐</span> Saytga qaytish</a>
+    </nav>
+  </aside>
+
+  <div class="admin-content">
+    <div class="admin-header">
+      <h1>⚙️ Sayt Sozlamalari</h1>
+      <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Hamma o'zgarishlarni saqlash</button>
+    </div>
+    <div class="admin-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+
+        <!-- Komissiya sozlamalari -->
+        <div style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">💰 Komissiya foizlari</h3>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">$0 – $100 gacha (%)</label>
+              <input type="number" class="form-input" value="15" min="1" max="50" id="comm1" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">$100 – $300 (%)</label>
+              <input type="number" class="form-input" value="12" min="1" max="50" id="comm2" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">$300 – $700 (%)</label>
+              <input type="number" class="form-input" value="10" min="1" max="50" id="comm3" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">$700 dan yuqori (%)</label>
+              <input type="number" class="form-input" value="8" min="1" max="50" id="comm4" style="padding:10px 14px;"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account talablari -->
+        <div style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">📋 Account talablari</h3>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Minimal followers soni</label>
+              <input type="number" class="form-input" value="5000" id="minFollowers" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Minimal Engagement Rate (%)</label>
+              <input type="number" class="form-input" value="3" step="0.1" id="minER" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Minimal bot tekshiruv bali</label>
+              <input type="number" class="form-input" value="80" max="100" id="minScore" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Tekshirish muddati (soat)</label>
+              <input type="number" class="form-input" value="72" id="checkTime" style="padding:10px 14px;"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safe Deal -->
+        <div style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">🛡️ Safe Deal sozlamalari</h3>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Safe Deal qo'shimcha foiz (%)</label>
+              <input type="number" class="form-input" value="15" id="safeDealFee" style="padding:10px 14px;"/>
+            </div>
+            <div class="form-group" style="margin:0;">
+              <label style="font-size:13px;font-weight:600;color:var(--text-light);display:block;margin-bottom:6px;">Kafolat muddati (kun)</label>
+              <input type="number" class="form-input" value="30" id="guaranteeDays" style="padding:10px 14px;"/>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--bg);border-radius:10px;">
+              <span style="font-size:14px;font-weight:600;">Safe Deal yoqilsin</span>
+              <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer;">
+                <input type="checkbox" checked id="safeDealToggle" style="opacity:0;width:0;height:0;"/>
+                <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;this.style.background=this.previousElementSibling.checked?'var(--green)':'var(--border)'" style="position:absolute;inset:0;background:var(--green);border-radius:26px;transition:0.3s;"></span>
+                <span style="position:absolute;left:3px;bottom:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sayt holati -->
+        <div style="background:white;border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);">
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">🌐 Sayt holati</h3>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--bg);border-radius:10px;">
+              <div><div style="font-size:14px;font-weight:600;">Texnik ishlar rejimi</div><div style="font-size:12px;color:var(--text-light);">Yoqilsa sayt vaqtincha yopiladi</div></div>
+              <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer;">
+                <input type="checkbox" id="maintenanceMode" style="opacity:0;width:0;height:0;"/>
+                <span onclick="toggleMode(this)" style="position:absolute;inset:0;background:var(--border);border-radius:26px;transition:0.3s;" id="maintenanceSpan"></span>
+                <span style="position:absolute;left:3px;bottom:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>
+              </label>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--bg);border-radius:10px;">
+              <div><div style="font-size:14px;font-weight:600;">Yangi ro'yxatdan o'tish</div><div style="font-size:12px;color:var(--text-light);">Yangi foydalanuvchilar uchun</div></div>
+              <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer;">
+                <input type="checkbox" checked style="opacity:0;width:0;height:0;"/>
+                <span onclick="this.style.background=this.style.background==='rgb(0,200,81)'?'var(--border)':'var(--green)'" style="position:absolute;inset:0;background:var(--green);border-radius:26px;transition:0.3s;"></span>
+                <span style="position:absolute;left:3px;bottom:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>
+              </label>
+            </div>
+            <div style="padding:14px;background:rgba(225,48,108,0.05);border:1px solid rgba(225,48,108,0.2);border-radius:10px;">
+              <div style="font-size:14px;font-weight:600;color:var(--primary);margin-bottom:8px;">⚠️ Xavfli amallar</div>
+              <button class="btn btn-sm" style="background:#fde8e8;color:#c53030;border:none;" onclick="showToast('Bu amal hali mavjud emas', 'error')">🗑 Barcha test ma'lumotlarni o'chirish</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+function saveAll() { showToast('✅ Barcha sozlamalar saqlandi!', 'success'); }
+function toggleMode(el) {
+  const checked = document.getElementById('maintenanceMode').checked;
+  el.style.background = !checked ? 'var(--primary)' : 'var(--border)';
+  document.getElementById('maintenanceMode').checked = !checked;
+  showToast(document.getElementById('maintenanceMode').checked ? '⚠️ Texnik rejim yoqildi' : '✅ Sayt ish rejimida', document.getElementById('maintenanceMode').checked ? 'error' : 'success');
+}
+</script>
+</body>
+</html>
