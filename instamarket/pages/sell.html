@@ -125,7 +125,7 @@ function renderStep1(){
   '</div>' +
   '<div class="sell-card">' +
     '<h3>📸 Screenshot (ixtiyoriy)</h3><p class="sdesc">Instagram Insights statistikasi — tasdiqlashni tezlashtiradi</p>' +
-    '<div class="upload-zone" onclick="document.getElementById(\'fileInp\').click()"><div style="font-size:36px;margin-bottom:8px;">📊</div><p style="font-size:14px;color:var(--text-muted);"><strong style="color:var(--primary);">Rasm yuklash</strong> yoki bu yerga tashlang</p><p style="font-size:12px;color:var(--text-muted);margin-top:5px;">PNG, JPG — max 5MB</p></div>' +
+    '<div class="upload-zone" onclick="document.getElementById(\'fileInp\').click()"><div style="font-size:36px;margin-bottom:8px;">📊</div><p style="font-size:14px;color:var(--text-muted);"><strong style="color:var(--primary);">Rasm yuklash</strong> yoki bu yerga tashlang</p><p style="font-size:12px;color:var(--text-muted);margin-top:5px;">PNG, JPG — max 1MB</p></div>' +
     '<input type="file" id="fileInp" accept="image/*" multiple style="display:none;" onchange="showFiles(this.files)"/>' +
     '<div id="fileList" style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;"></div>' +
   '</div>' +
@@ -214,10 +214,17 @@ function calcPrice(){
 function showFiles(files){
   var list=document.getElementById('fileList');
   if(!list)return;
+  var hasError = false;
   Array.from(files).forEach(function(f){
+    // 1MB tekshiruv
+    if(f.size > 1024*1024){
+      showToast('❌ "'+f.name+'" — 1MB dan katta! Kichikroq rasm tanlang.','error');
+      hasError = true;
+      return;
+    }
     var d=document.createElement('div');
-    d.style.cssText='background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:7px 11px;font-size:12px;';
-    d.textContent='📎 '+f.name;
+    d.style.cssText='background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:7px 11px;font-size:12px;display:flex;align-items:center;gap:6px;';
+    d.innerHTML='📎 '+f.name+' <span style="color:var(--text-muted);">('+( f.size/1024).toFixed(0)+' KB)</span>';
     list.appendChild(d);
   });
 }
