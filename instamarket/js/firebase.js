@@ -2,12 +2,13 @@
 // Firebase v9 compat (CDN orqali ishlaydi)
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDemoKeyReplaceWithYours",
+  apiKey: "AIzaSyCMexR_na10b385sHFLFYzyjHK1AQLJT8s",
   authDomain: "instamarket-uz.firebaseapp.com",
   projectId: "instamarket-uz",
-  storageBucket: "instamarket-uz.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456"
+  storageBucket: "instamarket-uz.firebasestorage.app",
+  messagingSenderId: "721123684030",
+  appId: "1:721123684030:web:47c23e27ed9009141438ef",
+  measurementId: "G-KZ1FTTP67H"
 };
 
 // Firebase ni boshlash
