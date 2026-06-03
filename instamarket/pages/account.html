@@ -15,6 +15,14 @@
     .pay-opt.sel{border-color:var(--primary);background:rgba(193,53,132,0.04);}
     .sim-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--border-light);color:inherit;}
     .sim-item:last-child{border:none;}
+    /* Gate overlay */
+    .acc-gate{position:fixed;inset:0;z-index:900;background:rgba(10,10,10,0.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;}
+    .acc-gate-box{background:white;border-radius:24px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:popIn 0.3s ease;}
+    @keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+    .gate-benefits{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;text-align:left;}
+    .gate-benefit{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-light);}
+    /* Xiralashgan kontent */
+    .blurred-content{filter:blur(8px);pointer-events:none;user-select:none;}
     .sim-ava{width:36px;height:36px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
     .online-dot{width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block;box-shadow:0 0 5px var(--green);}
     .typing{font-size:12px;color:var(--text-muted);font-style:italic;padding:4px 0;}
@@ -110,6 +118,40 @@ var firebaseOk = initFirebase();
 var currentAcc = null;
 var chatUnsubscribe = null;
 
+// ===== GATE — Ro'yxatsiz kirish bloki =====
+function showAccGate() {
+  if (document.getElementById('accGate')) return;
+  document.body.style.overflow = 'hidden';
+  var gate = document.createElement('div');
+  gate.id = 'accGate';
+  gate.className = 'acc-gate';
+  gate.innerHTML = `
+    <div class="acc-gate-box">
+      <div style="font-size:52px;margin-bottom:14px;">🔐</div>
+      <div style="font-size:22px;font-weight:800;margin-bottom:8px;">Kirish talab qilinadi</div>
+      <div style="font-size:14px;color:var(--text-muted);margin-bottom:22px;line-height:1.6;">
+        Account tafsilotlarini ko'rish uchun<br/>
+        <strong>bepul ro'yxatdan o'ting!</strong>
+      </div>
+      <div class="gate-benefits">
+        <div class="gate-benefit"><span>📊</span> To'liq statistika va nakrutka tahlili</div>
+        <div class="gate-benefit"><span>💬</span> Sotuvchi bilan bevosita chat</div>
+        <div class="gate-benefit"><span>🛡️</span> Xavfsiz xarid va Escrow himoya</div>
+        <div class="gate-benefit"><span>⭐</span> Safe Deal kafolati</div>
+      </div>
+      <a href="register.html" class="btn btn-primary btn-lg" style="display:block;justify-content:center;margin-bottom:12px;text-align:center;">
+        🚀 Bepul ro'yxatdan o'tish
+      </a>
+      <a href="login.html" class="btn btn-ghost" style="display:block;justify-content:center;text-align:center;">
+        Kirish →
+      </a>
+      <div style="margin-top:14px;font-size:13px;color:var(--text-muted);">
+        ← <a href="marketplace.html" style="color:var(--primary);">Bozorga qaytish</a>
+      </div>
+    </div>`;
+  document.body.appendChild(gate);
+}
+
 function selPay(lbl){
   document.querySelectorAll('.pay-opt').forEach(function(l){l.classList.remove('sel');});
   lbl.classList.add('sel');
@@ -117,6 +159,15 @@ function selPay(lbl){
 }
 
 async function loadAccount(){
+  // Avval auth tekshirish
+  var user = loadUser();
+  if (!user) {
+    // Sahifa yuklanadi lekin gate ko'rinadi
+    document.getElementById('pageContent').innerHTML =
+      '<div style="min-height:60vh;"></div>';
+    showAccGate();
+    return;
+  }
   var id = getParam('id');
   var acc = null;
 
@@ -151,7 +202,12 @@ async function loadAccount(){
 function renderPage(acc){
   var erColor  = (acc.er||0)>=5?'var(--green-dark)':(acc.er||0)>=3?'#d97706':'#dc2626';
   var scrColor = (acc.score||0)>=90?'var(--green-dark)':(acc.score||0)>=80?'#d97706':'#dc2626';
-  var safePrice = Math.round((acc.price||0)*1.15);
+  var priceUZS    = acc.price || 0;
+  var safePrice   = Math.round(priceUZS * 1.15 / 10000) * 10000;
+  var commUZS     = Math.round(priceUZS * 0.10);
+  var sellerUZS   = priceUZS - commUZS;
+  var priceStr    = formatUZS(priceUZS);
+  var safePriceStr= formatUZS(safePrice);
   var badge = acc.badge==='top'
     ? '<span class="badge badge-top">⭐ TOP</span>'
     : '<span class="badge badge-verified">✅ Verified</span>';
@@ -162,12 +218,14 @@ function renderPage(acc){
     '<div><div style="font-weight:700;">@'+(acc.username||'')+'</div><div style="font-size:12px;color:var(--text-muted);">'+(acc.niche||'')+'</div></div></div>' +
     '<div style="display:flex;justify-content:space-between;font-size:14px;padding-top:8px;border-top:1px solid var(--border-light);">' +
     '<span style="color:var(--text-muted);">Jami summa:</span>' +
-    '<span style="font-weight:900;font-size:18px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$'+(acc.price||0)+'</span></div>';
+    '<span style="font-weight:900;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+priceStr+'</span></div>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;padding:8px;background:var(--bg);border-radius:8px;">' +
+    '📞 To\'lov: Payme/Click — <strong>+998 XX XXX XX XX</strong><br/>Izoh: InstaMarket #'+( acc.id||'').toString().slice(-4)+'</div>';
 
   document.getElementById('safePriceBox').innerHTML =
     '<div style="font-size:11px;color:var(--text-muted);">Safe Deal narxi</div>' +
-    '<div style="font-size:26px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$'+safePrice+'</div>' +
-    '<div style="font-size:12px;color:var(--text-muted);">($'+(acc.price||0)+' + $'+(safePrice-(acc.price||0))+' himoya)</div>';
+    '<div style="font-size:24px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+safePriceStr+'</div>' +
+    '<div style="font-size:12px;color:var(--text-muted);">('+priceStr+' + himoya to\'lovi)</div>';
 
   var similar = accounts.filter(function(a){return a.category===(acc.category||'')&&('demo_'+a.id)!==acc.id;}).slice(0,3);
 
@@ -241,15 +299,15 @@ function renderPage(acc){
   // --- SIDEBAR ---
   '<div class="detail-sidebar">' +
     '<div class="buy-box">' +
-      '<div class="buy-price">$'+(acc.price||0)+'</div>' +
+      '<div class="buy-price">'+priceStr+'</div>' +
       '<div style="font-size:12px;color:var(--text-muted);margin-bottom:15px;">Bir martalik · Escrow himoyali</div>' +
       '<ul class="buy-features">' +
         ["Login va parol to'liq beriladi","72 soat tekshirish muddati","Escrow tizimi himoyasi","Sayt ichida yordam","Muammo bo'lsa pul qaytariladi"].map(function(t){
           return '<li><span class="chk">✅</span>'+t+'</li>';
         }).join('') +
       '</ul>' +
-      '<button class="btn btn-primary" style="width:100%;font-size:15px;padding:12px;margin-bottom:9px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — $'+(acc.price||0)+'</button>' +
-      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — $'+safePrice+'</button>' +
+      '<button class="btn btn-primary" style="width:100%;font-size:14px;padding:12px;margin-bottom:9px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — '+priceStr+'</button>' +
+      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — '+safePriceStr+'</button>' +
       '<div class="seller-mini" style="margin-top:14px;">' +
         '<div class="seller-ava">'+(acc.sellerEmoji||'👤')+'</div>' +
         '<div><div style="font-weight:700;font-size:13px;">'+(acc.sellerName||'Sotuvchi')+'</div>' +

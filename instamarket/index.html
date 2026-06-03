@@ -61,20 +61,20 @@
 
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="num" id="stat-accounts">500+</div>
+          <div class="num" id="stat-accounts">50+</div>
           <div class="label">Verified Account</div>
         </div>
         <div class="hero-stat">
-          <div class="num" id="stat-users">1,200+</div>
+          <div class="num" id="stat-users">120+</div>
           <div class="label">Foydalanuvchi</div>
         </div>
         <div class="hero-stat">
-          <div class="num">98%</div>
-          <div class="label">Muvaffaqiyatli savdo</div>
+          <div class="num">10%</div>
+          <div class="label">Komissiya (past!)</div>
         </div>
         <div class="hero-stat">
-          <div class="num">24/7</div>
-          <div class="label">Yordam xizmati</div>
+          <div class="num">72 soat</div>
+          <div class="label">Escrow himoya</div>
         </div>
       </div>
     </div>
@@ -89,11 +89,11 @@
             <div class="fc-niche">Travel & Lifestyle</div>
           </div>
         </div>
-        <div class="fc-row"><span class="fc-key">Followers</span><span class="fc-val">24,800</span></div>
+        <div class="fc-row"><span class="fc-key">Followers</span><span class="fc-val">1,240</span></div>
         <div class="fc-row"><span class="fc-key">Engagement</span><span class="fc-val" style="color:#00C851;">6.4%</span></div>
-        <div class="fc-row"><span class="fc-key">Account yoshi</span><span class="fc-val">2 yil</span></div>
+        <div class="fc-row"><span class="fc-key">Account yoshi</span><span class="fc-val">1 yil 2 oy</span></div>
         <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:22px; font-weight:900; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">$220</span>
+          <span style="font-size:18px; font-weight:900; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">570,000 so'm</span>
           <span style="background:rgba(0,200,81,0.2); color:#00C851; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">✅ Verified</span>
         </div>
       </div>
@@ -126,16 +126,16 @@
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <div class="num">500+</div>
+      <div class="num" id="statListings">50+</div>
       <div class="label">Aktiv e'lon</div>
     </div>
     <div class="stat-item">
-      <div class="num">$50K+</div>
-      <div class="label">Jami savdo hajmi</div>
+      <div class="num">10%</div>
+      <div class="label">Eng past komissiya</div>
     </div>
     <div class="stat-item">
-      <div class="num">98%</div>
-      <div class="label">Muvaffaqiyatli savdo</div>
+      <div class="num">72 soat</div>
+      <div class="label">Escrow himoya muddati</div>
     </div>
     <div class="stat-item">
       <div class="num">0</div>
@@ -312,24 +312,76 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- ====== JS ====== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  // Bosh sahifaga featured cards chiqarish
-  document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('featuredCards');
-    const featured = accounts.slice(0, 8);
-    container.innerHTML = featured.map(acc => renderAccountCard(acc)).join('');
-  });
+var firebaseOk = initFirebase();
 
-  function searchAccounts() {
-    const q = document.getElementById('heroSearch').value;
+document.addEventListener('DOMContentLoaded', async function() {
+  var container = document.getElementById('featuredCards');
+
+  // Firebase dan aktiv e'lonlarni olish
+  var items = [];
+  if (firebaseOk) {
+    try {
+      var snap = await db.collection('listings')
+        .where('status','==','active')
+        .orderBy('createdAt','desc')
+        .limit(8).get();
+      items = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+    } catch(e) { console.warn(e); }
+  }
+
+  // Firebase bo'sh bo'lsa demo accountlar
+  if (!items.length) {
+    items = accounts.map(function(a){
+      return Object.assign({}, a, {id:'demo_'+a.id});
+    });
+  } else {
+    // Firebase da kam bo'lsa demo bilan to'ldirish
+    var demoExtra = accounts.map(function(a){
+      return Object.assign({}, a, {id:'demo_'+a.id});
+    });
+    items = items.concat(demoExtra).slice(0,8);
+  }
+
+  container.innerHTML = items.map(function(acc) {
+    return renderCard(acc, 'pages/');
+  }).join('');
+
+  // Navbar ni yangilash (kirgan foydalanuvchi uchun)
+  updateNavbar();
+
+  // Firebase dan haqiqiy statistikani yangilash
+  if (firebaseOk) {
+    try {
+      var stats = await getAdminStats();
+      var listEl = document.getElementById('statListings');
+      if (listEl && stats.activeListings > 0) {
+        listEl.textContent = stats.activeListings + '+';
+      }
+    } catch(e) {}
+  }
+});
+
+function searchAccounts() {
+  var q = document.getElementById('heroSearch').value;
+  window.location.href = 'pages/marketplace.html?q=' + encodeURIComponent(q);
+}
+
+document.getElementById('heroSearch').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') searchAccounts();
+});
     window.location.href = 'pages/marketplace.html?q=' + encodeURIComponent(q);
   }
 
   document.getElementById('heroSearch').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') searchAccounts();
-  });
+  if (e.key === 'Enter') searchAccounts();
+});
 </script>
 </body>
 </html>

@@ -53,7 +53,7 @@
 <div class="sell-page">
   <div class="sell-hero">
     <h1>💰 Account sotish</h1>
-    <p>Bepul e'lon, 12% komissiya, xavfsiz to'lov</p>
+    <p>Bepul e'lon, 10% komissiya, xavfsiz to'lov</p>
   </div>
   <div class="sell-wrap" id="sellWrap">
     <!-- Auth tekshiruvi va kontent JS orqali to'ldiriladi -->
@@ -90,7 +90,7 @@ function renderStep1(){
   return renderSteps() +
   '<div class="sell-card">' +
     '<h3>📋 Qoidalar</h3><p class="sdesc">Qabul qilinadigan accountlar</p>' +
-    ['✅ Minimal 1,000 haqiqiy follower','✅ Engagement rate kamida 3%','✅ Account yoshi kamida 3 oy','✅ Kamida 20 ta post','❌ Nakrutka (sotib olingan) followers qabul qilinmaydi','ℹ️ Har savdodan 12% komissiya'].map(function(r){
+    ['✅ Minimal 1,000 haqiqiy follower','✅ Engagement rate kamida 3%','✅ Account yoshi kamida 3 oy','✅ Kamida 20 ta post','❌ Nakrutka (sotib olingan) followers qabul qilinmaydi','ℹ️ Har savdodan 10% komissiya olinadi'].map(function(r){
       return '<div class="rule-item"><span>'+r.slice(0,2)+'</span><span>'+r.slice(2)+'</span></div>';
     }).join('') +
   '</div>' +
@@ -114,11 +114,12 @@ function renderStep1(){
     '<div class="form-group" style="margin-top:14px;"><label>Tavsif * (kamida 30 belgi)</label>' +
     '<textarea class="form-input" id="f_desc" rows="4" placeholder="Account qanday kontentlar haqida? Auditoriya kim? Nima uchun qimmatli?..." style="resize:vertical;" oninput="document.getElementById(\'descLen\').textContent=this.value.length+\'/300\'" required></textarea>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;" id="descLen">0/300</div></div>' +
-    '<div class="form-group"><label>Narx (USD) *</label><input type="number" class="form-input" id="f_price" placeholder="masalan: 50" min="10" oninput="calcPrice()" required/>' +
+    '<div class="form-group"><label>Narx (so\'mda) *</label><input type="number" class="form-input" id="f_price" placeholder="masalan: 500000" min="50000" step="10000" oninput="calcPrice()" required/>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Minimal: 50,000 so\'m · Komissiya 10% hisoblanadi</div>' +
     '<div class="price-calc" id="priceCalc" style="display:none;">' +
       '<div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;">💰 NARX HISOBI</div>' +
       '<div class="pcalc-row"><span>Siz so\'raydigan narx</span><span id="pc1">—</span></div>' +
-      '<div class="pcalc-row"><span>Komissiya 12%</span><span id="pc2" style="color:#dc2626;">—</span></div>' +
+      '<div class="pcalc-row"><span>Komissiya 10%</span><span id="pc2" style="color:#dc2626;">—</span></div>' +
       '<div class="pcalc-row"><span>✅ Sizga tushadigan summa</span><span id="pc3" style="color:var(--green-dark);">—</span></div>' +
     '</div></div>' +
   '</div>' +
@@ -198,15 +199,16 @@ function render(){
 }
 
 function calcPrice(){
-  var price = parseFloat(document.getElementById('f_price')&&document.getElementById('f_price').value||0);
+  var price = parseInt(document.getElementById('f_price')&&document.getElementById('f_price').value||0);
   var pc = document.getElementById('priceCalc');
   if(!pc) return;
-  if(!price||price<1){pc.style.display='none';return;}
+  if(!price || price < 50000){ pc.style.display='none'; return; }
   pc.style.display='block';
-  var comm = Math.round(price*0.12);
-  document.getElementById('pc1').textContent='$'+price;
-  document.getElementById('pc2').textContent='-$'+comm;
-  document.getElementById('pc3').textContent='$'+(price-comm);
+  var comm = Math.round(price * 0.10);
+  var net  = price - comm;
+  document.getElementById('pc1').textContent = formatUZS(price);
+  document.getElementById('pc2').textContent = '-' + formatUZS(comm);
+  document.getElementById('pc3').textContent = formatUZS(net);
 }
 
 function showFiles(files){
@@ -235,7 +237,7 @@ function goStep2(){
   if(er<1){showToast('Engagement rate kiriting (min 1%)!','error');return;}
   if(p<20){showToast('Minimum 20 ta post!','error');return;}
   if(!cat){showToast('Kategoriya tanlang!','error');return;}
-  if(price<10){showToast('Minimal narx $10!','error');return;}
+  if(price<50000){showToast('Minimal narx 50,000 so\'m!','error');return;}
   if(!desc||desc.length<30){showToast('Tavsif kamida 30 ta belgi bo\'lsin!','error');return;}
   if(!age){showToast('Account yoshini tanlang!','error');return;}
 
