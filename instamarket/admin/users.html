@@ -14,8 +14,7 @@
       <a href="../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
         <img src="../images/logo.svg" width="28" height="28" style="border-radius:7px;" alt="logo"/>
         <span class="brand">InstaMarket</span>
-      </a>
-      <small>Admin Panel</small>
+      </a><small>Admin Panel</small>
     </div>
     <nav class="admin-nav">
       <div class="nav-section">Asosiy</div>
@@ -36,39 +35,40 @@
   <div class="admin-content">
     <div class="admin-topbar">
       <h1>👥 Foydalanuvchilar</h1>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <input type="text" placeholder="🔍 Ism yoki email..." oninput="filterUsers(this.value)"
-          style="border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;outline:none;font-family:inherit;width:220px;"/>
-        <select onchange="filterRole(this.value)"
-          style="border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;outline:none;">
+      <div style="display:flex;gap:9px;align-items:center;">
+        <input type="text" id="searchInp" placeholder="🔍 Ism yoki email..." oninput="filterUsers()"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:7px 13px;font-size:13px;outline:none;font-family:inherit;width:200px;"/>
+        <select id="roleFilter" onchange="filterUsers()"
+          style="border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;outline:none;">
           <option value="all">Barchasi</option>
           <option value="buyer">Xaridorlar</option>
           <option value="seller">Sotuvchilar</option>
+          <option value="blocked">Bloklangan</option>
         </select>
       </div>
     </div>
 
     <div class="admin-body">
-      <!-- Stats -->
-      <div class="dash-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
-        <div class="dash-card"><div class="dc-label">👥 Jami</div><div class="dc-val">1,248</div><div class="dc-change">↑ +24 bu hafta</div></div>
-        <div class="dash-card" style="border-color:var(--green);"><div class="dc-label">🛒 Xaridorlar</div><div class="dc-val">1,041</div><div class="dc-change" style="color:var(--green);">83%</div></div>
-        <div class="dash-card" style="border-color:#f59e0b;"><div class="dc-label">💰 Sotuvchilar</div><div class="dc-val">207</div><div class="dc-change" style="color:#f59e0b;">17%</div></div>
-        <div class="dash-card" style="border-color:#ef4444;"><div class="dc-label">🚫 Bloklangan</div><div class="dc-val">12</div><div class="dc-change" style="color:#ef4444;">0.9%</div></div>
+      <div class="dash-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:22px;">
+        <div class="dash-card"><div class="dc-label">👥 Jami</div><div class="dc-val" id="cntAll">—</div></div>
+        <div class="dash-card" style="border-color:var(--green);"><div class="dc-label">🛒 Xaridorlar</div><div class="dc-val" id="cntBuyers" style="color:var(--green-dark);">—</div></div>
+        <div class="dash-card" style="border-color:#f59e0b;"><div class="dc-label">💰 Sotuvchilar</div><div class="dc-val" id="cntSellers" style="color:#d97706;">—</div></div>
+        <div class="dash-card" style="border-color:#ef4444;"><div class="dc-label">🚫 Bloklangan</div><div class="dc-val" id="cntBlocked" style="color:#dc2626;">—</div></div>
       </div>
 
-      <!-- Jadval -->
       <div class="admin-table-wrap">
         <div class="admin-table-top">
           <h2>Barcha foydalanuvchilar</h2>
-          <span style="font-size:13px;color:var(--text-muted);" id="userCount">Jami: 1,248 ta</span>
+          <span id="totalLbl" style="font-size:13px;color:var(--text-muted);"></span>
         </div>
         <div style="overflow-x:auto;">
           <table>
             <thead>
-              <tr><th>#</th><th>Foydalanuvchi</th><th>Email</th><th>Rol</th><th>Ro'yxat sanasi</th><th>Savdolar</th><th>Holat</th><th>Amallar</th></tr>
+              <tr><th>Foydalanuvchi</th><th>Email</th><th>Rol</th><th>Ro'yxat</th><th>Holat</th><th>Amallar</th></tr>
             </thead>
-            <tbody id="usersBody"></tbody>
+            <tbody id="usersBody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">⏳ Yuklanmoqda...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -76,9 +76,9 @@
   </div>
 </div>
 
-<!-- User detail modal -->
+<!-- User Modal -->
 <div class="modal-overlay" id="userModal">
-  <div class="modal" style="max-width:480px;position:relative;">
+  <div class="modal" style="max-width:440px;position:relative;">
     <button class="modal-close" onclick="closeModal('userModal')">✕</button>
     <div class="modal-title" id="umTitle">Foydalanuvchi</div>
     <div id="umBody"></div>
@@ -86,94 +86,135 @@
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-var users = [
-  {id:1,name:'Jasur Toshmatov',email:'jasur@gmail.com',role:'seller',date:'12.01.2024',sales:3,status:'active'},
-  {id:2,name:'Nilufar Rahimova',email:'nilufar@mail.ru',role:'seller',date:'15.01.2024',sales:2,status:'active'},
-  {id:3,name:'Bobur Mirzaev',email:'bobur@gmail.com',role:'seller',date:'18.01.2024',sales:1,status:'active'},
-  {id:4,name:'Kamola Saidova',email:'kamola@gmail.com',role:'seller',date:'20.01.2024',sales:4,status:'active'},
-  {id:5,name:'Sherzod Nazarov',email:'sherzod@mail.ru',role:'buyer',date:'22.01.2024',sales:2,status:'active'},
-  {id:6,name:'Malika Yusupova',email:'malika@gmail.com',role:'buyer',date:'25.01.2024',sales:1,status:'active'},
-  {id:7,name:'Dilnoza Karimova',email:'dilnoza@inbox.uz',role:'buyer',date:'28.01.2024',sales:3,status:'active'},
-  {id:8,name:'Akbar Normatov',email:'akbar@gmail.com',role:'seller',date:'01.02.2024',sales:1,status:'active'},
-  {id:9,name:'Zulfiya Hamidova',email:'zulfiya@mail.ru',role:'seller',date:'03.02.2024',sales:2,status:'active'},
-  {id:10,name:'Sardor Aliyev',email:'sardor@gmail.com',role:'seller',date:'05.02.2024',sales:0,status:'blocked'},
-  {id:11,name:'Munira Baxtiyorova',email:'munira@inbox.uz',role:'seller',date:'08.02.2024',sales:3,status:'active'},
-  {id:12,name:'Otabek Xolmatov',email:'otabek@gmail.com',role:'buyer',date:'10.02.2024',sales:1,status:'active'},
+var firebaseOk = initFirebase();
+var allUsers = [];
+
+var demoUsers = [
+  {id:'u1', name:'Jasur Toshmatov',  email:'jasur@gmail.com',  role:'seller', status:'active',  createdAt:'12.01.2024'},
+  {id:'u2', name:'Nilufar Rahimova', email:'nilufar@mail.ru',  role:'seller', status:'active',  createdAt:'15.01.2024'},
+  {id:'u3', name:'Sherzod Nazarov',  email:'sherzod@gmail.com',role:'buyer',  status:'active',  createdAt:'22.01.2024'},
+  {id:'u4', name:'Malika Yusupova',  email:'malika@gmail.com', role:'buyer',  status:'active',  createdAt:'25.01.2024'},
+  {id:'u5', name:'Sardor Aliyev',    email:'sardor@gmail.com', role:'seller', status:'blocked', createdAt:'05.02.2024'},
 ];
 
 function renderUsers(list) {
+  var buyers  = list.filter(function(u){return u.role==='buyer';});
+  var sellers = list.filter(function(u){return u.role==='seller';});
+  var blocked = list.filter(function(u){return u.status==='blocked';});
+
+  document.getElementById('cntAll').textContent     = list.length;
+  document.getElementById('cntBuyers').textContent  = buyers.length;
+  document.getElementById('cntSellers').textContent = sellers.length;
+  document.getElementById('cntBlocked').textContent = blocked.length;
+  document.getElementById('totalLbl').textContent   = 'Jami: ' + list.length + ' ta';
+
+  if (!list.length) {
+    document.getElementById('usersBody').innerHTML =
+      '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Foydalanuvchi topilmadi</td></tr>';
+    return;
+  }
+
   document.getElementById('usersBody').innerHTML = list.map(function(u) {
+    var initials = (u.name||'?').split(' ').map(function(p){return p[0]||'';}).join('').slice(0,2).toUpperCase();
     var roleHtml = u.role === 'seller'
       ? '<span class="status-badge" style="background:#fef3c7;color:#92400e;">💰 Sotuvchi</span>'
       : '<span class="status-badge" style="background:#dbeafe;color:#1e40af;">🛒 Xaridor</span>';
     var statusHtml = u.status === 'active'
       ? '<span class="status-badge s-active">✅ Faol</span>'
       : '<span class="status-badge s-rejected">🚫 Bloklangan</span>';
-    var initials = u.name.split(' ').map(function(p){return p[0];}).join('').slice(0,2).toUpperCase();
-    return '<tr data-role="' + u.role + '" data-name="' + u.name.toLowerCase() + '" data-email="' + u.email.toLowerCase() + '">' +
-      '<td style="color:var(--text-muted);font-size:12px;">#' + u.id + '</td>' +
+    var date = u.createdAt
+      ? (u.createdAt.seconds ? new Date(u.createdAt.seconds*1000).toLocaleDateString('uz-UZ') : u.createdAt)
+      : '—';
+
+    return '<tr data-role="'+u.role+'" data-status="'+(u.status||'active')+'" data-search="'+(u.name||'').toLowerCase()+' '+(u.email||'').toLowerCase()+'">' +
       '<td><div style="display:flex;align-items:center;gap:10px;">' +
-        '<div style="width:36px;height:36px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0;">' + initials + '</div>' +
-        '<div><div style="font-weight:600;font-size:13px;">' + u.name + '</div></div></div></td>' +
-      '<td style="color:var(--text-muted);font-size:13px;">' + u.email + '</td>' +
-      '<td>' + roleHtml + '</td>' +
-      '<td style="color:var(--text-muted);font-size:13px;">' + u.date + '</td>' +
-      '<td style="font-weight:700;text-align:center;">' + u.sales + '</td>' +
-      '<td>' + statusHtml + '</td>' +
-      '<td><div class="act-btns">' +
-        '<button class="btn btn-xs btn-ghost" onclick="viewUser(' + u.id + ')">👁 Ko\'rish</button>' +
-        (u.status === 'active'
-          ? '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="toggleBlock(' + u.id + ',this)">🚫 Blok</button>'
-          : '<button class="btn btn-xs btn-green" onclick="toggleBlock(' + u.id + ',this)">✅ Faollashtir</button>') +
+        '<div style="width:34px;height:34px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;">'+initials+'</div>' +
+        '<span style="font-weight:600;font-size:13px;">'+(u.name||'—')+'</span></div></td>' +
+      '<td style="font-size:13px;color:var(--text-muted);">'+(u.email||'—')+'</td>' +
+      '<td>'+roleHtml+'</td>' +
+      '<td style="font-size:12px;color:var(--text-muted);">'+date+'</td>' +
+      '<td>'+statusHtml+'</td>' +
+      '<td><div style="display:flex;gap:5px;">' +
+        '<button class="btn btn-xs btn-ghost" onclick="viewUser(\''+u.id+'\')">👁 Ko\'rish</button>' +
+        (u.status==='active'
+          ? '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="toggleBlock(\''+u.id+'\',true)">🚫 Blok</button>'
+          : '<button class="btn btn-xs btn-green" onclick="toggleBlock(\''+u.id+'\',false)">✅ Faollashtir</button>') +
       '</div></td></tr>';
   }).join('');
 }
 
-function filterUsers(q) {
-  document.querySelectorAll('#usersBody tr').forEach(function(row) {
-    var name = row.dataset.name || '';
-    var email = row.dataset.email || '';
-    row.style.display = (name.includes(q.toLowerCase()) || email.includes(q.toLowerCase())) ? '' : 'none';
+function filterUsers() {
+  var q    = document.getElementById('searchInp').value.toLowerCase();
+  var role = document.getElementById('roleFilter').value;
+  var filtered = allUsers.filter(function(u) {
+    var search = ((u.name||'')+(u.email||'')).toLowerCase();
+    var matchQ    = !q || search.includes(q);
+    var matchRole = role === 'all' || u.role === role || (role==='blocked' && u.status==='blocked');
+    return matchQ && matchRole;
   });
-}
-
-function filterRole(role) {
-  document.querySelectorAll('#usersBody tr').forEach(function(row) {
-    row.style.display = (role === 'all' || row.dataset.role === role) ? '' : 'none';
-  });
+  renderUsers(filtered);
 }
 
 function viewUser(id) {
-  var u = users.find(function(x){return x.id===id;});
+  var u = allUsers.find(function(x){return x.id===id;});
   if (!u) return;
-  document.getElementById('umTitle').textContent = u.name;
+  var date = u.createdAt
+    ? (u.createdAt.seconds ? new Date(u.createdAt.seconds*1000).toLocaleDateString('uz-UZ') : u.createdAt)
+    : '—';
+  document.getElementById('umTitle').textContent = u.name || 'Foydalanuvchi';
   document.getElementById('umBody').innerHTML =
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">' +
-    [['📧 Email',u.email],['👤 Rol',u.role==='seller'?'Sotuvchi':'Xaridor'],['📅 Ro\'yxat',u.date],['📦 Savdolar',u.sales+' ta'],['🔘 Holat',u.status==='active'?'Faol':'Bloklangan']].map(function(p) {
-      return '<div style="background:var(--bg);border-radius:8px;padding:12px;border:1px solid var(--border-light);"><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">'+p[0]+'</div><div style="font-weight:600;font-size:14px;">'+p[1]+'</div></div>';
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">' +
+    [['📧 Email', u.email||'—'], ['👤 Rol', u.role==='seller'?'💰 Sotuvchi':'🛒 Xaridor'],
+     ['📅 Ro\'yxat', date], ['🔘 Holat', u.status==='active'?'✅ Faol':'🚫 Bloklangan']
+    ].map(function(p) {
+      return '<div style="background:var(--bg);border-radius:8px;padding:12px;border:1px solid var(--border-light);">' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">'+p[0]+'</div>' +
+        '<div style="font-weight:600;font-size:14px;">'+p[1]+'</div></div>';
     }).join('') + '</div>' +
     '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">' +
     '<button class="btn btn-ghost btn-sm" onclick="closeModal(\'userModal\')">Yopish</button>' +
-    (u.status==='active' ? '<button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="showToast(\'Foydalanuvchi bloklandi\',\'error\');closeModal(\'userModal\')">🚫 Bloklash</button>' : '') +
+    (u.status==='active'
+      ? '<button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="toggleBlock(\''+u.id+'\',true);closeModal(\'userModal\')">🚫 Bloklash</button>'
+      : '<button class="btn btn-sm btn-green" onclick="toggleBlock(\''+u.id+'\',false);closeModal(\'userModal\')">✅ Faollashtirish</button>') +
     '</div>';
   openModal('userModal');
 }
 
-function toggleBlock(id, btn) {
-  var u = users.find(function(x){return x.id===id;});
+async function toggleBlock(id, block) {
+  var u = allUsers.find(function(x){return x.id===id;});
   if (!u) return;
-  u.status = u.status === 'active' ? 'blocked' : 'active';
-  showToast(u.status === 'active' ? '✅ Foydalanuvchi faollashtirildi' : '🚫 Foydalanuvchi bloklandi', u.status === 'active' ? 'success' : 'error');
-  renderUsers(users);
+  if (firebaseOk && !id.startsWith('u')) {
+    var res = await blockUser(id, block);
+    if (!res.success) { showToast('Xato: ' + res.error, 'error'); return; }
+  }
+  u.status = block ? 'blocked' : 'active';
+  filterUsers();
+  showToast(block ? '🚫 Foydalanuvchi bloklandi' : '✅ Foydalanuvchi faollashtirildi', block ? 'error' : 'success');
+}
+
+async function loadUsers() {
+  var users = [];
+  if (firebaseOk) {
+    users = await getAdminUsers(100);
+  }
+  if (!users.length) users = demoUsers;
+  allUsers = users;
+  filterUsers();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  renderUsers(users);
+  if (!requireAdmin()) return;
+  loadUsers();
   document.querySelectorAll('.modal-overlay').forEach(function(m) {
-    m.addEventListener('click', function(e) { if(e.target===m) m.classList.remove('open'); });
+    m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('open'); });
   });
 });
 </script>

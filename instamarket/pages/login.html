@@ -16,6 +16,7 @@
         <span style="font-size:22px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">InstaMarket</span>
       </a>
     </div>
+
     <h1 class="auth-title">Xush kelibsiz 👋</h1>
     <p class="auth-sub">Hisobingizga kiring</p>
 
@@ -30,12 +31,12 @@
         <label>🔒 Parol</label>
         <div style="position:relative;">
           <input type="password" class="form-input" id="password" placeholder="Parolingiz" required autocomplete="current-password" style="padding-right:48px;"/>
-          <button type="button" onclick="togglePass('password','eyeBtn')" id="eyeBtn"
+          <button type="button" onclick="togglePass()" id="eyeBtn"
             style="position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);">👁</button>
         </div>
       </div>
       <div style="text-align:right;margin-bottom:20px;">
-        <a href="#" onclick="handleReset()" style="font-size:13px;color:var(--primary);font-weight:500;">Parolni unutdingizmi?</a>
+        <a href="#" onclick="handleReset(event)" style="font-size:13px;color:var(--primary);font-weight:500;">Parolni unutdingizmi?</a>
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:13px;" id="loginBtn">
         Kirish →
@@ -44,25 +45,19 @@
 
     <div class="auth-divider"><span>yoki</span></div>
 
-    <!-- Demo kirish -->
-    <div style="background:var(--bg);border-radius:12px;padding:16px;border:1.5px solid var(--border);margin-bottom:20px;">
-      <p style="font-size:12px;color:var(--text-muted);font-weight:600;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">🧪 Demo kirish (Firebase yo'q bo'lsa)</p>
-      <div style="display:flex;flex-direction:column;gap:7px;">
-        <button onclick="quickDemo('buyer')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;"><span>🛒</span> Xaridor sifatida kirish</button>
-        <button onclick="quickDemo('seller')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;"><span>💰</span> Sotuvchi sifatida kirish</button>
-        <button onclick="quickDemo('admin')" class="btn btn-ghost btn-sm" style="justify-content:flex-start;gap:10px;border-color:rgba(131,58,180,0.3);color:#7c3aed;"><span>⚙️</span> Admin sifatida kirish</button>
-      </div>
-    </div>
-
     <p style="text-align:center;font-size:14px;color:var(--text-muted);">
-      Hisob yo'qmi? <a href="register.html" style="color:var(--primary);font-weight:700;">Ro'yxatdan o'ting</a>
+      Hisob yo'qmi?
+      <a href="register.html" style="color:var(--primary);font-weight:700;"> Ro'yxatdan o'ting</a>
+    </p>
+    <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:10px;">
+      Admin?
+      <a href="../admin/index.html" style="color:var(--primary);font-weight:600;"> Admin panelga o'tish →</a>
     </p>
   </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -70,21 +65,28 @@
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
-// Firebase ni boshlash
 var firebaseOk = initFirebase();
+
+// Allaqachon kirgan bo'lsa yo'naltirish
+document.addEventListener('DOMContentLoaded', function() {
+  var user = loadUser();
+  if (user) {
+    window.location.href = user.role === 'admin' ? '../admin/index.html' : '../index.html';
+  }
+});
 
 function showErr(msg) {
   var b = document.getElementById('errBox');
   b.textContent = '❌ ' + msg;
   b.style.display = 'block';
-  setTimeout(function(){b.style.display='none';}, 4000);
+  setTimeout(function(){ b.style.display = 'none'; }, 5000);
 }
 
-function togglePass(inputId, btnId) {
-  var inp = document.getElementById(inputId);
-  var btn = document.getElementById(btnId);
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
-  else { inp.type = 'password'; btn.textContent = '👁'; }
+function togglePass() {
+  var inp = document.getElementById('password');
+  var btn = document.getElementById('eyeBtn');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁' : '🙈';
 }
 
 async function handleLogin(e) {
@@ -93,49 +95,44 @@ async function handleLogin(e) {
   var password = document.getElementById('password').value;
   var btn      = document.getElementById('loginBtn');
 
-  btn.textContent = '⏳ Kirish...'; btn.disabled = true;
+  btn.textContent = '⏳ Kirish...';
+  btn.disabled = true;
 
   if (firebaseOk) {
     var res = await loginUser(email, password);
     if (res.success) {
       showToast('✅ Muvaffaqiyatli kirdingiz!');
-      var user = loadUser();
-      setTimeout(function(){
-        if (user && user.role === 'admin') window.location.href = '../admin/index.html';
+      setTimeout(function() {
+        var u = loadUser();
+        if (u && u.role === 'admin') window.location.href = '../admin/index.html';
+        else if (u && u.role === 'seller') window.location.href = 'sell.html';
         else window.location.href = '../index.html';
-      }, 800);
+      }, 700);
     } else {
       showErr(res.error);
-      btn.textContent = 'Kirish →'; btn.disabled = false;
+      btn.textContent = 'Kirish →';
+      btn.disabled = false;
     }
   } else {
-    // Demo rejim
-    var u = { uid:'demo-'+Date.now(), name: email.split('@')[0], email: email, role:'buyer' };
+    // Firebase ullanmagan — demo rejim
+    var u = { uid: 'local-' + Date.now(), name: email.split('@')[0], email: email, role: 'buyer' };
     saveUserLocal(u);
     showToast('✅ Demo rejimda kirdingiz');
-    setTimeout(function(){ window.location.href = '../index.html'; }, 800);
+    setTimeout(function(){ window.location.href = '../index.html'; }, 700);
   }
 }
 
-async function handleReset() {
+async function handleReset(e) {
+  e.preventDefault();
   var email = document.getElementById('email').value.trim();
-  if (!email) { showErr('Email kiriting!'); return; }
+  if (!email) { showErr('Avval emailingizni kiriting!'); return; }
   if (firebaseOk) {
     var res = await resetPassword(email);
-    if (res.success) showToast('📧 Parol tiklash xabari yuborildi!');
+    if (res.success) showToast('📧 Parol tiklash xabari emailga yuborildi!');
     else showErr(res.error);
   } else {
-    showToast('📧 Demo: Parol tiklash (Firebase kerak)');
+    showToast('Firebase ulanmagan — bu funksiya ishlamaydi', 'error');
   }
-}
-
-function quickDemo(role) {
-  demoLogin(role);
-  showToast('✅ Demo kirish: ' + role);
-  setTimeout(function(){
-    if (role === 'admin') window.location.href = '../admin/index.html';
-    else window.location.href = '../index.html';
-  }, 600);
 }
 </script>
 </body>
