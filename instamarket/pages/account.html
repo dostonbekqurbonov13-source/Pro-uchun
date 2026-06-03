@@ -322,7 +322,7 @@ function renderPage(acc){
           '<div class="sim-ava">'+s.emoji+'</div>' +
           '<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@'+s.username+'</div>' +
           '<div style="font-size:11px;color:var(--text-muted);">'+formatNum(s.followers)+' · '+s.er+'% ER</div></div>' +
-          '<div style="font-weight:800;font-size:13px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">$'+s.price+'</div></a>';
+          '<div style="font-weight:800;font-size:13px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">'+(s.price ? formatUZS(s.price) : '—')+'</div></a>';
       }).join(''):'<p style="font-size:13px;color:var(--text-muted);">Hozircha yo\'q</p>') +
     '</div>' +
   '</div>' +

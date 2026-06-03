@@ -157,22 +157,52 @@
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
 <script src="../js/data.js"></script>
 <script src="../js/main.js"></script>
 <script>
+var firebaseOk = initFirebase();
+
+// Admin tekshiruvi
+if (!requireAdmin()) {}
+
 function updatePeriod(p) {
   var data = {
-    month:   {rev:'$1,840', escrow:'$620', paid:'$14,200', avg:'$52'},
-    quarter: {rev:'$4,260', escrow:'$820', paid:'$38,400', avg:'$48'},
-    year:    {rev:'$4,260', escrow:'$820', paid:'$38,400', avg:'$44'},
+    month:   {rev:"1,840,000 so'm", escrow:"620,000 so'm", paid:"14,200,000 so'm", avg:"52,000 so'm"},
+    quarter: {rev:"4,260,000 so'm", escrow:"820,000 so'm", paid:"38,400,000 so'm", avg:"48,000 so'm"},
+    year:    {rev:"4,260,000 so'm", escrow:"820,000 so'm", paid:"38,400,000 so'm", avg:"44,000 so'm"},
   };
   var d = data[p] || data.month;
-  document.getElementById('totalRev').textContent = d.rev;
+  document.getElementById('totalRev').textContent  = d.rev;
   document.getElementById('escrowAmt').textContent = d.escrow;
-  document.getElementById('paidOut').textContent = d.paid;
-  document.getElementById('avgOrder').textContent = d.avg;
+  document.getElementById('paidOut').textContent   = d.paid;
+  document.getElementById('avgOrder').textContent  = d.avg;
   showToast('📊 ' + (p==='month'?'Oylik':p==='quarter'?'Choraklik':'Yillik') + ' ma\'lumotlar yuklandi');
 }
+
+// Firebase dan moliya ma'lumotlarini olish
+async function loadFinance() {
+  if (!firebaseOk) return;
+  try {
+    var oSnap = await db.collection('orders').get();
+    var orders = oSnap.docs.map(function(d){ return d.data(); });
+    var done   = orders.filter(function(o){ return o.status === 'done'; });
+    var escrow = orders.filter(function(o){ return o.status === 'escrow' || o.status === 'checking'; });
+    var rev    = done.reduce(function(s,o){ return s + (o.commission||0); }, 0);
+    var esc    = escrow.reduce(function(s,o){ return s + (o.amount||0); }, 0);
+
+    if (rev > 0) document.getElementById('totalRev').textContent = formatUZS(rev);
+    if (esc > 0) document.getElementById('escrowAmt').textContent = formatUZS(esc);
+    document.getElementById('avgOrder').textContent = done.length ? formatUZS(Math.round(rev / done.length)) : '—';
+  } catch(e) { console.warn(e); }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (requireAdmin()) loadFinance();
+});
 </script>
 </body>
 </html>

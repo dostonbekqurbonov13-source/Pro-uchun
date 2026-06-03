@@ -7,46 +7,25 @@
   <link rel="stylesheet" href="../css/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    /* Ro'yxatsiz foydalanuvchi uchun blur effekti */
-    .blurred { filter: blur(6px); pointer-events: none; user-select: none; }
-    .gate-overlay {
-      position: fixed; inset: 0; z-index: 500;
-      display: flex; align-items: center; justify-content: center;
-      padding: 24px;
-      background: rgba(10,10,10,0.55);
-      backdrop-filter: blur(2px);
-    }
-    .gate-box {
-      background: white; border-radius: 24px; padding: 40px 36px;
-      max-width: 420px; width: 100%; text-align: center;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
-      animation: popIn 0.3s ease;
-    }
-    @keyframes popIn { from{transform:scale(0.92);opacity:0} to{transform:scale(1);opacity:1} }
-    .gate-emoji { font-size: 56px; margin-bottom: 14px; }
-    .gate-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
-    .gate-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
-    .gate-benefits { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; text-align: left; }
-    .gate-benefit { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-light); }
-    .gate-btns { display: flex; flex-direction: column; gap: 10px; }
-    .gate-close { font-size: 12px; color: var(--text-muted); margin-top: 12px; cursor: pointer; }
-    .gate-close:hover { color: var(--primary); }
-    /* Preview kartalar (xiralashgan) */
-    .preview-cards { display: grid; grid-template-columns: repeat(auto-fill,minmax(272px,1fr)); gap: 20px; }
-    .preview-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1.5px solid var(--border); }
-    .preview-card-top { padding: 18px 18px 0; display: flex; align-items: center; gap: 12px; }
-    .preview-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--gradient); flex-shrink: 0; }
-    .preview-lines { flex: 1; }
-    .preview-line { height: 12px; background: var(--border); border-radius: 6px; margin-bottom: 8px; }
-    .preview-line.short { width: 60%; }
-    .preview-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 14px 0 0; border-top: 1px solid var(--border-light); }
-    .preview-stat { padding: 12px 8px; text-align: center; border-right: 1px solid var(--border-light); }
-    .preview-stat:last-child { border-right: none; }
-    .preview-stat-val { height: 14px; background: var(--border); border-radius: 4px; margin-bottom: 6px; }
-    .preview-stat-key { height: 8px; background: var(--border-light); border-radius: 4px; width: 60%; margin: 0 auto; }
-    .preview-foot { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); }
-    .preview-price { height: 20px; width: 100px; background: var(--border); border-radius: 6px; }
-    .preview-btn { height: 32px; width: 80px; background: var(--border); border-radius: 8px; }
+    .gate-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(10,10,10,0.6);backdrop-filter:blur(3px);}
+    .gate-box{background:white;border-radius:24px;padding:36px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:popIn 0.3s ease;}
+    @keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
+    .gate-benefit{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-light);padding:5px 0;text-align:left;}
+    .preview-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px;}
+    .preview-card{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);}
+    .preview-card-top{padding:18px 18px 0;display:flex;align-items:center;gap:12px;}
+    .preview-avatar{width:52px;height:52px;border-radius:50%;background:var(--gradient);flex-shrink:0;}
+    .preview-lines{flex:1;}
+    .preview-line{height:12px;background:var(--border);border-radius:6px;margin-bottom:8px;}
+    .preview-line.short{width:60%;}
+    .preview-stats{display:grid;grid-template-columns:1fr 1fr 1fr;margin:14px 0 0;border-top:1px solid var(--border-light);}
+    .preview-stat{padding:12px 8px;text-align:center;border-right:1px solid var(--border-light);}
+    .preview-stat:last-child{border-right:none;}
+    .preview-stat-val{height:14px;background:var(--border);border-radius:4px;margin-bottom:6px;}
+    .preview-stat-key{height:8px;background:var(--border-light);border-radius:4px;width:60%;margin:0 auto;}
+    .preview-foot{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-light);}
+    .preview-price{height:20px;width:100px;background:var(--border);border-radius:6px;}
+    .preview-btn{height:32px;width:80px;background:var(--border);border-radius:8px;}
   </style>
 </head>
 <body>
@@ -65,6 +44,7 @@
   <button class="nav-mobile-btn" onclick="toggleMenu()">☰</button>
 </nav>
 
+<!-- HEADER -->
 <div style="background:var(--dark);padding:72px 32px 36px;margin-top:64px;">
   <div style="max-width:1200px;margin:0 auto;">
     <h1 style="color:white;font-size:34px;font-weight:900;margin-bottom:10px;">Instagram Account <span class="gradient-text">Bozori</span></h1>
@@ -73,7 +53,7 @@
       <input type="text" id="searchInp" placeholder="Username, niche yoki kategoriya..." style="color:white;background:transparent;" oninput="filterAccounts()"/>
       <button onclick="filterAccounts()" style="background:var(--gradient);">🔍 Qidirish</button>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;" id="catChips">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;">
       <button class="cat-chip active" onclick="setCat('all',this)"><span>🏪</span>Barchasi</button>
       <button class="cat-chip" onclick="setCat('food',this)"><span>🍔</span>Ovqat</button>
       <button class="cat-chip" onclick="setCat('travel',this)"><span>✈️</span>Sayohat</button>
@@ -87,29 +67,29 @@
   </div>
 </div>
 
+<!-- MAIN -->
 <div class="marketplace-layout">
   <aside class="filter-sidebar">
     <div class="filter-title">Filterlar <span class="filter-clear" onclick="clearFilters()">Tozalash</span></div>
-    <div class="filter-group">
-      <label>Narx ($)</label>
-      <input type="range" class="range-slider" id="priceRange" min="0" max="500" value="500" oninput="updRange('price',this.value)"/>
-      <div class="range-vals"><span>$0</span><span id="priceVal">$500</span></div>
-    </div>
-    <div class="filter-group">
-      <label>Followers soni</label>
-      <input type="range" class="range-slider" id="flwRange" min="1000" max="50000" step="500" value="50000" oninput="updRange('flw',this.value)"/>
-      <div class="range-vals"><span>1K</span><span id="flwVal">50K+</span></div>
-    </div>
-    <div class="filter-group">
-      <label>Min. Engagement Rate</label>
-      <input type="range" class="range-slider" id="erRange" min="1" max="15" value="1" step="0.5" oninput="updRange('er',this.value)"/>
-      <div class="range-vals"><span>1%</span><span id="erVal">1%+</span></div>
-    </div>
+
     <div class="filter-group">
       <label>Narx (so'm)</label>
-      <input type="range" class="range-slider" id="priceRange" min="0" max="5000000" step="50000" value="5000000" oninput="updRange('price',this.value)"/>
+      <input type="range" class="range-slider" id="priceRng" min="0" max="5000000" step="50000" value="5000000" oninput="updRange('price',this.value)"/>
       <div class="range-vals"><span>0</span><span id="priceVal">5 mln+</span></div>
     </div>
+
+    <div class="filter-group">
+      <label>Followers soni</label>
+      <input type="range" class="range-slider" id="flwRng" min="1000" max="50000" step="500" value="50000" oninput="updRange('flw',this.value)"/>
+      <div class="range-vals"><span>1K</span><span id="flwVal">50K+</span></div>
+    </div>
+
+    <div class="filter-group">
+      <label>Min. Engagement Rate</label>
+      <input type="range" class="range-slider" id="erRng" min="1" max="15" value="1" step="0.5" oninput="updRange('er',this.value)"/>
+      <div class="range-vals"><span>1%</span><span id="erVal">1%+</span></div>
+    </div>
+
     <div class="filter-group">
       <label>Holat</label>
       <div class="check-list">
@@ -136,7 +116,7 @@
       <div style="font-size:56px;margin-bottom:14px;">🔍</div>
       <h3 style="font-size:20px;margin-bottom:7px;">Hech narsa topilmadi</h3>
       <p style="color:var(--text-muted);">Filter shartlarini o'zgartiring</p>
-      <button class="btn btn-primary" style="margin-top:18px;" onclick="clearFilters()">Filterlarni tozalash</button>
+      <button class="btn btn-primary" style="margin-top:18px;" onclick="clearFilters()">Tozalash</button>
     </div>
   </main>
 </div>
@@ -151,67 +131,50 @@
 <script src="../js/main.js"></script>
 <script>
 var firebaseOk = initFirebase();
-var allItems = [];
-var activeCat = 'all';
-var maxPrice = 5000000, maxFlw = 50000, minER = 1;
-var CARDS_VISIBLE = 3; // Ro'yxatsiz faqat 3 ta preview ko'radi
+var allItems   = [];
+var activeCat  = 'all';
+var maxPrice   = 5000000, maxFlw = 50000, minER = 1;
+var CARDS_VISIBLE = 3;
 
-// ===== GATE — Ro'yxatsiz foydalanuvchilar =====
+// ===== GATE =====
 function showGate() {
   if (document.getElementById('gateOverlay')) return;
-  var overlay = document.createElement('div');
-  overlay.id = 'gateOverlay';
-  overlay.className = 'gate-overlay';
-  overlay.innerHTML = `
-    <div class="gate-box">
-      <div class="gate-emoji">🔐</div>
-      <div class="gate-title">Accountlarni ko'rish uchun kiring</div>
-      <div class="gate-sub">
-        InstaMarket da <strong>500+</strong> tekshirilgan Instagram account bor.<br/>
-        Ko'rish uchun bepul ro'yxatdan o'ting!
-      </div>
-      <div class="gate-benefits">
-        <div class="gate-benefit"><span>✅</span> Barcha accountlarni ko'rish</div>
-        <div class="gate-benefit"><span>📊</span> To'liq statistika va tahlil</div>
-        <div class="gate-benefit"><span>💬</span> Sotuvchi bilan bog'lanish</div>
-        <div class="gate-benefit"><span>🛡️</span> Xavfsiz xarid qilish</div>
-      </div>
-      <div class="gate-btns">
-        <a href="register.html" class="btn btn-primary btn-lg" style="justify-content:center;width:100%;">
-          🚀 Bepul ro'yxatdan o'tish
-        </a>
-        <a href="login.html" class="btn btn-ghost" style="justify-content:center;width:100%;">
-          Kirish →
-        </a>
-      </div>
-      <div class="gate-close" onclick="closeGate()">
-        Hozircha yopish (faqat ${CARDS_VISIBLE} ta ko'rinadi)
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  // Scroll lock
   document.body.style.overflow = 'hidden';
+  var o = document.createElement('div');
+  o.id = 'gateOverlay';
+  o.className = 'gate-overlay';
+  o.innerHTML =
+    '<div class="gate-box">' +
+      '<div style="font-size:52px;margin-bottom:12px;">🔐</div>' +
+      '<div style="font-size:21px;font-weight:800;margin-bottom:8px;">Ko\'rish uchun kiring</div>' +
+      '<div style="font-size:14px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">Barcha accountlarni ko\'rish uchun <strong>bepul ro\'yxatdan o\'ting!</strong></div>' +
+      '<div style="margin-bottom:20px;">' +
+        '<div class="gate-benefit"><span>✅</span> Barcha accountlarni ko\'rish</div>' +
+        '<div class="gate-benefit"><span>📊</span> To\'liq statistika va nakrutka tahlili</div>' +
+        '<div class="gate-benefit"><span>💬</span> Sotuvchi bilan chat</div>' +
+        '<div class="gate-benefit"><span>🛡️</span> Escrow himoyali xarid</div>' +
+      '</div>' +
+      '<a href="register.html" class="btn btn-primary btn-lg" style="display:block;justify-content:center;margin-bottom:10px;">🚀 Bepul ro\'yxatdan o\'tish</a>' +
+      '<a href="login.html" class="btn btn-ghost" style="display:block;justify-content:center;margin-bottom:12px;">Kirish →</a>' +
+      '<div style="font-size:12px;color:var(--text-muted);cursor:pointer;" onclick="closeGate()">Yopish (faqat ' + CARDS_VISIBLE + ' ta ko\'rinadi)</div>' +
+    '</div>';
+  document.body.appendChild(o);
 }
 
 function closeGate() {
   var o = document.getElementById('gateOverlay');
-  if (o) {
-    o.style.opacity = '0';
-    o.style.transition = 'opacity 0.3s';
-    setTimeout(function() { o.remove(); document.body.style.overflow = ''; }, 300);
-  }
+  if (!o) return;
+  o.style.opacity = '0';
+  o.style.transition = 'opacity 0.3s';
+  setTimeout(function() { o.remove(); document.body.style.overflow = ''; }, 300);
 }
 
-// Karta click — gate ochadi
 function handleCardClick(id) {
-  var user = loadUser();
-  if (!user) {
-    showGate();
-    return;
-  }
+  if (!loadUser()) { showGate(); return; }
   window.location.href = 'account.html?id=' + id;
 }
 
+// ===== LOAD =====
 async function loadMarket() {
   document.getElementById('cardsList').innerHTML =
     '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">⏳ Yuklanmoqda...</div>';
@@ -219,24 +182,21 @@ async function loadMarket() {
   var items = [];
   if (firebaseOk) {
     try {
-      var snap = await db.collection('listings').where('status','==','active').orderBy('createdAt','desc').limit(50).get();
-      items = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data(), {isFirebase:true}); });
-    } catch(e) { console.warn(e); }
+      var snap = await db.collection('listings').where('status','==','active')
+        .orderBy('createdAt','desc').limit(50).get();
+      items = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+    } catch(e) { console.warn('Firebase:', e.message); }
   }
-  if (items.length === 0) {
-    items = accounts.map(function(a){
-      return Object.assign({}, a, {id:'demo_'+a.id, isFirebase:false, status:'active'});
-    });
-  } else {
-    var demoItems = accounts.map(function(a){
-      return Object.assign({}, a, {id:'demo_'+a.id, isFirebase:false, status:'active'});
-    });
-    items = items.concat(demoItems);
-  }
-  allItems = items;
+
+  // Demo accountlar (Firebase bo'sh bo'lsa yoki qo'shimcha)
+  var demoItems = accounts.map(function(a){
+    return Object.assign({}, a, {id:'demo_'+a.id, status:'active'});
+  });
+  allItems = items.length ? items.concat(demoItems) : demoItems;
   filterAccounts();
 }
 
+// ===== FILTER =====
 function setCat(cat, el) {
   activeCat = cat;
   document.querySelectorAll('.cat-chip').forEach(function(c){ c.classList.remove('active'); });
@@ -245,27 +205,82 @@ function setCat(cat, el) {
 }
 
 function updRange(type, val) {
-  if (type==='price') {
+  if (type === 'price') {
     maxPrice = parseInt(val);
-    var display = parseInt(val) >= 5000000 ? '5 mln+' : parseInt(val).toLocaleString('uz-UZ') + ' so\'m';
-    document.getElementById('priceVal').textContent = display;
+    document.getElementById('priceVal').textContent =
+      parseInt(val) >= 5000000 ? '5 mln+' : parseInt(val).toLocaleString('uz-UZ') + ' so\'m';
   }
-  if (type==='flw') {
+  if (type === 'flw') {
     maxFlw = parseInt(val);
     document.getElementById('flwVal').textContent = parseInt(val) >= 50000 ? '50K+' : (val/1000).toFixed(0)+'K';
   }
-  if (type==='er') {
+  if (type === 'er') {
     minER = parseFloat(val);
     document.getElementById('erVal').textContent = val+'%+';
   }
   filterAccounts();
 }
 
+function filterAccounts() {
+  var user   = loadUser();
+  var q      = (document.getElementById('searchInp').value||'').toLowerCase();
+  var sort   = document.getElementById('sortSel').value;
+  var chkVer = document.getElementById('chkVer').checked;
+  var chkTop = document.getElementById('chkTop').checked;
+
+  var filtered = allItems.filter(function(a) {
+    if (activeCat !== 'all' && (a.category||'') !== activeCat) return false;
+    if ((a.price||0) > maxPrice) return false;
+    if ((a.followers||0) > maxFlw) return false;
+    if ((a.er||0) < minER) return false;
+    if (chkVer && a.badge !== 'verified') return false;
+    if (chkTop && a.badge !== 'top') return false;
+    if (q && !((a.username||'')+(a.niche||'')+(a.category||'')).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  if (sort === 'price_asc')  filtered.sort(function(a,b){ return (a.price||0)-(b.price||0); });
+  if (sort === 'price_desc') filtered.sort(function(a,b){ return (b.price||0)-(a.price||0); });
+  if (sort === 'flw_desc')   filtered.sort(function(a,b){ return (b.followers||0)-(a.followers||0); });
+  if (sort === 'er_desc')    filtered.sort(function(a,b){ return (b.er||0)-(a.er||0); });
+
+  document.getElementById('resCount').textContent = filtered.length;
+  var listEl  = document.getElementById('cardsList');
+  var emptyEl = document.getElementById('emptyState');
+
+  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+
+  if (user) {
+    listEl.innerHTML = filtered.map(renderRealCard).join('');
+  } else {
+    var visible   = filtered.slice(0, CARDS_VISIBLE);
+    var remaining = Math.max(0, filtered.length - CARDS_VISIBLE);
+    var html = visible.map(renderRealCard).join('');
+    if (remaining > 0) {
+      html += '<div style="position:relative;grid-column:1/-1;">' +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px;filter:blur(5px);opacity:0.5;pointer-events:none;">' +
+          Array(Math.min(remaining,6)).fill('').map(renderPreviewCard).join('') +
+        '</div>' +
+        '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;">' +
+          '<div style="background:white;border-radius:20px;padding:28px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:360px;">' +
+            '<div style="font-size:36px;margin-bottom:10px;">🔒</div>' +
+            '<div style="font-size:18px;font-weight:800;margin-bottom:8px;">'+remaining+' ta account yashirilgan</div>' +
+            '<div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Ko\'rish uchun bepul ro\'yxatdan o\'ting</div>' +
+            '<a href="register.html" class="btn btn-primary" style="display:block;margin-bottom:9px;">🚀 Bepul ro\'yxatdan o\'tish</a>' +
+            '<a href="login.html" style="font-size:13px;color:var(--primary);">Hisobim bor →</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+    listEl.innerHTML = html;
+  }
+}
+
 function renderRealCard(a) {
   var badge = a.badge === 'top'
     ? '<span class="badge badge-top">⭐ TOP</span>'
     : '<span class="badge badge-verified">✅ Verified</span>';
-  var priceStr = a.price ? formatUZS(a.price) : '—';
   return '<div class="account-card" onclick="handleCardClick(\''+a.id+'\')" style="cursor:pointer;">' +
     '<div class="card-top">' +
       '<div class="card-avatar">'+(a.emoji||'📱')+'</div>' +
@@ -279,100 +294,29 @@ function renderRealCard(a) {
       '<div class="card-stat"><div class="val">'+(a.score||0)+'</div><div class="key">Ball</div></div>' +
     '</div>' +
     '<div class="card-foot">' +
-      '<div class="card-price">'+priceStr+'</div>' +
+      '<div class="card-price">'+(a.price ? formatUZS(a.price) : '—')+'</div>' +
       '<button class="card-btn">Ko\'rish →</button>' +
     '</div></div>';
 }
 
 function renderPreviewCard() {
   return '<div class="preview-card">' +
-    '<div class="preview-card-top">' +
-      '<div class="preview-avatar"></div>' +
-      '<div class="preview-lines">' +
-        '<div class="preview-line"></div>' +
-        '<div class="preview-line short"></div>' +
-      '</div>' +
-    '</div>' +
+    '<div class="preview-card-top"><div class="preview-avatar"></div>' +
+    '<div class="preview-lines"><div class="preview-line"></div><div class="preview-line short"></div></div></div>' +
     '<div class="preview-stats">' +
       '<div class="preview-stat"><div class="preview-stat-val"></div><div class="preview-stat-key"></div></div>' +
       '<div class="preview-stat"><div class="preview-stat-val"></div><div class="preview-stat-key"></div></div>' +
       '<div class="preview-stat"><div class="preview-stat-val"></div><div class="preview-stat-key"></div></div>' +
     '</div>' +
-    '<div class="preview-foot"><div class="preview-price"></div><div class="preview-btn"></div></div>' +
-  '</div>';
-}
-
-function filterAccounts() {
-  var user = loadUser();
-  var q      = (document.getElementById('searchInp').value||'').toLowerCase();
-  var sort   = document.getElementById('sortSel').value;
-  var chkVer = document.getElementById('chkVer').checked;
-  var chkTop = document.getElementById('chkTop').checked;
-
-  var filtered = allItems.filter(function(a) {
-    if (activeCat !== 'all' && (a.category||'') !== activeCat) return false;
-    if ((a.price||0) > maxPrice) return false;
-    if ((a.followers||0) > maxFlw) return false;
-    if ((a.er||0) < minER) return false;
-    if (chkVer && a.badge !== 'verified') return false;
-    if (chkTop && a.badge !== 'top') return false;
-    if (q) {
-      if (!((a.username||'')+(a.niche||'')+(a.category||'')).toLowerCase().includes(q)) return false;
-    }
-    return true;
-  });
-
-  if (sort === 'price_asc')  filtered.sort(function(a,b){ return (a.price||0)-(b.price||0); });
-  if (sort === 'price_desc') filtered.sort(function(a,b){ return (b.price||0)-(a.price||0); });
-  if (sort === 'flw_desc')   filtered.sort(function(a,b){ return (b.followers||0)-(a.followers||0); });
-  if (sort === 'er_desc')    filtered.sort(function(a,b){ return (b.er||0)-(a.er||0); });
-
-  document.getElementById('resCount').textContent = filtered.length;
-  var listEl = document.getElementById('cardsList');
-  var emptyEl = document.getElementById('emptyState');
-
-  if (filtered.length === 0) {
-    listEl.innerHTML = ''; emptyEl.style.display = 'block'; return;
-  }
-  emptyEl.style.display = 'none';
-
-  if (user) {
-    // Kirgan foydalanuvchi — hamma ko'radi
-    listEl.innerHTML = filtered.map(renderRealCard).join('');
-  } else {
-    // Kirmaganlarga: CARDS_VISIBLE ta haqiqiy + qolganlar xiralashgan
-    var visible   = filtered.slice(0, CARDS_VISIBLE);
-    var remaining = Math.max(0, filtered.length - CARDS_VISIBLE);
-    var html = visible.map(renderRealCard).join('');
-
-    if (remaining > 0) {
-      // Xiralashgan preview kartalar
-      var previewCount = Math.min(remaining, 6);
-      html += '<div style="position:relative;grid-column:1/-1;">' +
-        '<div class="preview-cards" style="pointer-events:none;filter:blur(5px);opacity:0.6;">' +
-          Array(previewCount).fill('').map(renderPreviewCard).join('') +
-        '</div>' +
-        '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;">' +
-          '<div style="background:white;border-radius:20px;padding:28px 36px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:380px;">' +
-            '<div style="font-size:40px;margin-bottom:10px;">🔒</div>' +
-            '<div style="font-size:18px;font-weight:800;margin-bottom:8px;">'+remaining+' ta account yashirilgan</div>' +
-            '<div style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">Ko\'rish uchun bepul ro\'yxatdan o\'ting</div>' +
-            '<a href="register.html" class="btn btn-primary" style="margin-bottom:10px;display:block;justify-content:center;">🚀 Bepul ro\'yxatdan o\'tish</a>' +
-            '<a href="login.html" style="font-size:13px;color:var(--primary);">Allaqachon hisobim bor →</a>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
-    }
-    listEl.innerHTML = html;
-  }
+    '<div class="preview-foot"><div class="preview-price"></div><div class="preview-btn"></div></div></div>';
 }
 
 function clearFilters() {
   activeCat = 'all';
   document.getElementById('searchInp').value = '';
-  document.getElementById('priceRange').value = 5000000; document.getElementById('priceVal').textContent = '5 mln+';
-  document.getElementById('flwRange').value = 50000;    document.getElementById('flwVal').textContent = '50K+';
-  document.getElementById('erRange').value = 1;          document.getElementById('erVal').textContent = '1%+';
+  document.getElementById('priceRng').value = 5000000; document.getElementById('priceVal').textContent = '5 mln+';
+  document.getElementById('flwRng').value = 50000;    document.getElementById('flwVal').textContent = '50K+';
+  document.getElementById('erRng').value = 1;          document.getElementById('erVal').textContent = '1%+';
   document.getElementById('chkVer').checked = false;
   document.getElementById('chkTop').checked = false;
   document.getElementById('sortSel').value = '';
@@ -385,133 +329,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var cat = getParam('cat');
   if (cat && cat !== 'all') {
     activeCat = cat;
-    document.querySelectorAll('.cat-chip').forEach(function(el) {
+    document.querySelectorAll('.cat-chip').forEach(function(el){
       el.classList.toggle('active', el.textContent.toLowerCase().includes(cat));
     });
   }
+  var q = getParam('q');
+  if (q) document.getElementById('searchInp').value = q;
   loadMarket();
-});
-  document.getElementById('cardsList').innerHTML =
-    '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">⏳ Yuklanmoqda...</div>';
-
-  var items = [];
-  if(firebaseOk){
-    try{
-      var snap = await db.collection('listings').where('status','==','active').orderBy('createdAt','desc').limit(50).get();
-      items = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data(),{isFirebase:true}); });
-    }catch(e){ console.warn(e); }
-  }
-  // Firebase bo'sh bo'lsa demo qo'shamiz
-  if(items.length===0){
-    items = accounts.map(function(a){
-      return Object.assign({},a,{id:'demo_'+a.id,isFirebase:false,status:'active'});
-    });
-  } else {
-    // Demo ni ham qo'shib ko'rsatish (aralash)
-    var demoItems = accounts.map(function(a){
-      return Object.assign({},a,{id:'demo_'+a.id,isFirebase:false,status:'active'});
-    });
-    items = items.concat(demoItems);
-  }
-  allItems = items;
-  filterAccounts();
-}
-
-function setCat(cat, el){
-  activeCat = cat;
-  document.querySelectorAll('.cat-chip').forEach(function(c){c.classList.remove('active');});
-  el.classList.add('active');
-  filterAccounts();
-}
-
-function updRange(type, val){
-  if(type==='price'){ maxPrice=parseInt(val); document.getElementById('priceVal').textContent='$'+val; }
-  if(type==='flw'){ maxFlw=parseInt(val); document.getElementById('flwVal').textContent=parseInt(val)>=50000?'50K+':(val/1000).toFixed(0)+'K'; }
-  if(type==='er'){ minER=parseFloat(val); document.getElementById('erVal').textContent=val+'%+'; }
-  filterAccounts();
-}
-
-function filterAccounts(){
-  var q   = (document.getElementById('searchInp').value||'').toLowerCase();
-  var sort = document.getElementById('sortSel').value;
-  var chkVer = document.getElementById('chkVer').checked;
-  var chkTop = document.getElementById('chkTop').checked;
-
-  var filtered = allItems.filter(function(a){
-    if(activeCat!=='all' && (a.category||'')!==activeCat) return false;
-    if((a.price||0)>maxPrice) return false;
-    if((a.followers||0)>maxFlw) return false;
-    if((a.er||0)<minER) return false;
-    if(chkVer && a.badge!=='verified') return false;
-    if(chkTop && a.badge!=='top') return false;
-    if(q){
-      var searchStr = ((a.username||'')+(a.niche||'')+(a.category||'')).toLowerCase();
-      if(!searchStr.includes(q)) return false;
-    }
-    return true;
-  });
-
-  if(sort==='price_asc')  filtered.sort(function(a,b){return (a.price||0)-(b.price||0);});
-  if(sort==='price_desc') filtered.sort(function(a,b){return (b.price||0)-(a.price||0);});
-  if(sort==='flw_desc')   filtered.sort(function(a,b){return (b.followers||0)-(a.followers||0);});
-  if(sort==='er_desc')    filtered.sort(function(a,b){return (b.er||0)-(a.er||0);});
-
-  document.getElementById('resCount').textContent = filtered.length;
-  var list = document.getElementById('cardsList');
-  var empty = document.getElementById('emptyState');
-
-  if(filtered.length===0){
-    list.innerHTML=''; empty.style.display='block';
-  } else {
-    empty.style.display='none';
-    list.innerHTML = filtered.map(function(a){
-      var badge = a.badge==='top'
-        ? '<span class="badge badge-top">⭐ TOP</span>'
-        : '<span class="badge badge-verified">✅ Verified</span>';
-      return '<a href="account.html?id='+a.id+'" class="account-card">' +
-        '<div class="card-top">' +
-          '<div class="card-avatar">'+(a.emoji||'📱')+'</div>' +
-          '<div><div class="card-username">@'+(a.username||'')+'</div>' +
-          '<div class="card-niche">'+(a.niche||'')+'</div>' +
-          '<div class="card-badge-wrap">'+badge+'</div></div>' +
-        '</div>' +
-        '<div class="card-stats">' +
-          '<div class="card-stat"><div class="val">'+formatNum(a.followers||0)+'</div><div class="key">Followers</div></div>' +
-          '<div class="card-stat"><div class="val" style="color:var(--green)">'+(a.er||0)+'%</div><div class="key">ER</div></div>' +
-          '<div class="card-stat"><div class="val">'+(a.score||0)+'</div><div class="key">Ball</div></div>' +
-        '</div>' +
-        '<div class="card-foot">' +
-          '<div class="card-price">$'+(a.price||0)+'</div>' +
-          '<button class="card-btn" onclick="event.preventDefault();window.location.href=\'account.html?id='+a.id+'\'">Ko\'rish →</button>' +
-        '</div></a>';
-    }).join('');
-  }
-}
-
-function clearFilters(){
-  activeCat='all';
-  document.getElementById('searchInp').value='';
-  document.getElementById('priceRange').value=500; document.getElementById('priceVal').textContent='$500';
-  document.getElementById('flwRange').value=50000; document.getElementById('flwVal').textContent='50K+';
-  document.getElementById('erRange').value=1; document.getElementById('erVal').textContent='1%+';
-  document.getElementById('chkVer').checked=false;
-  document.getElementById('chkTop').checked=false;
-  document.getElementById('sortSel').value='';
-  document.querySelectorAll('.cat-chip').forEach(function(c,i){c.classList.toggle('active',i===0);});
-  maxPrice=500; maxFlw=50000; minER=1;
-  filterAccounts();
-}
-
-document.addEventListener('DOMContentLoaded',function(){
-  // URL dan kategoriya
-  var cat = getParam('cat');
-  if(cat && cat!=='all'){
-    activeCat=cat;
-    document.querySelectorAll('.cat-chip').forEach(function(el){
-      if(el.textContent.toLowerCase().includes(cat)) el.classList.add('active');
-      else el.classList.remove('active');
-    });
-  }
 });
 </script>
 </body>

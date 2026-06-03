@@ -237,7 +237,8 @@ function goStep2(){
   if(er<1){showToast('Engagement rate kiriting (min 1%)!','error');return;}
   if(p<20){showToast('Minimum 20 ta post!','error');return;}
   if(!cat){showToast('Kategoriya tanlang!','error');return;}
-  if(price<50000){showToast('Minimal narx 50,000 so\'m!','error');return;}
+  if(!price||price<50000){showToast('Minimal narx 50,000 so\'m!','error');return;}
+  if(price>100000000){showToast('Narx juda katta! 100 mln dan oshmasin.','error');return;}
   if(!desc||desc.length<30){showToast('Tavsif kamida 30 ta belgi bo\'lsin!','error');return;}
   if(!age){showToast('Account yoshini tanlang!','error');return;}
 
