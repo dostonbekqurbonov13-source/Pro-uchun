@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Account — InstaMarket.uz</title>
+  <title>Account — InstaBazar.uz</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -33,7 +33,7 @@
 <nav class="navbar">
   <a href="../index.html" class="navbar-brand">
     <img src="../images/logo.svg" width="32" height="32" style="border-radius:8px;" alt="logo"/>
-    <span>InstaMarket</span>
+    <span>InstaBazar</span>
   </a>
   <div class="nav-links">
     <a href="../index.html">Bosh sahifa</a>
@@ -192,7 +192,7 @@ async function loadAccount(){
   }
 
   currentAcc = acc;
-  document.title = '@'+(acc.username||'Account')+' — InstaMarket.uz';
+  document.title = '@'+(acc.username||'Account')+' — InstaBazar.uz';
   var bc = document.getElementById('bcName');
   if(bc) bc.textContent = '@'+(acc.username||'');
 
@@ -220,7 +220,7 @@ function renderPage(acc){
     '<span style="color:var(--text-muted);">Jami summa:</span>' +
     '<span style="font-weight:900;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+priceStr+'</span></div>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;padding:8px;background:var(--bg);border-radius:8px;">' +
-    '📞 To\'lov: Payme/Click — <strong>+998 XX XXX XX XX</strong><br/>Izoh: InstaMarket #'+( acc.id||'').toString().slice(-4)+'</div>';
+    '📞 To\'lov: Payme/Click — <strong>+998 XX XXX XX XX</strong><br/>Izoh: InstaBazar #'+( acc.id||'').toString().slice(-4)+'</div>';
 
   document.getElementById('safePriceBox').innerHTML =
     '<div style="font-size:11px;color:var(--text-muted);">Safe Deal narxi</div>' +

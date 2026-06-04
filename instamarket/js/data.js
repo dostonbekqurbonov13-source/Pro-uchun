@@ -1,4 +1,4 @@
-// ===== InstaMarket.uz — Ma'lumotlar bazasi =====
+// ===== InstaBazar.uz — Ma'lumotlar bazasi =====
 
 // 1 USD = 12,700 so'm (taxminiy kurs)
 const USD_RATE = 12700;

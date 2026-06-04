@@ -1,4 +1,4 @@
-// ===== InstaMarket.uz — main.js =====
+// ===== InstaBazar.uz — main.js =====
 
 // ===== TOAST =====
 function showToast(msg, type) {

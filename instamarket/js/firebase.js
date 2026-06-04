@@ -1,4 +1,4 @@
-// ===== InstaMarket.uz — Firebase v2 =====
+// ===== InstaBazar.uz — Firebase v2 =====
 
 const firebaseConfig = {
   apiKey: "AIzaSyCMexR_na10b385sHFLFYzyjHK1AQLJT8s",
@@ -65,7 +65,7 @@ function showAdminLoginScreen() {
       <div style="text-align:center;margin-bottom:28px;">
         <div style="font-size:52px;margin-bottom:10px;">🔐</div>
         <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;">Admin Panel</h2>
-        <p style="font-size:13px;color:#6b7280;">InstaMarket.uz — Faqat adminlar</p>
+        <p style="font-size:13px;color:#6b7280;">InstaBazar.uz — Faqat adminlar</p>
       </div>
       <div id="apErr" style="display:none;background:#fee2e2;color:#b91c1c;border-radius:8px;padding:10px;font-size:13px;margin-bottom:14px;text-align:center;"></div>
       <input type="password" id="apInp" placeholder="Admin parolini kiriting..."
@@ -358,7 +358,7 @@ function demoLogin(role) {
   const u = {
     buyer:  { uid:'demo-buyer',  name:'Demo Xaridor', email:'buyer@demo.uz',  role:'buyer'  },
     seller: { uid:'demo-seller', name:'Demo Sotuvchi',email:'seller@demo.uz', role:'seller' },
-    admin:  { uid:'demo-admin',  name:'Admin',        email:'admin@instamarket.uz', role:'admin' }
+    admin:  { uid:'demo-admin',  name:'Admin',        email:'admin@instabazar.uz', role:'admin' }
   }[role] || { uid:'demo', name:'Demo', email:'demo@demo.uz', role:'buyer' };
   saveUserLocal(u);
   return u;
