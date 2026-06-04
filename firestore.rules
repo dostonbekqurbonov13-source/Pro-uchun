@@ -4,67 +4,49 @@ service cloud.firestore {
 
     // ===== FOYDALANUVCHILAR =====
     match /users/{userId} {
-      // Faqat o'zining profilini o'qiy oladi
-      allow read: if request.auth != null && request.auth.uid == userId;
-      // Faqat o'zi yoza oladi (yangi hisob yaratishda)
+      allow read:   if request.auth != null;
       allow create: if request.auth != null && request.auth.uid == userId;
-      // Faqat o'zi yangilaydi
       allow update: if request.auth != null && request.auth.uid == userId;
-      // O'chirish taqiq
       allow delete: if false;
     }
 
     // ===== E'LONLAR =====
     match /listings/{listingId} {
-      // Barcha tasdiqlangan e'lonlarni hamma ko'ra oladi
+      // Hamma o'qiy oladi
       allow read: if true;
-      // Faqat login qilgan foydalanuvchi e'lon qo'sha oladi
+
+      // Login qilgan har kim e'lon bera oladi
       allow create: if request.auth != null
         && request.resource.data.uid == request.auth.uid
-        && request.resource.data.price >= 10
-        && request.resource.data.followers >= 1000;
-      // Faqat egasi yoki admin yangilaydi
-      allow update: if request.auth != null
-        && (resource.data.uid == request.auth.uid
-            || request.auth.token.email == 'admin@instamarket.uz');
-      // O'chirish taqiq (faqat admin)
-      allow delete: if request.auth != null
-        && request.auth.token.email == 'admin@instamarket.uz';
+        && request.resource.data.followers >= 100;
+
+      // Egasi yoki istalgan login qilgan user yangilay oladi (admin uchun)
+      allow update: if request.auth != null;
+
+      // O'chirish — faqat login qilganlar
+      allow delete: if request.auth != null;
     }
 
     // ===== SAVDOLAR =====
     match /orders/{orderId} {
-      // Faqat xaridor yoki sotuvchi ko'ra oladi
-      allow read: if request.auth != null
-        && (resource.data.buyerUid == request.auth.uid
-            || resource.data.sellerUid == request.auth.uid
-            || request.auth.token.email == 'admin@instamarket.uz');
-      // Faqat login qilgan foydalanuvchi savdo yarata oladi
-      allow create: if request.auth != null
-        && request.resource.data.buyerUid == request.auth.uid;
-      // Holat yangilash — xaridor yoki admin
-      allow update: if request.auth != null
-        && (resource.data.buyerUid == request.auth.uid
-            || request.auth.token.email == 'admin@instamarket.uz');
+      allow read:   if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null;
       allow delete: if false;
     }
 
-    // ===== CHAT XABARLARI =====
+    // ===== CHAT =====
     match /chats/{listingId}/messages/{messageId} {
-      // Faqat login qilganlar o'qiy oladi
-      allow read: if request.auth != null;
-      // Faqat login qilganlar xabar yubora oladi
+      allow read:   if request.auth != null;
       allow create: if request.auth != null
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.text.size() <= 1000;
-      // Xabarni o'zgartirish va o'chirish taqiq
       allow update, delete: if false;
     }
 
-    // ===== ADMIN FAQAT =====
+    // ===== ADMIN =====
     match /admin/{document=**} {
-      allow read, write: if request.auth != null
-        && request.auth.token.email == 'admin@instamarket.uz';
+      allow read, write: if request.auth != null;
     }
   }
 }
