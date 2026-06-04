@@ -140,27 +140,39 @@ async function addListing(data) {
   try {
     const user = loadUser();
     if (!user) return { success: false, error: 'Kirish talab qilinadi' };
+
+    const sellerName = user.name || user.email || 'Sotuvchi';
+
     const ref = await db.collection('listings').add({
       ...data,
-      uid: user.uid, sellerName: user.name,
-      status: 'pending', views: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      uid:        user.uid,
+      sellerName: sellerName,
+      sellerEmail:user.email || '',
+      status:     'pending',
+      views:      0,
+      createdAt:  firebase.firestore.FieldValue.serverTimestamp()
     });
+    console.log('E\'lon saqlandi:', ref.id);
     return { success: true, id: ref.id };
   } catch(e) {
+    console.error('addListing xato:', e);
     return { success: false, error: e.message };
   }
 }
 
+// Bozor uchun — faqat active, orderBy YO'Q (index kerak emas)
 async function getListings(category) {
   try {
-    let q = db.collection('listings').where('status', '==', 'active');
+    var snap = await db.collection('listings').limit(100).get();
+    var all = snap.docs.map(function(d){ return { id: d.id, ...d.data() }; });
+    // JS da filter qilamiz
+    var active = all.filter(function(a){ return a.status === 'active'; });
     if (category && category !== 'all') {
-      q = q.where('category', '==', category);
+      active = active.filter(function(a){ return (a.category||'') === category; });
     }
-    const snap = await q.limit(50).get();
-    return snap.docs.map(function(d){ return { id: d.id, ...d.data() }; });
+    return active;
   } catch(e) {
+    console.error('getListings xato:', e);
     return [];
   }
 }
@@ -272,6 +284,7 @@ async function getAdminStats() {
       db.collection('listings').get(),
       db.collection('orders').get()
     ]);
+    // JS da filter (index kerak emas)
     const pending  = lSnap.docs.filter(function(d){ return d.data().status==='pending'; }).length;
     const active   = lSnap.docs.filter(function(d){ return d.data().status==='active'; }).length;
     const revenue  = oSnap.docs.reduce(function(s,d){ return s+(d.data().commission||0); }, 0);

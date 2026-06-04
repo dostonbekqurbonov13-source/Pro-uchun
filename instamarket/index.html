@@ -328,11 +328,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   var items = [];
   if (firebaseOk) {
     try {
-      var snap = await db.collection('listings')
-        .where('status','==','active')
-        .orderBy('createdAt','desc')
-        .limit(8).get();
-      items = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+      var snap = await db.collection('listings').limit(50).get();
+      var all = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+      items = all.filter(function(a){ return a.status === 'active'; });
     } catch(e) { console.warn(e); }
   }
 

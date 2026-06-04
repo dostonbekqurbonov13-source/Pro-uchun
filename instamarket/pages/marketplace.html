@@ -182,9 +182,10 @@ async function loadMarket() {
   var items = [];
   if (firebaseOk) {
     try {
-      var snap = await db.collection('listings').where('status','==','active')
-        .orderBy('createdAt','desc').limit(50).get();
-      items = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+      // Barcha e'lonlarni olib, JS da filter qilamiz (index kerak emas)
+      var snap = await db.collection('listings').limit(100).get();
+      var all = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+      items = all.filter(function(a){ return a.status === 'active'; });
     } catch(e) { console.warn('Firebase:', e.message); }
   }
 
