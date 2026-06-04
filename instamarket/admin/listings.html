@@ -170,9 +170,8 @@ async function loadListings() {
 
   if (firebaseOk) {
     try {
-      // createdAt bo'yicha tartiblash (oxirgi qo'shilganlar tepada)
+      // Barcha e'lonlarni olish (orderBy yo'q — index kerak emas)
       var snap = await db.collection('listings')
-        .orderBy('createdAt', 'desc')
         .limit(100)
         .get();
 
