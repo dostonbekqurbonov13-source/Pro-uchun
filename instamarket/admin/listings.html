@@ -237,6 +237,7 @@ function renderAll(list) {
           '<button class="btn btn-xs btn-green" onclick="approveOne(\'' + l.id + '\')">✅ Tasdiq</button>' +
           '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="rejectOne(\'' + l.id + '\')">❌ Rad</button>' +
           '<button class="btn btn-xs btn-ghost" onclick="openReview(\'' + l.id + '\')">👁 Ko\'rish</button>' +
+          '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="deleteOne(\'' + l.id + '\')" title="O\'chirish">🗑</button>' +
         '</div></td></tr>';
     }).join('');
   }
@@ -259,6 +260,7 @@ function renderAll(list) {
           ? '<button class="btn btn-xs btn-green" onclick="approveOne(\'' + l.id + '\')">✅ Tasdiq</button>' +
             '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="rejectOne(\'' + l.id + '\')">❌ Rad</button>'
           : '') +
+        '<button class="btn btn-xs" style="background:#fee2e2;color:#b91c1c;border:none;" onclick="deleteOne(\'' + l.id + '\')" title="O\'chirish">🗑</button>' +
       '</div></td></tr>';
   }).join('');
 }
@@ -310,6 +312,22 @@ function openReview(id) {
           (sHtml[l.status]||'') + ' — Qaror allaqachon qabul qilingan' +
         '</div>');
   openModal('reviewModal');
+}
+
+async function deleteOne(id) {
+  if (!confirm('Haqiqatan ham o\'chirmoqchimisiz?')) return;
+  var isDemoId = id.startsWith('demo');
+  if (firebaseOk && !isDemoId) {
+    try {
+      await db.collection('listings').doc(id).delete();
+    } catch(e) {
+      showToast('Xato: ' + e.message, 'error');
+      return;
+    }
+  }
+  allListings = allListings.filter(function(l){ return l.id !== id; });
+  renderAll(allListings);
+  showToast('🗑 E\'lon o\'chirildi!', 'error');
 }
 
 async function approveOne(id) {
