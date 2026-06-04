@@ -141,7 +141,7 @@ function renderStep2(){
     {label:'Engagement Rate',ok:f.er>=3,val:f.er+'%'},
     {label:'Post soni',ok:f.posts>=20,val:f.posts+' ta'},
     {label:'Username format',ok:/^[a-zA-Z0-9._]+$/.test(f.username),val:'@'+f.username},
-    {label:'Narx diapazon',ok:f.price>=10&&f.price<=2000,val:'$'+f.price},
+    {label:'Narx diapazon',ok:f.price>=50000&&f.price<=100000000,val:formatUZS(f.price)},
     {label:'Tavsif uzunligi',ok:f.desc.length>=30,val:f.desc.length+' belgi'},
   ];
   var allOk = checks.every(function(c){return c.ok;});
