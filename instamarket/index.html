@@ -336,18 +336,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch(e) { console.warn(e); }
   }
 
-  // Firebase bo'sh bo'lsa demo accountlar
+  // Demo FAQAT Firebase bo'sh bo'lsa
   if (!items.length) {
     items = accounts.map(function(a){
       return Object.assign({}, a, {id:'demo_'+a.id});
     });
-  } else {
-    // Firebase da kam bo'lsa demo bilan to'ldirish
-    var demoExtra = accounts.map(function(a){
-      return Object.assign({}, a, {id:'demo_'+a.id});
-    });
-    items = items.concat(demoExtra).slice(0,8);
   }
+  // Firebase da account bor bo'lsa — faqat haqiqiylar
 
   container.innerHTML = items.map(function(acc) {
     return renderCard(acc, 'pages/');

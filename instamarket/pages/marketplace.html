@@ -188,11 +188,15 @@ async function loadMarket() {
     } catch(e) { console.warn('Firebase:', e.message); }
   }
 
-  // Demo accountlar (Firebase bo'sh bo'lsa yoki qo'shimcha)
-  var demoItems = accounts.map(function(a){
-    return Object.assign({}, a, {id:'demo_'+a.id, status:'active'});
-  });
-  allItems = items.length ? items.concat(demoItems) : demoItems;
+  // Demo accountlar FAQAT Firebase bo'sh bo'lsa ko'rinadi
+  if (items.length === 0) {
+    var demoItems = accounts.map(function(a){
+      return Object.assign({}, a, {id:'demo_'+a.id, status:'active'});
+    });
+    allItems = demoItems;
+  } else {
+    allItems = items; // Faqat haqiqiy accountlar
+  }
   filterAccounts();
 }
 
