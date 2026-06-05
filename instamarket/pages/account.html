@@ -306,7 +306,8 @@ function renderPage(acc){
           return '<li><span class="chk">✅</span>'+t+'</li>';
         }).join('') +
       '</ul>' +
-      '<button class="btn btn-primary" style="width:100%;font-size:14px;padding:12px;margin-bottom:9px;" onclick="openModal(\'buyModal\')">🛒 Sotib olish — '+priceStr+'</button>' +
+      '<a href="https://t.me/instabazar_bot?start=acc_'+acc.id+'" target="_blank" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;text-decoration:none;gap:8px;">✈️ Telegram Bot orqali sotib ol — '+priceStr+'</a>' +
+      '<button onclick="openModal(\'buyModal\')" style="width:100%;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:8px;padding:10px;font-weight:600;font-size:13px;cursor:pointer;margin-bottom:9px;">🌐 Sayt orqali sotib olish</button>' +
       '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — '+safePriceStr+'</button>' +
       '<div class="seller-mini" style="margin-top:14px;">' +
         '<div class="seller-ava">'+(acc.sellerEmoji||'👤')+'</div>' +
