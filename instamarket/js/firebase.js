@@ -353,6 +353,103 @@ async function loadSettings() {
   } catch(e) { return null; }
 }
 
+// ===== GOOGLE LOGIN =====
+async function loginWithGoogle() {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    const cred = await auth.signInWithPopup(provider);
+    const user  = cred.user;
+
+    // Firestore da bor-yo'qligini tekshir
+    const doc = await db.collection('users').doc(user.uid).get();
+    let role = 'buyer';
+    if (doc.exists) {
+      role = doc.data().role || 'buyer';
+    } else {
+      // Yangi user — saqla
+      await db.collection('users').doc(user.uid).set({
+        uid: user.uid,
+        name: user.displayName || user.email.split('@')[0],
+        email: user.email,
+        role: 'buyer',
+        status: 'active',
+        sales: 0, rating: 5.0,
+        avatar: user.photoURL || '',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    const u = {
+      uid: user.uid,
+      name: user.displayName || user.email.split('@')[0],
+      email: user.email,
+      avatar: user.photoURL || '',
+      role
+    };
+    saveUserLocal(u);
+    return { success: true, user: u };
+  } catch(e) {
+    if (e.code === 'auth/popup-closed-by-user') {
+      return { success: false, error: null }; // foydalanuvchi yopdi
+    }
+    return { success: false, error: firebaseErr(e.code) };
+  }
+}
+
+// ===== SAVAT (Wishlist) =====
+async function addToWishlist(listingId) {
+  try {
+    const user = loadUser();
+    if (!user) return { success: false, error: 'Kirish talab qilinadi' };
+    await db.collection('users').doc(user.uid)
+      .collection('wishlist').doc(listingId).set({
+        listingId,
+        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    return { success: true };
+  } catch(e) { return { success: false, error: e.message }; }
+}
+
+async function removeFromWishlist(listingId) {
+  try {
+    const user = loadUser();
+    if (!user) return { success: false };
+    await db.collection('users').doc(user.uid)
+      .collection('wishlist').doc(listingId).delete();
+    return { success: true };
+  } catch(e) { return { success: false }; }
+}
+
+async function getWishlist() {
+  try {
+    const user = loadUser();
+    if (!user) return [];
+    const snap = await db.collection('users').doc(user.uid)
+      .collection('wishlist').get();
+    return snap.docs.map(d => d.data().listingId);
+  } catch(e) { return []; }
+}
+
+async function getUserListings() {
+  try {
+    const user = loadUser();
+    if (!user) return [];
+    const snap = await db.collection('listings')
+      .where('uid', '==', user.uid).limit(50).get();
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { return []; }
+}
+
+async function getUserOrders() {
+  try {
+    const user = loadUser();
+    if (!user) return [];
+    const snap = await db.collection('orders')
+      .where('buyerUid', '==', user.uid).limit(50).get();
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { return []; }
+}
+
 // ===== DEMO LOGIN =====
 function demoLogin(role) {
   const u = {

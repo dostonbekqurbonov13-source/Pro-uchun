@@ -42,26 +42,45 @@ function toggleMenu() {
 // ===== NAVBAR USER =====
 function updateNavbar() {
   var user = loadUser();
-  var nav = document.querySelector('.nav-links');
-  if (!nav || !user) return;
+  var nav  = document.querySelector('.nav-links');
+  if (!nav) return;
+
+  if (!user) return; // Kirmaganlarga o'zgartirish kerak emas
+
+  // Login/Register yashirish
   var login = nav.querySelector('a[href*="login"]');
-  var reg = nav.querySelector('a[href*="register"]');
-  if (login) login.remove();
-  if (reg) reg.remove();
+  var reg   = nav.querySelector('a[href*="register"]');
+  if (login) login.style.display = 'none';
+  if (reg)   reg.style.display   = 'none';
+
+  // Takroran qo'shmaslik
+  if (nav.querySelector('.nav-profile')) return;
+
+  var base = (window.location.pathname.includes('/pages/') ||
+              window.location.pathname.includes('/admin/')) ? '../' : '';
 
   // Profil tugmasi
-  var base = window.location.pathname.includes('/pages/') || window.location.pathname.includes('/admin/') ? '../' : '';
+  var initials   = (user.name || user.email || 'U')[0].toUpperCase();
+  var avatarHtml = user.avatar
+    ? '<img src="' + user.avatar + '" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--border);" />'
+    : '<span style="background:var(--gradient);color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">' + initials + '</span>';
+
   var pLink = document.createElement('a');
-  pLink.href = user.role === 'seller' ? base + 'pages/sell.html' : '#';
-  pLink.style.cssText = 'display:inline-flex;align-items:center;gap:7px;';
-  pLink.innerHTML = '<span style="background:linear-gradient(135deg,#C13584,#E1306C);color:white;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">' + user.name[0].toUpperCase() + '</span><span style="font-size:14px;font-weight:600;">' + user.name.split(' ')[0] + '</span>';
+  pLink.href      = base + 'pages/profile.html';
+  pLink.className = 'nav-profile';
+  pLink.style.cssText = 'display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:14px;';
+  pLink.innerHTML = avatarHtml + '<span>' + (user.name ? user.name.split(' ')[0] : 'Profil') + '</span>';
   nav.appendChild(pLink);
 
+  // Chiqish
   var lOut = document.createElement('a');
-  lOut.href = '#';
+  lOut.href      = '#';
   lOut.textContent = 'Chiqish';
-  lOut.style.color = '#6b7280';
-  lOut.onclick = function(e) { e.preventDefault(); logoutUser(); window.location.reload(); };
+  lOut.style.cssText = 'color:var(--text-muted);font-size:13px;';
+  lOut.onclick   = function(e) {
+    e.preventDefault();
+    if (confirm('Chiqmoqchimisiz?')) { logoutUser(); window.location.reload(); }
+  };
   nav.appendChild(lOut);
 }
 

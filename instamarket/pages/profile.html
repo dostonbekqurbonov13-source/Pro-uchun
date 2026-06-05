@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil — InstaBazar.uz</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .profile-page { padding-top: 64px; min-height: 100vh; background: var(--bg); }
+    .profile-header { background: linear-gradient(135deg, var(--dark), var(--dark2)); padding: 40px 24px 80px; }
+    .profile-card { max-width: 900px; margin: -48px auto 0; padding: 0 24px 40px; }
+    .profile-box { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border: 1.5px solid var(--border); margin-bottom: 24px; }
+    .profile-avatar-wrap { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+    .profile-avatar { width: 88px; height: 88px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: white; border: 4px solid white; box-shadow: var(--shadow); flex-shrink: 0; overflow: hidden; }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .profile-name { font-size: 22px; font-weight: 800; }
+    .profile-email { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .profile-role { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-top: 8px; }
+    .role-buyer { background: #dbeafe; color: #1e40af; }
+    .role-seller { background: #fef3c7; color: #92400e; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+    .stat-pill { background: var(--bg); border-radius: 10px; padding: 14px; text-align: center; border: 1.5px solid var(--border-light); }
+    .stat-pill .n { font-size: 22px; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-pill .l { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 24px; }
+    .tab-btn { padding: 10px 20px; font-size: 14px; font-weight: 600; color: var(--text-muted); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; font-family: inherit; }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .listing-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-light); }
+    .listing-row:last-child { border: none; }
+    .listing-ava { width: 44px; height: 44px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .listing-info { flex: 1; min-width: 0; }
+    .listing-name { font-weight: 700; font-size: 14px; }
+    .listing-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .listing-price { font-weight: 800; font-size: 15px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; flex-shrink: 0; }
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--text-muted); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .wishlist-card { display: flex; align-items: center; gap: 14px; padding: 14px; background: var(--bg); border-radius: 10px; margin-bottom: 10px; border: 1.5px solid var(--border-light); }
+    .edit-form { display: none; }
+    .edit-form.show { display: block; }
+    .order-row { padding: 14px; background: var(--bg); border-radius: 10px; margin-bottom: 10px; border: 1.5px solid var(--border-light); }
+    .order-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="../index.html" class="navbar-brand">
+    <img src="../images/logo.svg" width="32" height="32" style="border-radius:8px;" alt="logo"/>
+    <span>InstaBazar</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html">Bosh sahifa</a>
+    <a href="marketplace.html">Bozor</a>
+    <a href="sell.html" style="color:var(--primary);font-weight:600;">💰 Sotish</a>
+    <a href="profile.html" style="color:var(--primary);font-weight:700;">👤 Profil</a>
+    <a href="login.html" class="btn-nav-login" id="navLogin">Kirish</a>
+    <a href="register.html" class="btn-nav-register" id="navRegister">Ro'yxatdan o'tish</a>
+  </div>
+  <button class="nav-mobile-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<div class="profile-page">
+  <div class="profile-header"></div>
+
+  <div class="profile-card">
+
+    <!-- AUTH CHECK -->
+    <div id="notLoggedIn" style="display:none;">
+      <div class="profile-box" style="text-align:center; padding:60px 32px;">
+        <div style="font-size:64px; margin-bottom:16px;">🔐</div>
+        <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;">Kirish talab qilinadi</h2>
+        <p style="color:var(--text-muted); margin-bottom:28px;">Profilingizni ko'rish uchun kiring</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="login.html" class="btn btn-primary">Kirish</a>
+          <a href="register.html" class="btn btn-ghost">Ro'yxatdan o'tish</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE CONTENT -->
+    <div id="profileContent" style="display:none;">
+
+      <!-- Profile Card -->
+      <div class="profile-box">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profileAvatar">D</div>
+          <div>
+            <div class="profile-name" id="profileName">Yuklanmoqda...</div>
+            <div class="profile-email" id="profileEmail"></div>
+            <div class="profile-role" id="profileRole"></div>
+          </div>
+          <div style="margin-left:auto;">
+            <button class="btn btn-ghost btn-sm" onclick="toggleEdit()">✏️ Tahrirlash</button>
+            <button class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:none;margin-left:8px;" onclick="handleLogout()">🚪 Chiqish</button>
+          </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="edit-form" id="editForm">
+          <div style="border-top:1px solid var(--border);padding-top:20px;margin-top:8px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">Ism</label>
+                <input type="text" class="form-input" id="editName" placeholder="Ismingiz"/>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">Telefon</label>
+                <input type="tel" class="form-input" id="editPhone" placeholder="+998 90 123 45 67"/>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px;justify-content:flex-end;">
+              <button class="btn btn-ghost btn-sm" onclick="toggleEdit()">Bekor qilish</button>
+              <button class="btn btn-primary btn-sm" onclick="saveProfile()">💾 Saqlash</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row" id="profileStats">
+          <div class="stat-pill"><div class="n" id="statListings">0</div><div class="l">E'lonlar</div></div>
+          <div class="stat-pill"><div class="n" id="statSales">0</div><div class="l">Savdolar</div></div>
+          <div class="stat-pill"><div class="n" id="statRating">5.0</div><div class="l">⭐ Reyting</div></div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="profile-box" style="padding-bottom:8px;">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('myListings', this)">📱 Mening e'lonlarim</button>
+          <button class="tab-btn" onclick="switchTab('wishlist', this)">❤️ Saqlangan</button>
+          <button class="tab-btn" onclick="switchTab('orders', this)">🛒 Buyurtmalar</button>
+        </div>
+
+        <!-- Tab 1: Mening e'lonlarim -->
+        <div class="tab-content active" id="tab_myListings">
+          <div id="myListingsContent">
+            <div class="empty-state"><div class="icon">⏳</div><p>Yuklanmoqda...</p></div>
+          </div>
+          <div style="margin-top:16px;">
+            <a href="sell.html" class="btn btn-primary btn-sm">+ Yangi e'lon berish</a>
+          </div>
+        </div>
+
+        <!-- Tab 2: Saqlangan (Wishlist) -->
+        <div class="tab-content" id="tab_wishlist">
+          <div id="wishlistContent">
+            <div class="empty-state"><div class="icon">⏳</div><p>Yuklanmoqda...</p></div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Buyurtmalar -->
+        <div class="tab-content" id="tab_orders">
+          <div id="ordersContent">
+            <div class="empty-state"><div class="icon">⏳</div><p>Yuklanmoqda...</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/main.js"></script>
+<script>
+var firebaseOk = initFirebase();
+
+// ===== AUTH CHECK =====
+document.addEventListener('DOMContentLoaded', function() {
+  var user = loadUser();
+  if (!user) {
+    document.getElementById('notLoggedIn').style.display = 'block';
+    return;
+  }
+  document.getElementById('notLoggedIn').style.display = 'none';
+  document.getElementById('profileContent').style.display = 'block';
+
+  // Navbar yangilash
+  var navLogin    = document.getElementById('navLogin');
+  var navRegister = document.getElementById('navRegister');
+  if (navLogin)    navLogin.style.display = 'none';
+  if (navRegister) navRegister.style.display = 'none';
+
+  renderProfile(user);
+  loadMyListings(user);
+  loadWishlist(user);
+  loadOrders(user);
+});
+
+// ===== RENDER PROFILE =====
+function renderProfile(user) {
+  // Avatar
+  var avaEl = document.getElementById('profileAvatar');
+  if (user.avatar) {
+    avaEl.innerHTML = '<img src="' + user.avatar + '" alt="avatar"/>';
+  } else {
+    avaEl.textContent = (user.name || 'U')[0].toUpperCase();
+  }
+
+  document.getElementById('profileName').textContent  = user.name  || 'Foydalanuvchi';
+  document.getElementById('profileEmail').textContent = user.email || '';
+  document.getElementById('editName').value           = user.name  || '';
+
+  var roleEl   = document.getElementById('profileRole');
+  var isSeller = user.role === 'seller';
+  roleEl.className  = 'profile-role ' + (isSeller ? 'role-seller' : 'role-buyer');
+  roleEl.textContent = isSeller ? '💰 Sotuvchi' : '🛒 Xaridor';
+
+  // Stats (Firebase dan)
+  if (firebaseOk && user.uid && !user.uid.startsWith('demo')) {
+    db.collection('users').doc(user.uid).get().then(function(doc) {
+      if (doc.exists) {
+        var d = doc.data();
+        document.getElementById('statSales').textContent  = d.sales  || 0;
+        document.getElementById('statRating').textContent = d.rating || '5.0';
+        if (d.phone) document.getElementById('editPhone').value = d.phone;
+      }
+    }).catch(function(){});
+  }
+}
+
+// ===== MY LISTINGS =====
+async function loadMyListings(user) {
+  var el = document.getElementById('myListingsContent');
+  if (!firebaseOk || user.uid.startsWith('demo')) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Hali e\'lon berilmagan</p><br/><a href="sell.html" class="btn btn-primary btn-sm">E\'lon berish</a></div>';
+    return;
+  }
+  try {
+    var listings = await getUserListings();
+    document.getElementById('statListings').textContent = listings.length;
+
+    if (!listings.length) {
+      el.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Hali e\'lon berilmagan</p></div>';
+      return;
+    }
+
+    var sHtml = {
+      pending:  '<span class="status-badge s-pending">⏳ Kutayotgan</span>',
+      active:   '<span class="status-badge s-active">✅ Aktiv</span>',
+      rejected: '<span class="status-badge s-rejected">❌ Rad etilgan</span>',
+      sold:     '<span class="status-badge s-sold">💰 Sotildi</span>',
+    };
+
+    el.innerHTML = listings.map(function(l) {
+      return '<div class="listing-row">' +
+        '<div class="listing-ava">' + (l.emoji||'📱') + '</div>' +
+        '<div class="listing-info">' +
+          '<div class="listing-name">@' + (l.username||'—') + '</div>' +
+          '<div class="listing-meta">' + formatNum(l.followers||0) + ' followers · ' + (l.er||0) + '% ER</div>' +
+        '</div>' +
+        (sHtml[l.status] || sHtml.pending) +
+        '<div class="listing-price" style="margin-left:10px;">' + formatUZS(l.price||0) + '</div>' +
+        '<a href="account.html?id=' + l.id + '" class="btn btn-xs btn-ghost" style="margin-left:8px;">Ko\'rish</a>' +
+      '</div>';
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Xatolik yuz berdi</p></div>';
+  }
+}
+
+// ===== WISHLIST =====
+async function loadWishlist(user) {
+  var el = document.getElementById('wishlistContent');
+  if (!firebaseOk || user.uid.startsWith('demo')) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">💔</div><p>Saqlangan accountlar yo\'q</p><br/><a href="marketplace.html" class="btn btn-primary btn-sm">Bozorga o\'tish</a></div>';
+    return;
+  }
+  try {
+    var ids = await getWishlist();
+    if (!ids.length) {
+      el.innerHTML = '<div class="empty-state"><div class="icon">💔</div><p>Saqlangan accountlar yo\'q</p><br/><a href="marketplace.html" class="btn btn-primary btn-sm">Bozorga o\'tish</a></div>';
+      return;
+    }
+
+    // Firebase dan listinglarni olish
+    var listings = [];
+    for (var i = 0; i < ids.length; i++) {
+      try {
+        var doc = await db.collection('listings').doc(ids[i]).get();
+        if (doc.exists) listings.push({ id: doc.id, ...doc.data() });
+      } catch(e) {}
+    }
+
+    if (!listings.length) {
+      el.innerHTML = '<div class="empty-state"><div class="icon">💔</div><p>Saqlangan accountlar topilmadi</p></div>';
+      return;
+    }
+
+    el.innerHTML = listings.map(function(l) {
+      return '<div class="wishlist-card">' +
+        '<div class="listing-ava">' + (l.emoji||'📱') + '</div>' +
+        '<div class="listing-info">' +
+          '<div class="listing-name">@' + (l.username||'—') + '</div>' +
+          '<div class="listing-meta">' + formatNum(l.followers||0) + ' · ' + (l.er||0) + '% ER · ' + formatUZS(l.price||0) + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;">' +
+          '<a href="account.html?id=' + l.id + '" class="btn btn-xs btn-primary">Ko\'rish</a>' +
+          '<button class="btn btn-xs btn-ghost" onclick="removeWish(\'' + l.id + '\', this)">🗑</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Xatolik</p></div>';
+  }
+}
+
+async function removeWish(id, btn) {
+  await removeFromWishlist(id);
+  btn.closest('.wishlist-card').remove();
+  showToast('Saqlangandan o\'chirildi', 'error');
+}
+
+// ===== ORDERS =====
+async function loadOrders(user) {
+  var el = document.getElementById('ordersContent');
+  if (!firebaseOk || user.uid.startsWith('demo')) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><p>Hali buyurtma yo\'q</p><br/><a href="marketplace.html" class="btn btn-primary btn-sm">Bozorga o\'tish</a></div>';
+    return;
+  }
+  try {
+    var orders = await getUserOrders();
+    if (!orders.length) {
+      el.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><p>Hali buyurtma yo\'q</p><br/><a href="marketplace.html" class="btn btn-primary btn-sm">Bozorga o\'tish</a></div>';
+      return;
+    }
+
+    var sMap = {
+      escrow:   { cls: 's-pending', txt: '🔒 Escrow' },
+      checking: { cls: 's-pending', txt: '🔍 Tekshirish' },
+      done:     { cls: 's-active',  txt: '✅ Yakunlandi' },
+      dispute:  { cls: 's-rejected',txt: '⚠️ Nizo' },
+      refunded: { cls: 's-sold',    txt: '↩️ Qaytarildi' },
+    };
+
+    el.innerHTML = orders.map(function(o) {
+      var s   = sMap[o.status] || sMap.escrow;
+      var date = o.createdAt && o.createdAt.seconds
+        ? new Date(o.createdAt.seconds * 1000).toLocaleDateString('uz-UZ')
+        : '—';
+      return '<div class="order-row">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">' +
+          '<div>' +
+            '<div style="font-weight:700;font-size:14px;">📱 @' + (o.listingTitle||'—') + '</div>' +
+            '<div style="font-size:12px;color:var(--text-muted);">Buyurtma · ' + date + '</div>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:10px;">' +
+            '<span class="status-badge ' + s.cls + '">' + s.txt + '</span>' +
+            '<span style="font-weight:800;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">' + formatUZS(o.amount||0) + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Xatolik</p></div>';
+  }
+}
+
+// ===== TABS =====
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab_' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== EDIT PROFILE =====
+function toggleEdit() {
+  var f = document.getElementById('editForm');
+  f.classList.toggle('show');
+}
+
+async function saveProfile() {
+  var user = loadUser();
+  if (!user) return;
+  var name  = document.getElementById('editName').value.trim();
+  var phone = document.getElementById('editPhone').value.trim();
+  if (!name) { showToast('Ism kiriting!', 'error'); return; }
+
+  if (firebaseOk && !user.uid.startsWith('demo')) {
+    try {
+      await db.collection('users').doc(user.uid).update({ name, phone });
+      await auth.currentUser?.updateProfile({ displayName: name });
+    } catch(e) {}
+  }
+  user.name = name;
+  saveUserLocal(user);
+  document.getElementById('profileName').textContent = name;
+  toggleEdit();
+  showToast('✅ Profil yangilandi!');
+}
+
+// ===== LOGOUT =====
+function handleLogout() {
+  if (!confirm('Chiqmoqchimisiz?')) return;
+  logoutUser();
+  window.location.href = '../index.html';
+}
+</script>
+</body>
+</html>
