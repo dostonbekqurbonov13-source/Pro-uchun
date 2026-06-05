@@ -192,7 +192,6 @@ async function handleGoogleReg() {
   if (firebaseOk) {
     var res = await loginWithGoogle();
     if (res.success) {
-      // Rolni yangilash
       try {
         await db.collection('users').doc(res.user.uid).update({ role: role });
         var u = loadUser();
@@ -210,7 +209,7 @@ async function handleGoogleReg() {
   }
 }
 
-
+async function handleRegister(e) {
   e.preventDefault();
 
   var first = document.getElementById('firstName').value.trim();
