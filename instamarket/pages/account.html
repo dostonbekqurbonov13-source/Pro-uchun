@@ -201,7 +201,7 @@ async function loadWishStatus(id) {
   } catch(e) {}
 }
 
-
+async function loadAccount() {
   // Avval auth tekshirish
   var user = loadUser();
   if (!user) {
@@ -359,6 +359,9 @@ function renderPage(acc){
         '<div style="font-size:12px;color:var(--text-muted);">⭐'+(acc.sellerRating||5.0)+' · '+(acc.sellerSales||0)+' savdo</div></div>' +
       '</div>' +
       '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">🔒 Payme · Click · USDT<br/>⚡ O\'rtacha javob: 1-2 soat</div>' +
+      (acc.sellerTelegram
+        ? '<a href="https://t.me/' + acc.sellerTelegram + '" target="_blank" style="display:block;width:100%;margin-top:10px;background:#2AABEE;color:white;border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;">✈️ Sotuvchi bilan Telegram orqali bog\'lanish</a>'
+        : '') +
       '<button onclick="toggleWish(\''+acc.id+'\')" id="wishBtn" style="width:100%;margin-top:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;">❤️ Saqlash</button>' +
     '</div>' +
     '<div style="background:white;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-top:18px;">' +

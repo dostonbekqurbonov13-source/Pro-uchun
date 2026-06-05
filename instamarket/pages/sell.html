@@ -114,6 +114,10 @@ function renderStep1(){
     '<div class="form-group" style="margin-top:14px;"><label>Tavsif * (kamida 30 belgi)</label>' +
     '<textarea class="form-input" id="f_desc" rows="4" placeholder="Account qanday kontentlar haqida? Auditoriya kim? Nima uchun qimmatli?..." style="resize:vertical;" oninput="document.getElementById(\'descLen\').textContent=this.value.length+\'/300\'" required></textarea>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;" id="descLen">0/300</div></div>' +
+    '<div class="form-group"><label>✈️ Telegram username * (xaridor bilan bog\'lanish uchun)</label>' +
+    '<div style="position:relative;"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;">@</span>' +
+    '<input type="text" class="form-input" id="f_telegram" placeholder="telegram_username" style="padding-left:30px;" required/></div>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">⚠️ Xaridor topilganda shu Telegram orqali bog\'laniladi</div></div>' +
     '<div class="form-group"><label>Narx (so\'mda) *</label><input type="number" class="form-input" id="f_price" placeholder="masalan: 500000" min="50000" step="10000" oninput="calcPrice()" required/>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Minimal: 50,000 so\'m · Komissiya 10% hisoblanadi</div>' +
     '<div class="price-calc" id="priceCalc" style="display:none;">' +
@@ -238,6 +242,7 @@ function goStep2(){
   var price=parseFloat(document.getElementById('f_price')&&document.getElementById('f_price').value||0);
   var desc=document.getElementById('f_desc')&&document.getElementById('f_desc').value.trim();
   var age=document.getElementById('f_age')&&document.getElementById('f_age').value;
+  var telegram=(document.getElementById('f_telegram')&&document.getElementById('f_telegram').value.trim().replace('@',''))||'';
 
   if(!u){showToast('Username kiriting!','error');return;}
   if(fl<1000){showToast('Minimum 1,000 followers bo\'lishi kerak!','error');return;}
@@ -248,9 +253,11 @@ function goStep2(){
   if(price>100000000){showToast('Narx juda katta! 100 mln dan oshmasin.','error');return;}
   if(!desc||desc.length<30){showToast('Tavsif kamida 30 ta belgi bo\'lsin!','error');return;}
   if(!age){showToast('Account yoshini tanlang!','error');return;}
+  if(!telegram){showToast('Telegram username kiriting!','error');return;}
+  if(!/^[a-zA-Z0-9_]{3,}$/.test(telegram)){showToast('Telegram username noto\'g\'ri format!','error');return;}
 
   formData={username:u,followers:fl,er:er,posts:p,category:cat,price:price,desc:desc,age:age,
-    audience:document.getElementById('f_audience').value};
+    audience:document.getElementById('f_audience').value, telegram:telegram};
   currentStep=2;render();window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -271,20 +278,21 @@ async function submitListing(){
 
   if (firebaseOk) {
     var res = await addListing({
-      username:    formData.username,
-      followers:   formData.followers,
-      er:          formData.er,
-      posts:       formData.posts,
-      category:    formData.category,
-      price:       formData.price,
-      description: formData.desc,
-      age:         formData.age,
-      audience:    formData.audience,
-      emoji:       getCatEmoji(formData.category),
-      niche:       getCatName(formData.category),
-      badge:       'pending',
-      score:       0,
-      realFollowers: 0,
+      username:       formData.username,
+      followers:      formData.followers,
+      er:             formData.er,
+      posts:          formData.posts,
+      category:       formData.category,
+      price:          formData.price,
+      description:    formData.desc,
+      age:            formData.age,
+      audience:       formData.audience,
+      sellerTelegram: formData.telegram || '',
+      emoji:          getCatEmoji(formData.category),
+      niche:          getCatName(formData.category),
+      badge:          'pending',
+      score:          0,
+      realFollowers:  0,
     });
     if (!res.success) {
       showToast('❌ Xato: ' + (res.error||'Noma\'lum xato'), 'error');
