@@ -3,11 +3,12 @@ const TelegramBot = require('node-telegram-bot-api');
 const admin = require('firebase-admin');
 
 // ===== CONFIG =====
-const BOT_TOKEN  = process.env.BOT_TOKEN;
-const ADMIN_ID   = 8901786831;
-const CLICK_CARD = '4916 9903 5922 9462';
-const CARD_NAME  = 'Qurbonov Dostonbek';
-const SITE_URL   = 'https://instabazar.uz/instamarket';
+const BOT_TOKEN      = process.env.BOT_TOKEN;
+const ADMIN_ID       = 8901786831;
+const ADMIN_USERNAME = '@instabazar_admin';
+const CLICK_CARD     = '4916 9903 5922 9462';
+const CARD_NAME      = 'Qurbonov Dostonbek';
+const SITE_URL       = 'https://instabazar.uz/instamarket';
 
 if (!BOT_TOKEN) {
   console.error('❌ BOT_TOKEN env variable kerak!');
@@ -252,7 +253,7 @@ bot.on('callback_query', async (query) => {
   if (data.startsWith('reject_')) {
     const buyerChatId = parseInt(data.split('_')[1]);
     await bot.sendMessage(buyerChatId,
-      `❌ *To'lov tasdiqlanmadi.*\n\nIltimos, qayta to'lab chek yuboring yoki @instabazar_admin bilan bog'laning.`,
+      `❌ *To'lov tasdiqlanmadi.*\n\nIltimos, qayta to'lab chek yuboring yoki ${ADMIN_USERNAME} bilan bog'laning.`,
       { parse_mode: 'Markdown' }
     );
     await bot.answerCallbackQuery(query.id, { text: '❌ Rad etildi' });
@@ -300,7 +301,7 @@ bot.on('photo', async (msg) => {
     `✅ *Chek qabul qilindi!*\n\n` +
     `Buyurtma: *#${orderId}*\n\n` +
     `Admin 15-30 daqiqa ichida tekshiradi va tasdiqlaydi.\n\n` +
-    `Savol bo'lsa: @instabazar_admin`,
+    `Savol bo'lsa: ${ADMIN_USERNAME}`,
     {
       parse_mode: 'Markdown',
       reply_markup: mainMenu()
@@ -315,7 +316,7 @@ bot.onText(/💰 Account sotish/, async (msg) => {
     `Account sotish uchun saytimizga kiring:\n\n` +
     `👉 [instabazar.uz](${SITE_URL}/pages/sell.html)\n\n` +
     `Yoki admin bilan to'g'ridan bog'laning:\n` +
-    `👤 @instabazar_admin`,
+    `👤 ${ADMIN_USERNAME}`,
     { parse_mode: 'Markdown', reply_markup: mainMenu() }
   );
 });
@@ -325,7 +326,7 @@ bot.onText(/❓ Yordam/, async (msg) => {
   await bot.sendMessage(msg.chat.id,
     `❓ *Yordam*\n\n` +
     `🌐 Sayt: [instabazar.uz](${SITE_URL})\n` +
-    `👤 Admin: @instabazar_admin\n\n` +
+    `👤 Admin: ${ADMIN_USERNAME}\n\n` +
     `*Ko'p so'raladigan savollar:*\n\n` +
     `❔ Account xavfsizmi?\n` +
     `✅ Ha! Barcha accountlar moderatsiyadan o'tadi\n\n` +
@@ -341,7 +342,7 @@ bot.onText(/❓ Yordam/, async (msg) => {
 bot.onText(/📞 Operator bilan bog'lanish/, async (msg) => {
   await bot.sendMessage(msg.chat.id,
     `📞 *Operator bilan bog\'lanish*\n\n` +
-    `👤 Admin Telegram: @instabazar_admin\n` +
+    `👤 Admin Telegram: ${ADMIN_USERNAME}\n` +
     `⏰ Ish vaqti: 9:00 — 22:00\n\n` +
     `Savollaringizni yozing!`,
     { parse_mode: 'Markdown', reply_markup: mainMenu() }
