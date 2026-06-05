@@ -72,6 +72,14 @@ bot.onText(/\/start/, async (msg) => {
 bot.onText(/📱 Accountlarni ko'rish/, async (msg) => {
   const chatId = msg.chat.id;
 
+  if (!db) {
+    await bot.sendMessage(chatId,
+      '⚠️ Hozirda ma\'lumotlar bazasi ulanmagan.\n\nSaytda ko\'ring: instabazar.uz',
+      { reply_markup: mainMenu() }
+    );
+    return;
+  }
+
   await bot.sendMessage(chatId, '⏳ Accountlar yuklanmoqda...');
 
   try {

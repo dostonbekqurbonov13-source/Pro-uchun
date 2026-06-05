@@ -217,7 +217,7 @@ async function createOrder(listingId, paymentMethod) {
       buyerUid: user.uid, buyerName: user.name,
       sellerUid: listing.uid || '', sellerName: listing.sellerName || '',
       amount: listing.price,
-      commission: Math.round((listing.price || 0) * 0.12),
+      commission: Math.round((listing.price || 0) * 0.10),
       paymentMethod, status: 'escrow',
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       checkDeadline: new Date(Date.now() + 72 * 3600 * 1000)

@@ -94,6 +94,35 @@ function togglePass() {
   btn.textContent = inp.type === 'password' ? '👁' : '🙈';
 }
 
+async function handleLogin(e) {
+  e.preventDefault();
+  var email    = document.getElementById('email').value.trim();
+  var password = document.getElementById('password').value;
+  var btn      = document.getElementById('loginBtn');
+  btn.textContent = '⏳ Kirish...';
+  btn.disabled = true;
+  if (firebaseOk) {
+    var res = await loginUser(email, password);
+    if (res.success) {
+      showToast('✅ Muvaffaqiyatli kirdingiz!');
+      setTimeout(function() {
+        var u = loadUser();
+        if (u && u.role === 'admin') window.location.href = '../admin/index.html';
+        else window.location.href = '../index.html';
+      }, 700);
+    } else {
+      showErr(res.error);
+      btn.textContent = 'Kirish →';
+      btn.disabled = false;
+    }
+  } else {
+    var u = { uid:'local-'+Date.now(), name:email.split('@')[0], email, role:'buyer' };
+    saveUserLocal(u);
+    showToast('✅ Demo rejimda kirdingiz');
+    setTimeout(function(){ window.location.href = '../index.html'; }, 700);
+  }
+}
+
 async function handleGoogleLogin() {
   var btn = event.target.closest('button');
   btn.textContent = '⏳ Yuklanmoqda...';
@@ -123,39 +152,6 @@ async function handleGoogleLogin() {
   }
 }
 
-
-  e.preventDefault();
-  var email    = document.getElementById('email').value.trim();
-  var password = document.getElementById('password').value;
-  var btn      = document.getElementById('loginBtn');
-
-  btn.textContent = '⏳ Kirish...';
-  btn.disabled = true;
-
-  if (firebaseOk) {
-    var res = await loginUser(email, password);
-    if (res.success) {
-      showToast('✅ Muvaffaqiyatli kirdingiz!');
-      setTimeout(function() {
-        var u = loadUser();
-        if (u && u.role === 'admin') window.location.href = '../admin/index.html';
-        else if (u && u.role === 'seller') window.location.href = 'sell.html';
-        else window.location.href = '../index.html';
-      }, 700);
-    } else {
-      showErr(res.error);
-      btn.textContent = 'Kirish →';
-      btn.disabled = false;
-    }
-  } else {
-    // Firebase ullanmagan — demo rejim
-    var u = { uid: 'local-' + Date.now(), name: email.split('@')[0], email: email, role: 'buyer' };
-    saveUserLocal(u);
-    showToast('✅ Demo rejimda kirdingiz');
-    setTimeout(function(){ window.location.href = '../index.html'; }, 700);
-  }
-}
-
 async function handleReset(e) {
   e.preventDefault();
   var email = document.getElementById('email').value.trim();
@@ -165,7 +161,7 @@ async function handleReset(e) {
     if (res.success) showToast('📧 Parol tiklash xabari emailga yuborildi!');
     else showErr(res.error);
   } else {
-    showToast('Firebase ulanmagan — bu funksiya ishlamaydi', 'error');
+    showToast('Firebase ulanmagan', 'error');
   }
 }
 </script>

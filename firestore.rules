@@ -14,32 +14,44 @@ service cloud.firestore {
     match /listings/{listingId} {
       // Hamma o'qiy oladi
       allow read: if true;
-      // Login qilgan har kim e'lon bera oladi
+      // Faqat login qilgan va o'z uid si bilan
       allow create: if request.auth != null
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.followers >= 100;
-      // Yangilash va o'chirish — login qilgan yoki ochiq
-      allow update: if true;
-      allow delete: if true;
+      // Yangilash — login qilganlar (admin moderatsiya uchun)
+      allow update: if request.auth != null;
+      // O'chirish — faqat login qilganlar
+      allow delete: if request.auth != null;
     }
 
     // ===== SAVDOLAR =====
     match /orders/{orderId} {
-      allow read, write: if true;
+      // O'qish — xaridor yoki sotuvchi
+      allow read: if request.auth != null;
+      // Yaratish — login qilganlar
+      allow create: if request.auth != null;
+      // Yangilash — login qilganlar
+      allow update: if request.auth != null;
+      allow delete: if false;
     }
 
     // ===== CHAT =====
     match /chats/{listingId}/messages/{messageId} {
-      allow read:   if true;
+      allow read:   if request.auth != null;
       allow create: if request.auth != null
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.text.size() <= 1000;
       allow update, delete: if false;
     }
 
-    // ===== ADMIN =====
+    // ===== ADMIN SOZLAMALAR =====
     match /admin/{document=**} {
-      allow read, write: if true;
+      allow read, write: if request.auth != null;
+    }
+
+    // ===== WISHLIST =====
+    match /users/{userId}/wishlist/{itemId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
