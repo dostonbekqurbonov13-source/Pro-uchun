@@ -1,26 +1,43 @@
 // ===== InstaBazar.uz — Telegram Bot =====
-// Node.js + node-telegram-bot-api
-
 const TelegramBot = require('node-telegram-bot-api');
-const { initializeApp } = require('firebase-admin/app');
-const { getFirestore } = require('firebase-admin/firestore');
-const credential = require('firebase-admin/app');
+const admin = require('firebase-admin');
 
 // ===== CONFIG =====
-const BOT_TOKEN   = process.env.BOT_TOKEN;
-const ADMIN_ID    = 8901786831;
-const CLICK_CARD  = '4916 9903 5922 9462';
-const CARD_NAME   = 'Qurbonov Dostonbek';
-const SITE_URL    = 'https://instabazar.uz/instamarket';
+const BOT_TOKEN  = process.env.BOT_TOKEN;
+const ADMIN_ID   = 8901786831;
+const CLICK_CARD = '4916 9903 5922 9462';
+const CARD_NAME  = 'Qurbonov Dostonbek';
+const SITE_URL   = 'https://instabazar.uz/instamarket';
+
+if (!BOT_TOKEN) {
+  console.error('❌ BOT_TOKEN env variable kerak!');
+  process.exit(1);
+}
 
 // ===== FIREBASE =====
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccount.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-const db = admin.firestore();
+let db = null;
+try {
+  let cred;
+  if (process.env.GOOGLE_CREDENTIALS) {
+    const sa = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+    cred = admin.credential.cert(sa);
+  } else {
+    try {
+      const sa = require('./serviceAccount.json');
+      cred = admin.credential.cert(sa);
+    } catch(e) {
+      console.warn('⚠️ serviceAccount.json topilmadi');
+      cred = null;
+    }
+  }
+  if (cred) {
+    admin.initializeApp({ credential: cred });
+    db = admin.firestore();
+    console.log('✅ Firebase ulandi!');
+  }
+} catch(e) {
+  console.warn('⚠️ Firebase ulanmadi:', e.message);
+}
 
 // ===== BOT =====
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
