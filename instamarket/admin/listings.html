@@ -190,14 +190,7 @@ async function loadListings() {
     document.getElementById('pendingHint').textContent = 'Firebase ulanmagan';
   }
 
-  // Firebase bo'sh bo'lsa DEMO ko'rsat, aks holda faqat haqiqiylar
-  if (listings.length === 0) {
-    listings = [
-      {id:'demo1', username:'yangi_account', emoji:'📱', niche:'Umumiy', category:'other',
-       followers:1200, er:5.1, price:80000, sellerName:'Test Sotuvchi', status:'pending', createdAt:null,
-       description:'Bu demo e\'lon. Haqiqiy e\'lon yo\'q paytda ko\'rinadi.'},
-    ];
-  }
+  // Faqat REAL e'lonlar ko'rsatiladi (soxta demo e'lon olib tashlandi)
 
   allListings = listings;
   renderAll(listings);

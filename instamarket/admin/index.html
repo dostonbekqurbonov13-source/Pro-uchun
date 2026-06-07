@@ -163,7 +163,7 @@ var firebaseOk = initFirebase();
 function checkAdminPass(){
   var v = document.getElementById('passInp').value;
   if(v === ADMIN_PASS){
-    sessionStorage.setItem('im_admin', ADMIN_PASS);
+    sessionStorage.setItem('im_admin_v2', ADMIN_PASS);
     document.getElementById('passModal').classList.remove('open');
     loadDashboard();
   } else {
@@ -213,7 +213,7 @@ async function loadDashboard(){
   document.getElementById('dateStr').textContent = new Date().toLocaleDateString('uz-UZ',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   updateChart('week');
 
-  var stats = demoStats;
+  var stats = {totalUsers:0, activeListings:0, pendingListings:0, totalOrders:0, totalRevenue:0};
   if(firebaseOk){
     try { stats = await getAdminStats(); } catch(e){}
   }
@@ -236,7 +236,7 @@ async function loadDashboard(){
   if(stats.adminInfo) document.getElementById('adminInfo').querySelector('span').textContent = stats.adminInfo.name || 'Admin';
 
   // So'nggi savdolar
-  var orders = demoOrders;
+  var orders = [];
   if(firebaseOk){
     try {
       var snap = await db.collection('orders').orderBy('createdAt','desc').limit(5).get();
@@ -253,8 +253,10 @@ async function loadDashboard(){
       '<td style="font-size:12px;color:var(--text-muted);">'+o.time+'</td></tr>';
   }).join('');
 
+  if (!orders.length) document.getElementById('recentOrders').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Hozircha savdolar yo\'q</td></tr>';
+
   // So'nggi e'lonlar (Firebase dan)
-  var listings = demoListings;
+  var listings = [];
   if(firebaseOk){
     try {
       var lsnap = await db.collection('listings').orderBy('createdAt','desc').limit(5).get();
@@ -275,6 +277,7 @@ async function loadDashboard(){
           : '<a href="listings.html" class="btn btn-xs btn-ghost">Ko\'rish</a>') +
       '</div></td></tr>';
   }).join('');
+  if (!listings.length) document.getElementById('recentListings').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Hozircha e\'lonlar yo\'q</td></tr>';
 }
 
 async function approveListing(id, btn){
@@ -291,7 +294,7 @@ async function rejectListing(id, btn){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-  if(sessionStorage.getItem('im_admin') !== ADMIN_PASS){
+  if(sessionStorage.getItem('im_admin_v2') !== ADMIN_PASS){
     document.getElementById('passModal').classList.add('open');
     setTimeout(function(){ var inp=document.getElementById('passInp'); if(inp)inp.focus(); },300);
   } else {
