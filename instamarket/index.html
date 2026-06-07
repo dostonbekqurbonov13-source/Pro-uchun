@@ -11,6 +11,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     .page-top { padding-top: 68px; }
+
+    /* ===== HOMEPAGE PREMIUM DARK MODE ===== */
+    body { background:#0B0B0F; color:#E8E8EC; }
+
+    /* Navbar — dark glass */
+    .navbar { background:rgba(11,11,15,0.85); border-bottom:1px solid rgba(255,255,255,0.08); box-shadow:none; }
+    .nav-links a { color:rgba(255,255,255,0.72); }
+    .nav-links a:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .btn-nav-login { border-color:rgba(255,255,255,0.22)!important; color:#fff!important; }
+    .btn-nav-login:hover { background:rgba(255,255,255,0.08)!important; color:#fff!important; }
+    .nav-mobile-btn { color:#fff; }
+
+    /* Hero trust bar */
+    .hero-trust { display:flex; flex-wrap:wrap; gap:10px; padding-top:28px; border-top:1px solid rgba(255,255,255,0.08); }
+    .ht-item { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:9px 14px; border-radius:12px; }
+    .ht-ic { font-size:15px; }
+
+    /* Floating card extras */
+    .fc-main { position:relative; }
+    .fc-demo-tag { position:absolute; top:12px; right:12px; font-size:10px; font-weight:700; letter-spacing:.3px; color:rgba(255,255,255,0.6); background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); padding:3px 9px; border-radius:20px; }
+    .fc-score { margin-top:14px; }
+    .fc-score-bar { height:5px; background:rgba(255,255,255,0.12); border-radius:50px; overflow:hidden; }
+    .fc-score-fill { height:100%; background:linear-gradient(90deg,#00E676,#00C851); border-radius:50px; }
+
+    /* Trust bar (replaces stats-bar) */
+    .stats-bar { background:#101015; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); }
+    .stat-item .ic { font-size:30px; margin-bottom:8px; }
+    .stat-item .label { color:rgba(255,255,255,0.7); font-size:14px; font-weight:600; }
+
+    /* Sections — premium dark */
+    .section { background:#0B0B0F !important; }
+    .section-title { color:#fff; }
+    .section-subtitle { text-align:center; font-size:16px; color:rgba(255,255,255,0.5); margin-bottom:40px; max-width:560px; margin-left:auto; margin-right:auto; }
+
+    /* Category chips — dark */
+    .cat-chip { background:#17171C; border-color:rgba(255,255,255,0.08); color:rgba(255,255,255,0.72); }
+    .cat-chip:hover { background:#1f1f26; color:#fff; border-color:rgba(255,255,255,0.2); }
+    .cat-chip.active { background:var(--gradient); color:#fff; border-color:transparent; }
+
+    /* Account cards — dark premium */
+    .account-card { background:#17171C; border-color:rgba(255,255,255,0.08); box-shadow:0 10px 34px rgba(0,0,0,0.45); }
+    .account-card:hover { border-color:rgba(168,85,247,0.45); box-shadow:0 14px 44px rgba(168,85,247,0.18); }
+    .card-username { color:#fff; }
+    .card-niche { color:rgba(255,255,255,0.45); }
+    .card-stats, .card-stat, .card-foot { border-color:rgba(255,255,255,0.07) !important; }
+    .card-stat .val { color:#fff; }
+    .card-stat .key { color:rgba(255,255,255,0.4); }
+
+    /* How it works — dark */
+    .step h3 { color:#fff; }
+    .step p { color:rgba(255,255,255,0.55); }
+
+    /* ===== MOBILE FIRST (390px / 430px) ===== */
+    @media (max-width:480px) {
+      .hero { padding:90px 20px 50px; }
+      .hero h1 { font-size:30px; }
+      .hero p { font-size:15px; }
+      .hero-btns { flex-direction:column; }
+      .hero-btns .btn { width:100%; }
+      .ht-item { font-size:12px; padding:8px 11px; }
+      .stats-inner { grid-template-columns:1fr 1fr; gap:20px; }
+      .section { padding:48px 20px !important; }
+      .section-title { font-size:24px; }
+    }
   </style>
 </head>
 <body>
@@ -40,8 +104,8 @@
       <div class="hero-badge">
         <span>🇺🇿</span> instabazar.uz — O'zbekistondagi №1
       </div>
-      <h1>Instagram <span>accountingni</span> sotib ol yoki sot</h1>
-      <p>Verified accountlar, nakrutka tekshiruvi va Escrow himoya bilan O'zbekistondagi eng ishonchli Instagram bozori.</p>
+      <h1>Instagram account sotib olishdan <span>qo'rqasizmi?</span></h1>
+      <p>Verified accountlar, nakrutka tekshiruvi va Escrow himoyasi bilan — O'zbekistondagi eng xavfsiz Instagram account bozori.</p>
 
       <div style="margin-bottom:36px;">
         <div class="search-bar" style="background:rgba(255,255,255,0.1); border:2px solid rgba(255,255,255,0.2); max-width:520px;">
@@ -52,36 +116,25 @@
 
       <div class="hero-btns">
         <a href="pages/marketplace.html" class="btn btn-primary btn-lg">
-          🛒 Accountlarni ko'rish
+          🔍 Verified accountlarni ko'rish
         </a>
         <a href="pages/register.html?role=seller" class="btn btn-secondary btn-lg" style="color:white; border-color:rgba(255,255,255,0.4);">
           💰 Account sotish
         </a>
       </div>
 
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="num" id="stat-accounts">50+</div>
-          <div class="label">Verified Account</div>
-        </div>
-        <div class="hero-stat">
-          <div class="num" id="stat-users">120+</div>
-          <div class="label">Foydalanuvchi</div>
-        </div>
-        <div class="hero-stat">
-          <div class="num">10%</div>
-          <div class="label">Komissiya (past!)</div>
-        </div>
-        <div class="hero-stat">
-          <div class="num">72 soat</div>
-          <div class="label">Escrow himoya</div>
-        </div>
+      <div class="hero-trust">
+        <div class="ht-item"><span class="ht-ic">✅</span> Verified accountlar</div>
+        <div class="ht-item"><span class="ht-ic">🔒</span> Escrow pul kafolati</div>
+        <div class="ht-item"><span class="ht-ic">🤖</span> Nakrutka tekshiruvi</div>
+        <div class="ht-item"><span class="ht-ic">💸</span> Atigi 10% komissiya</div>
       </div>
     </div>
 
     <div class="hero-visual">
       <!-- Floating Card 1 — Asosiy account card -->
       <div class="floating-card fc-main">
+        <div class="fc-demo-tag">Demo listing</div>
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px;">
           <div class="fc-avatar">✈️</div>
           <div>
@@ -91,20 +144,25 @@
         </div>
         <div class="fc-row"><span class="fc-key">Followers</span><span class="fc-val">1,240</span></div>
         <div class="fc-row"><span class="fc-key">Engagement</span><span class="fc-val" style="color:#00C851;">6.4%</span></div>
+        <div class="fc-row"><span class="fc-key">Auditoriya</span><span class="fc-val">🇺🇿 92% O'zbekiston</span></div>
         <div class="fc-row"><span class="fc-key">Account yoshi</span><span class="fc-val">1 yil 2 oy</span></div>
-        <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+        <div class="fc-score">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;"><span style="color:rgba(255,255,255,0.55);">Trust Score</span><span style="font-weight:800;color:#00C851;">92/100</span></div>
+          <div class="fc-score-bar"><div class="fc-score-fill" style="width:92%;"></div></div>
+        </div>
+        <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
           <span style="font-size:18px; font-weight:900; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">570,000 so'm</span>
           <span style="background:rgba(0,200,81,0.2); color:#00C851; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">✅ Verified</span>
         </div>
       </div>
 
-      <!-- Floating Card 2 — Stats -->
+      <!-- Floating Card 2 — Escrow himoya -->
       <div class="floating-card fc-stat">
-        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:8px;">📊 Bugungi savdolar</div>
-        <div style="font-size:28px; font-weight:900; color:#00C851;">+12</div>
-        <div style="font-size:12px; color:rgba(255,255,255,0.5);">Kecha: 8 ta</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:8px;">🔒 Escrow himoya</div>
+        <div style="font-size:22px; font-weight:900; color:#00C851;">Pul kafolatda</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5);">Tasdiqlamaguningizcha</div>
         <div style="margin-top:10px; height:4px; background:rgba(255,255,255,0.1); border-radius:2px;">
-          <div style="height:100%; width:75%; background:var(--gradient); border-radius:2px;"></div>
+          <div style="height:100%; width:100%; background:var(--gradient); border-radius:2px;"></div>
         </div>
       </div>
 
@@ -114,32 +172,32 @@
           <div class="verified-dot"></div>
           <span style="font-weight:700;">Nakrutka yo'q</span>
         </div>
-        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px;">94% real followers</div>
-        <div style="font-size:20px; font-weight:900; color:white; margin-top:8px;">96 ball</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px;">Real follower tekshiruvi</div>
+        <div style="font-size:13px; font-weight:700; color:white; margin-top:8px;">Trust Score 92/100</div>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- ====== STATS BAR ====== -->
+<!-- ====== TRUST BAR ====== -->
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <div class="num" id="statListings">50+</div>
-      <div class="label">Aktiv e'lon</div>
+      <div class="ic">🔒</div>
+      <div class="label">Escrow pul kafolati</div>
     </div>
     <div class="stat-item">
-      <div class="num">10%</div>
-      <div class="label">Eng past komissiya</div>
+      <div class="ic">✅</div>
+      <div class="label">Verified accountlar</div>
     </div>
     <div class="stat-item">
-      <div class="num">72 soat</div>
-      <div class="label">Escrow himoya muddati</div>
+      <div class="ic">🤖</div>
+      <div class="label">Real follower tekshiruvi</div>
     </div>
     <div class="stat-item">
-      <div class="num">0</div>
-      <div class="label">Hal etilmagan nizo</div>
+      <div class="ic">⚡</div>
+      <div class="label">Tez va xavfsiz savdo</div>
     </div>
   </div>
 </div>
@@ -184,27 +242,22 @@
 <section class="section" id="qanday-ishlaydi" style="background:white;">
   <div class="container">
     <h2 class="section-title">Qanday ishlaydi?</h2>
-    <p class="section-subtitle">Atigi 4 qadamda xavfsiz xarid qiling</p>
+    <p class="section-subtitle">Atigi 3 qadamda xavfsiz xarid qiling</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <h3>Accountni tanlang</h3>
-        <p>Kategoriya, narx va followers soni bo'yicha filter qiling. Har bir accountning to'liq statistikasini ko'ring.</p>
+        <h3>Account tanlang</h3>
+        <p>Verified accountlar orasidan kerakligini tanlang — to'liq statistika va Trust Score bilan.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>Sotuvchi bilan gaplashing</h3>
-        <p>Sayt ichidagi chat orqali sotuvchiga savol bering. Tashqi aloqa talab qilinmaydi — hamma narsa saytda!</p>
+        <h3>Escrow orqali to'lov qiling</h3>
+        <p>Pulingiz Escrow tizimida ushlanadi. Sotuvchiga faqat siz tasdiqlaganingizdan keyin o'tadi.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Xavfsiz to'lov qiling</h3>
-        <p>Payme yoki Click orqali to'lang. Pulingiz Escrow tizimida ushlanadi — sotuvchiga faqat siz tasdiqlasangiz o'tadi.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
         <h3>Accountni qabul qiling</h3>
-        <p>Login va parolni oling, 72 soat mobaynida tekshiring. Muammo yo'qmi — savdo yakunlandi!</p>
+        <p>Login ma'lumotlarini oling, tekshiring. Hammasi joyida — savdo yakunlandi! 🎉</p>
       </div>
     </div>
   </div>

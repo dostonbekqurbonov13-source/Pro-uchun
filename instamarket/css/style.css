@@ -6,8 +6,8 @@
   --primary-dark: #833AB4;
   --secondary: #E1306C;
   --accent: #F77737;
-  --gradient: linear-gradient(135deg, #833AB4, #C13584, #E1306C, #F77737);
-  --gradient-short: linear-gradient(135deg, #C13584, #E1306C);
+  --gradient: linear-gradient(135deg, #A855F7, #E1306C, #FF4D8D);
+  --gradient-short: linear-gradient(135deg, #A855F7, #FF4D8D);
   --green: #22c55e;
   --green-light: #dcfce7;
   --green-dark: #16a34a;

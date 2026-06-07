@@ -1,37 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56">
   <defs>
-    <linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#F58529"/>
-      <stop offset="50%" stop-color="#E1306C"/>
-      <stop offset="100%" stop-color="#833AB4"/>
-    </linearGradient>
-    <linearGradient id="cart" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00E676"/>
-      <stop offset="100%" stop-color="#00B248"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="55%" stop-color="#E1306C"/>
+      <stop offset="100%" stop-color="#FF4D8D"/>
     </linearGradient>
   </defs>
 
-  <!-- Instagram belgisi (to'liq, original shakl) -->
-  <rect x="2" y="2" width="52" height="52" rx="14" fill="url(#ig)"/>
-  <!-- Ichki border -->
-  <rect x="6" y="6" width="44" height="44" rx="11" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <!-- Instagram-style app icon background -->
+  <rect x="2" y="2" width="52" height="52" rx="15" fill="url(#bg)"/>
+  <!-- Glossy top highlight -->
+  <path d="M2 18 Q2 2 18 2 H38 Q54 2 54 18 V21 Q28 11 2 21 Z" fill="rgba(255,255,255,0.14)"/>
 
-  <!-- Aravacha tanasi (yashil, Instagram ichida) -->
-  <rect x="10" y="18" width="28" height="18" rx="4" fill="url(#cart)"/>
-  <!-- Aravacha ichki ajratgich -->
-  <line x1="10" y1="25" x2="38" y2="25" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
-  <!-- Dollar belgisi -->
-  <text x="24" y="34" font-size="9" fill="white" font-weight="900" text-anchor="middle" font-family="Arial, sans-serif">$</text>
+  <!-- Shopping bag (premium white) -->
+  <path d="M15 21 H41 L39.2 43.5 Q38.9 46.5 35.8 46.5 H20.2 Q17.1 46.5 16.8 43.5 Z" fill="#ffffff"/>
+  <!-- Bag handle -->
+  <path d="M21.5 23 V18.5 Q21.5 12.5 28 12.5 Q34.5 12.5 34.5 18.5 V23" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
 
-  <!-- Aravacha dastasi (chap yuqori) -->
-  <path d="M10 22 L8 18 L5 18" stroke="url(#cart)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- G'ildiraklar -->
-  <circle cx="16" cy="42" r="4" fill="url(#cart)"/>
-  <circle cx="16" cy="42" r="2" fill="white" opacity="0.9"/>
-  <circle cx="30" cy="42" r="4" fill="url(#cart)"/>
-  <circle cx="30" cy="42" r="2" fill="white" opacity="0.9"/>
-
-  <!-- Yuqori o'ng nuqta (Instagram flash) -->
-  <circle cx="43" cy="13" r="3" fill="white" opacity="0.9"/>
+  <!-- Trust check (safe Instagram trading) -->
+  <path d="M22.5 33 l3.8 3.8 L34 28.5" fill="none" stroke="url(#bg)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
