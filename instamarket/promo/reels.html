@@ -204,6 +204,7 @@
 
 <div id="ctrl">
   <button onclick="play()">▶ Boshlash / Qayta</button>
+  <button id="voiceBtn" onclick="toggleVoice()">🔊 Ovoz: YONIQ</button>
   <div class="hint">📹 Ekrandan yozib oling (Reels 9:16)</div>
 </div>
 
@@ -220,14 +221,63 @@
   }
   window.addEventListener('resize', fit); fit();
 
+  // ===== OVOZLI MATN (text-to-speech) =====
+  // Har bir sahna boshlanishida o'qiladigan gaplar (vaqt: soniya)
+  var NARRATION = [
+    { t:0.4,  text:"InstaBazar — O'zbekistondagi birinchi Instagram account bozori." },
+    { t:3.6,  text:"Instagram accounting bormi? Uni soting va pul ishlang!" },
+    { t:7.4,  text:"Endi xavfsiz savdo qiling. Escrow himoyasi pulingizni saqlaydi." },
+    { t:11.8, text:"Tekshirilgan accountlar, nakrutka tekshiruvi, va atigi o'n foiz komissiya." },
+    { t:16.8, text:"Tayyor, faol accountlar siz uchun." },
+    { t:21.0, text:"Instabazar nuqta uz. Hoziroq kiring!" }
+  ];
+  var voiceOn = true;
+  var timers = [];
+
+  function pickVoice(){
+    var vs = speechSynthesis.getVoices();
+    // o'zbekcha -> ruscha -> birinchi mavjud ovoz
+    return vs.find(function(v){return /uz/i.test(v.lang)}) ||
+           vs.find(function(v){return /ru/i.test(v.lang)}) ||
+           vs.find(function(v){return /tr/i.test(v.lang)}) || vs[0];
+  }
+  function speak(text){
+    if(!('speechSynthesis' in window)) return;
+    var u = new SpeechSynthesisUtterance(text);
+    var v = pickVoice();
+    if(v){ u.voice = v; u.lang = v.lang; } else { u.lang='uz-UZ'; }
+    u.rate = 1.0; u.pitch = 1.05; u.volume = 1;
+    speechSynthesis.speak(u);
+  }
+  function clearVoice(){
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+    timers.forEach(clearTimeout); timers = [];
+  }
+  function scheduleVoice(){
+    if(!voiceOn) return;
+    NARRATION.forEach(function(n){
+      timers.push(setTimeout(function(){ speak(n.text); }, n.t*1000));
+    });
+  }
+
   // Animatsiyani boshlash (qayta o'ynatish uchun klassni reset qilamiz)
   var stage = document.getElementById('stage');
   function play(){
+    clearVoice();
     stage.classList.remove('playing');
     void stage.offsetWidth; // reflow
     stage.classList.add('playing');
+    scheduleVoice();
   }
-  // sahifa ochilganda avtomatik boshlanadi
+  function toggleVoice(){
+    voiceOn = !voiceOn;
+    document.getElementById('voiceBtn').textContent = voiceOn ? '🔊 Ovoz: YONIQ' : '🔇 Ovoz: O\'CHIQ';
+    if(!voiceOn) clearVoice();
+  }
+  // ba'zi brauzerlar ovozlarni kech yuklaydi
+  if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged = function(){}; }
+
+  // sahifa ochilganda avtomatik boshlanadi (foydalanuvchi bosgach ovoz ishlaydi)
   window.addEventListener('load', function(){ setTimeout(play, 400); });
 </script>
 </body>
