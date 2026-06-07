@@ -8,11 +8,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     .gate-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(10,10,10,0.6);backdrop-filter:blur(3px);}
-    .gate-box{background:white;border-radius:24px;padding:36px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:popIn 0.3s ease;}
+    .gate-box{background:#17171C;border:1.5px solid rgba(255,255,255,0.08);border-radius:24px;padding:36px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.55);animation:popIn 0.3s ease;}
     @keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
     .gate-benefit{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-light);padding:5px 0;text-align:left;}
     .preview-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px;}
-    .preview-card{background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);}
+    .preview-card{background:#17171C;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);}
     .preview-card-top{padding:18px 18px 0;display:flex;align-items:center;gap:12px;}
     .preview-avatar{width:52px;height:52px;border-radius:50%;background:var(--gradient);flex-shrink:0;}
     .preview-lines{flex:1;}
@@ -268,9 +268,9 @@ function filterAccounts() {
           Array(Math.min(remaining,6)).fill('').map(renderPreviewCard).join('') +
         '</div>' +
         '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;">' +
-          '<div style="background:white;border-radius:20px;padding:28px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-width:360px;">' +
+          '<div style="background:#17171C;border:1.5px solid rgba(255,255,255,0.08);border-radius:20px;padding:28px 32px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.45);max-width:360px;">' +
             '<div style="font-size:36px;margin-bottom:10px;">🔒</div>' +
-            '<div style="font-size:18px;font-weight:800;margin-bottom:8px;">'+remaining+' ta account yashirilgan</div>' +
+            '<div style="font-size:18px;font-weight:800;margin-bottom:8px;color:#E8E8EC;">'+remaining+' ta account yashirilgan</div>' +
             '<div style="font-size:13px;color:var(--text-muted);margin-bottom:18px;">Ko\'rish uchun bepul ro\'yxatdan o\'ting</div>' +
             '<a href="register.html" class="btn btn-primary" style="display:block;margin-bottom:9px;">🚀 Bepul ro\'yxatdan o\'tish</a>' +
             '<a href="login.html" style="font-size:13px;color:var(--primary);">Hisobim bor →</a>' +

@@ -13,11 +13,11 @@
     .sell-hero p{color:rgba(255,255,255,0.5);font-size:15px;}
     .sell-wrap{max-width:760px;margin:0 auto;padding:32px 24px;}
     .steps-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px;flex-wrap:wrap;}
-    .sbar-item{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--text-muted);background:white;border:1.5px solid var(--border);}
+    .sbar-item{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--text-muted);background:#17171C;border:1.5px solid rgba(255,255,255,0.08);}
     .sbar-item.active{background:var(--gradient);color:white;border-color:transparent;}
     .sbar-item.done{background:var(--green-light);color:var(--green-dark);border-color:transparent;}
     .sbar-arrow{color:var(--text-muted);margin:0 5px;}
-    .sell-card{background:white;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-bottom:18px;}
+    .sell-card{background:#17171C;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);margin-bottom:18px;}
     .sell-card h3{font-size:16px;font-weight:700;margin-bottom:4px;}
     .sell-card .sdesc{font-size:13px;color:var(--text-muted);margin-bottom:20px;}
     .form-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -31,7 +31,7 @@
     .checker-row:last-child{border:none;}
     .cv-ok{color:var(--green-dark);font-weight:700;}
     .cv-fail{color:#dc2626;font-weight:700;}
-    select.form-input{background:white;cursor:pointer;}
+    select.form-input{background:#0F0F14;cursor:pointer;}
   </style>
 </head>
 <body>
@@ -314,9 +314,9 @@ document.addEventListener('DOMContentLoaded',function(){
   var user=loadUser();
   if(!user){
     document.getElementById('sellWrap').innerHTML=
-      '<div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">' +
+      '<div style="text-align:center;padding:60px 20px;background:#17171C;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);">' +
       '<div style="font-size:52px;margin-bottom:14px;">🔐</div>' +
-      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Kirish talab qilinadi</h2>' +
+      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;color:#E8E8EC;">Kirish talab qilinadi</h2>' +
       '<p style="color:var(--text-muted);margin-bottom:22px;">Account sotish uchun tizimga kiring</p>' +
       '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' +
       '<a href="login.html" class="btn btn-primary">Kirish</a>' +
@@ -326,9 +326,9 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   if(user.role==='buyer'){
     document.getElementById('sellWrap').innerHTML=
-      '<div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid var(--border);">' +
+      '<div style="text-align:center;padding:60px 20px;background:#17171C;border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);">' +
       '<div style="font-size:52px;margin-bottom:14px;">💡</div>' +
-      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Sotuvchi hisob kerak</h2>' +
+      '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;color:#E8E8EC;">Sotuvchi hisob kerak</h2>' +
       '<p style="color:var(--text-muted);margin-bottom:22px;">Siz xaridor sifatida kirgansiz. Sotish uchun yangi sotuvchi hisob oching.</p>' +
       '<a href="register.html?role=seller" class="btn btn-primary">Sotuvchi bo\'lib ro\'yxatdan o\'tish</a></div>';
     return;

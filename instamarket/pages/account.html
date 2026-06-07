@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     .page-body{padding-top:64px;background:var(--bg);min-height:100vh;}
-    .breadcrumb{background:white;border-bottom:1px solid var(--border);padding:11px 24px;font-size:13px;color:var(--text-muted);}
+    .breadcrumb{background:#17171C;border-bottom:1px solid rgba(255,255,255,0.08);padding:11px 24px;font-size:13px;color:var(--text-muted);}
     .breadcrumb a{color:var(--text-muted);}
     .breadcrumb a:hover{color:var(--primary);}
     .pay-opt{border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;display:flex;align-items:center;gap:9px;font-weight:600;font-size:14px;transition:all 0.18s;}
@@ -17,7 +17,7 @@
     .sim-item:last-child{border:none;}
     /* Gate overlay */
     .acc-gate{position:fixed;inset:0;z-index:900;background:rgba(10,10,10,0.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;}
-    .acc-gate-box{background:white;border-radius:24px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.25);animation:popIn 0.3s ease;}
+    .acc-gate-box{background:#17171C;border:1.5px solid rgba(255,255,255,0.08);border-radius:24px;padding:40px 36px;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.55);animation:popIn 0.3s ease;}
     @keyframes popIn{from{transform:scale(0.92);opacity:0}to{transform:scale(1);opacity:1}}
     .gate-benefits{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;text-align:left;}
     .gate-benefit{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-light);}
@@ -90,13 +90,13 @@
     <div class="modal-title">🛡️ Safe Deal</div>
     <p style="color:var(--text-muted);font-size:13px;margin-bottom:18px;">Qo'shimcha himoya va kafolat</p>
     <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
-      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+      <div style="background:var(--green-light);color:var(--green-dark);border-radius:9px;padding:12px;display:flex;gap:9px;">
         <span style="font-size:17px;flex-shrink:0;">✅</span><div><strong style="font-size:13px;">Moderator shaxsan tekshiradi</strong></div>
       </div>
-      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+      <div style="background:var(--green-light);color:var(--green-dark);border-radius:9px;padding:12px;display:flex;gap:9px;">
         <span style="font-size:17px;flex-shrink:0;">📅</span><div><strong style="font-size:13px;">30 kunlik kafolat</strong></div>
       </div>
-      <div style="background:var(--green-light);border-radius:9px;padding:12px;display:flex;gap:9px;">
+      <div style="background:var(--green-light);color:var(--green-dark);border-radius:9px;padding:12px;display:flex;gap:9px;">
         <span style="font-size:17px;flex-shrink:0;">💰</span><div><strong style="font-size:13px;">100% qaytarish kafolati</strong></div>
       </div>
     </div>
@@ -169,6 +169,7 @@ async function toggleWish(id) {
     btn.textContent = '❤️ Saqlash';
     btn.setAttribute('data-wished', '0');
     btn.style.background = 'var(--bg)';
+    btn.style.color = '';
     showToast('Saqlangandan o\'chirildi', 'error');
   } else {
     var res = await addToWishlist(id);
@@ -176,6 +177,7 @@ async function toggleWish(id) {
       btn.textContent = '💔 Saqlangan';
       btn.setAttribute('data-wished', '1');
       btn.style.background = '#fee2e2';
+      btn.style.color = '#b91c1c';
       showToast('❤️ Saqlandi!');
     } else if (res.error === 'Kirish talab qilinadi') {
       window.location.href = 'login.html';
@@ -196,6 +198,7 @@ async function loadWishStatus(id) {
         btn.textContent = '💔 Saqlangan';
         btn.setAttribute('data-wished', '1');
         btn.style.background = '#fee2e2';
+        btn.style.color = '#b91c1c';
       }
     }
   } catch(e) {}
@@ -359,7 +362,7 @@ function renderPage(acc){
         : '') +
       '<button onclick="toggleWish(\''+acc.id+'\')" id="wishBtn" style="width:100%;margin-top:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;">❤️ Saqlash</button>' +
     '</div>' +
-    '<div style="background:white;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-top:18px;">' +
+    '<div style="background:#17171C;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);margin-top:18px;">' +
       '<h4 style="font-size:14px;font-weight:700;margin-bottom:13px;">🔥 O\'xshash accountlar</h4>' +
       (similar.length?similar.map(function(s){
         return '<a href="account.html?id='+s.id+'" class="sim-item">' +
