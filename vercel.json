@@ -1,6 +1,10 @@
 {
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/", "destination": "/instamarket/index.html" },
+    { "source": "/admin", "destination": "/instamarket/admin/index.html" },
+    { "source": "/admin/", "destination": "/instamarket/admin/index.html" },
+    { "source": "/(.*)/", "destination": "/instamarket/$1/index.html" },
     { "source": "/(.*)", "destination": "/instamarket/$1" }
   ]
 }
