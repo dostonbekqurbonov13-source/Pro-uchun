@@ -299,8 +299,15 @@ async function getAdminStats() {
 
 async function getAdminUsers(limitN) {
   try {
-    const snap = await db.collection('users').orderBy('createdAt','desc').limit(limitN||50).get();
-    return snap.docs.map(function(d){ return { id: d.id, ...d.data() }; });
+    const snap = await db.collection('users').limit(limitN||200).get();
+    var users = snap.docs.map(function(d){ return { id: d.id, ...d.data() }; });
+    // createdAt bo'yicha JS da saralaymiz — maydoni yo'q hujjatlar ham tushib qolmaydi
+    users.sort(function(a,b){
+      var ta = (a.createdAt && a.createdAt.seconds) ? a.createdAt.seconds : 0;
+      var tb = (b.createdAt && b.createdAt.seconds) ? b.createdAt.seconds : 0;
+      return tb - ta;
+    });
+    return users;
   } catch(e) { return []; }
 }
 
@@ -473,5 +480,9 @@ function firebaseErr(code) {
     'auth/too-many-requests':    'Juda ko\'p urinish! Biroz kuting.',
     'auth/network-request-failed':'Internet aloqasi yo\'q!',
     'auth/user-disabled':        'Bu hisob bloklangan!',
+    'auth/unauthorized-domain':  'Bu domen ruxsat etilmagan! Firebase Console → Authentication → Settings → Authorized domains ga domeningizni (masalan instabazar.uz) qo\'shing.',
+    'auth/operation-not-allowed':'Google kirish yoqilmagan! Firebase Console → Authentication → Sign-in method → Google ni yoqing.',
+    'auth/popup-blocked':        'Brauzer popup oynasini bloklab qo\'ydi! Popup ruxsatini bering va qayta urinib ko\'ring.',
+    'auth/cancelled-popup-request':'Avvalgi oyna ochiq. Bir lahzadan keyin qayta urinib ko\'ring.',
   })[code] || 'Xatolik yuz berdi. Qayta urinib ko\'ring.';
 }

@@ -205,7 +205,7 @@ async function loadUsers() {
   if (firebaseOk) {
     users = await getAdminUsers(100);
   }
-  if (!users.length) users = demoUsers;
+  // Faqat REAL foydalanuvchilar ko'rsatiladi (soxta demo fallback olib tashlandi)
   allUsers = users;
   filterUsers();
 }
