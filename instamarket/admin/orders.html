@@ -207,7 +207,7 @@ async function loadOrders() {
   if (firebaseOk) {
     orders = await getAdminOrders(100);
   }
-  if (!orders.length) orders = demoOrders;
+  // Faqat REAL savdolar (soxta demo fallback olib tashlandi)
   allOrders = orders;
   filterOrders();
 }

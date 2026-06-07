@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="../css/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .dispute-card{background:white;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-bottom:18px;border-left:4px solid var(--secondary);}
+    .dispute-card{background:#17171C;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1.5px solid var(--border);margin-bottom:18px;border-left:4px solid var(--secondary);}
     .dispute-card.resolved{border-left-color:var(--green);opacity:0.7;}
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
     .side-box{border-radius:10px;padding:14px;}
-    .side-buyer{background:#fff0f3;border:1px solid #fecdd3;}
-    .side-seller{background:var(--green-light);border:1px solid #bbf7d0;}
+    .side-buyer{background:rgba(225,29,72,0.12);border:1px solid rgba(225,29,72,0.32);}
+    .side-seller{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.32);}
     .chat-log{background:var(--bg);border-radius:10px;padding:14px;max-height:200px;overflow-y:auto;border:1px solid var(--border);font-size:13px;}
     .chat-log-msg{padding:6px 0;border-bottom:1px solid var(--border-light);}
     .chat-log-msg:last-child{border:none;}
@@ -297,7 +297,7 @@ async function loadDisputes() {
       });
     } catch(e) { console.warn(e); }
   }
-  if (!disputes.length) disputes = demoDisputes;
+  // Faqat REAL nizolar (soxta demo fallback olib tashlandi)
   allDisputes = disputes;
   renderDisputes(disputes);
 }
