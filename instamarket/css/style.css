@@ -341,3 +341,19 @@ tr:hover td { background: #fafafa; }
   .section-title { font-size: 26px; }
   .navbar { padding: 0 18px; }
 }
+
+
+/* ===== ADMIN — PREMIUM DARK ===== */
+.admin-topbar { background: #17171C; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.admin-topbar h1 { color: #fff; }
+.admin-body { background: #0B0B0F; }
+.dash-card { background: #17171C; border: 1.5px solid rgba(255,255,255,0.08); }
+.dash-card .dc-label { color: rgba(255,255,255,0.5); }
+.dash-card .dc-val { color: #fff; }
+.admin-table-wrap { background: #17171C; border: 1.5px solid rgba(255,255,255,0.08); }
+.admin-table-top { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.admin-table-top h2 { color: #fff; }
+thead tr { background: #0F0F14; }
+th { color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.08); }
+td { color: #E8E8EC; border-bottom: 1px solid rgba(255,255,255,0.06); }
+tr:hover td { background: rgba(255,255,255,0.03); }
