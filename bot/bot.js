@@ -1,4 +1,5 @@
-// ===== InstaBazar.uz — Telegram Bot (Render/Webhook) =====
+// ===== InstaBazar.uz — Telegram Bot (Render/Webhook + Local/Polling) =====
+require('dotenv').config(); // .env faylidagi BOT_TOKEN ni o'qiydi (lokal ishlatish uchun)
 const TelegramBot = require('node-telegram-bot-api');
 const admin = require('firebase-admin');
 const express = require('express');

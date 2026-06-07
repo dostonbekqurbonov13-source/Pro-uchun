@@ -1,0 +1,5 @@
+# Maxfiy fayllar — HECH QACHON GitHub'ga yuklanmaydi!
+node_modules/
+.env
+serviceAccount.json
+*.log
