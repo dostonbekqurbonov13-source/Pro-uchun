@@ -167,3 +167,45 @@ var hs = document.getElementById('heroSearch');
 if (hs) {
   hs.addEventListener('keypress', function(e) { if (e.key === 'Enter') searchAccounts(); });
 }
+
+
+
+// ===== ADMIN MOBILE MENU (hamburger) =====
+// Barcha admin sahifalarda ishlaydi (ular main.js ni yuklaydi).
+// Telefonda yashirin sidebar'ni ochish/yopish uchun tugma va overlay qo'shadi.
+(function () {
+  function initAdminMobile() {
+    var sidebar = document.querySelector('.admin-sidebar');
+    var topbar = document.querySelector('.admin-topbar');
+    if (!sidebar || !topbar) return;               // faqat admin sahifalarda
+    if (document.querySelector('.admin-burger')) return; // ikki marta qo'shilmasin
+
+    var burger = document.createElement('button');
+    burger.className = 'admin-burger';
+    burger.setAttribute('aria-label', 'Menyu');
+    burger.type = 'button';
+    burger.innerHTML = '\u2630'; // ☰
+    topbar.insertBefore(burger, topbar.firstChild);
+
+    var overlay = document.createElement('div');
+    overlay.className = 'admin-overlay';
+    document.body.appendChild(overlay);
+
+    function openMenu() { sidebar.classList.add('open'); overlay.classList.add('show'); }
+    function closeMenu() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+    burger.addEventListener('click', function () {
+      if (sidebar.classList.contains('open')) closeMenu(); else openMenu();
+    });
+    overlay.addEventListener('click', closeMenu);
+    // Sidebar ichidagi havola bosilsa, menyu yopilsin
+    var links = sidebar.querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) links[i].addEventListener('click', closeMenu);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdminMobile);
+  } else {
+    initAdminMobile();
+  }
+})();
