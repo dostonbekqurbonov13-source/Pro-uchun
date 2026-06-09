@@ -1,4 +1,5 @@
-// ===== InstaBazar.uz — Telegram Bot (Render/Webhook) =====
+// ===== InstaBazar.uz — Telegram Bot (Render/Webhook + Local/Polling) =====
+require('dotenv').config(); // .env faylidagi BOT_TOKEN ni o'qiydi (lokal ishlatish uchun)
 const TelegramBot = require('node-telegram-bot-api');
 const admin = require('firebase-admin');
 const express = require('express');
@@ -70,8 +71,27 @@ if (RENDER_URL) {
   });
 } else {
   // Local — Polling rejimi
-  bot = new TelegramBot(BOT_TOKEN, { polling: true });
-  console.log('✅ Polling rejimida ishlamoqda');
+  bot = new TelegramBot(BOT_TOKEN, { polling: false });
+
+  // Polling xatolarini ko'rsatish (409 Conflict va h.k. — diagnostika uchun)
+  bot.on('polling_error', (err) => {
+    const desc = (err.response && err.response.body && err.response.body.description) || err.message || '';
+    console.error('❌ Polling xatosi:', err.code || '', desc);
+    if (/webhook/i.test(desc)) {
+      console.error('   ⚠️ Tokenga webhook o\'rnatilgan! Bot avtomatik o\'chirishga harakat qilmoqda...');
+    }
+  });
+
+  // MUHIM: polling ishlashi uchun avval webhookni o'chiramiz.
+  // Agar token avval @ControllerBot kabi xizmatga ulangan bo'lsa, webhook qoladi
+  // va polling xabarlarni ololmaydi (409 Conflict). Buni avtomatik tozalaymiz.
+  bot.deleteWebHook({ drop_pending_updates: true })
+    .then(() => console.log('🧹 Webhook tozalandi (polling uchun tayyor)'))
+    .catch((e) => console.warn('⚠️ Webhook tozalashda ogohlantirish:', e.message))
+    .finally(() => {
+      bot.startPolling();
+      console.log('✅ Polling rejimida ishlamoqda');
+    });
 }
 
 // ===== FOYDALANUVCHI HOLATI =====
