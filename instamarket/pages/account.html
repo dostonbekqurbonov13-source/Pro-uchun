@@ -88,7 +88,7 @@
       <div><strong>3)</strong> Admin pulni ushlab turadi, account qo'lingizga o'tgach sotuvchiga o'tkazadi</div>
     </div>
 
-    <a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;" onclick="confirmBuy()">💬 Admin bilan bog'lanish (Telegram)</a>
+    <a href="https://t.me/InstaBazar_Garant" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;" onclick="confirmBuy()">💬 Admin bilan bog'lanish (Telegram)</a>
   </div>
 </div>
 
@@ -258,6 +258,19 @@ async function loadAccount() {
   loadWishStatus(acc.id);
 }
 
+// ===== STATUS BADGE — listing holati (rangli) =====
+function statusBadge(status){
+  var s = status || 'active';
+  var map = {
+    active:  {bg:'rgba(34,197,94,0.15)',  bd:'rgba(34,197,94,0.5)',  col:'var(--green)', txt:'🟢 Faol (Active)'},
+    hold:    {bg:'rgba(245,158,11,0.15)', bd:'rgba(245,158,11,0.45)', col:'#f59e0b',      txt:'🔒 Band qilingan (Hold)'},
+    sold:    {bg:'rgba(107,114,128,0.2)', bd:'rgba(107,114,128,0.5)', col:'#9ca3af',      txt:'✔️ Sotildi (Sold)'},
+    pending: {bg:'rgba(234,179,8,0.15)',  bd:'rgba(234,179,8,0.45)',  col:'#eab308',      txt:'⏳ Tekshiruvda (Pending)'}
+  };
+  var c = map[s] || map.active;
+  return '<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700;background:'+c.bg+';border:1px solid '+c.bd+';color:'+c.col+';white-space:nowrap;">'+c.txt+'</span>';
+}
+
 function renderPage(acc){
   var erColor  = (acc.er||0)>=5?'var(--green-dark)':(acc.er||0)>=3?'#d97706':'#dc2626';
   var scrColor = (acc.score||0)>=90?'var(--green-dark)':(acc.score||0)>=80?'#d97706':'#dc2626';
@@ -270,6 +283,29 @@ function renderPage(acc){
   var badge = acc.badge==='top'
     ? '<span class="badge badge-top">⭐ TOP</span>'
     : '<span class="badge badge-verified">✅ Verified</span>';
+
+  // ===== Listing holati (status) mantig'i =====
+  var status    = acc.status || 'active';
+  var isBuyable = (status === 'active');
+  var stBadge   = statusBadge(status);
+
+  // Sotib olish tugmasi — faqat 'active' bo'lsa faol
+  var buyBtnHtml, safeBtnHtml;
+  if (isBuyable) {
+    buyBtnHtml = '<button onclick="openModal(\'buyModal\')" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;gap:8px;border:none;cursor:pointer;background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);color:#fff;">🛒 Sotib olish — '+priceStr+'</button>';
+    safeBtnHtml = '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — '+safePriceStr+'</button>';
+  } else {
+    var dLabel = status === 'sold' ? 'Sotildi'
+               : status === 'hold' ? '🔒 Band qilingan'
+               : '⏳ Tekshiruvda';
+    var dBg    = status === 'sold' ? '#6b7280'
+               : status === 'hold' ? '#f59e0b'
+               : '#eab308';
+    buyBtnHtml = '<button disabled class="btn" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;gap:8px;border:none;cursor:not-allowed;opacity:0.5;background:'+dBg+';color:#fff;">'+dLabel+'</button>';
+    safeBtnHtml = '<div style="width:100%;text-align:center;font-size:12px;color:var(--text-muted);padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">'+
+      (status === 'sold' ? 'Bu akkaunt allaqachon sotilgan.' : status === 'hold' ? 'Bu akkaunt hozir band qilingan (Hold). Iltimos, boshqa akkauntni tanlang yoki keyinroq qaytib keling.' : 'Bu akkaunt hali tekshiruvda. Tasdiqlangach sotuvga chiqadi.')+
+    '</div>';
+  }
 
   document.getElementById('buyInfo').innerHTML =
     '<div style="display:flex;align-items:center;gap:11px;margin-bottom:10px;">' +
@@ -298,7 +334,7 @@ function renderPage(acc){
         '<div class="detail-avatar">'+(acc.emoji||'📱')+'</div>' +
         '<div>' +
           '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-            '<span class="detail-username">@'+(acc.username||'')+'</span>'+badge+
+            '<span class="detail-username">@'+(acc.username||'')+'</span>'+badge+stBadge+
           '</div>' +
           '<div class="detail-niche">'+(acc.niche||'')+'</div>' +
           '<div style="display:flex;gap:14px;margin-top:7px;font-size:13px;color:var(--text-muted);flex-wrap:wrap;">' +
@@ -339,7 +375,7 @@ function renderPage(acc){
       '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:#1e40af;">' +
         '<strong>ℹ️ Qanday ishlaydi?</strong><br/>Admin bilan Telegram orqali bog\'laning → Kartaga to\'lang va chekni yuboring → Admin pulni ushlab turadi → Account qo\'lingizga o\'tgach sotuvchiga o\'tkazadi (Escrow himoya).' +
       '</div>' +
-      '<a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#2AABEE;color:white;border-radius:10px;padding:13px;font-weight:700;font-size:15px;text-decoration:none;margin-bottom:10px;">' +
+      '<a href="https://t.me/InstaBazar_Garant" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#2AABEE;color:white;border-radius:10px;padding:13px;font-weight:700;font-size:15px;text-decoration:none;margin-bottom:10px;">' +
         '💬 Admin bilan bog\'lanish (Telegram)' +
       '</a>' +
       '<div style="text-align:center;font-size:12px;color:var(--text-muted);padding:4px;">Xaridor va sotuvchi faqat admin orqali muloqot qiladi.</div>' +
@@ -348,22 +384,29 @@ function renderPage(acc){
   // --- SIDEBAR ---
   '<div class="detail-sidebar">' +
     '<div class="buy-box">' +
-      '<div class="buy-price">'+priceStr+'</div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:6px;">' +
+        '<div class="buy-price">'+priceStr+'</div>'+stBadge+
+      '</div>' +
       '<div style="font-size:12px;color:var(--text-muted);margin-bottom:15px;">Bir martalik · Escrow himoyali</div>' +
       '<ul class="buy-features">' +
         ["Login va parol to'liq beriladi","72 soat tekshirish muddati","Escrow tizimi himoyasi","Sayt ichida yordam","Muammo bo'lsa pul qaytariladi"].map(function(t){
           return '<li><span class="chk">✅</span>'+t+'</li>';
         }).join('') +
       '</ul>' +
-      '<button onclick="openModal(\'buyModal\')" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;gap:8px;border:none;cursor:pointer;background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);color:#fff;">🛒 Sotib olish — '+priceStr+'</button>' +
-      '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — '+safePriceStr+'</button>' +
+      // ⚠️ Original Email xavfsizlik ogohlantirishi
+      '<div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);border-radius:10px;padding:12px 13px;margin-bottom:14px;font-size:12.5px;color:#fbbf24;line-height:1.6;display:flex;gap:8px;align-items:flex-start;">' +
+        '<span style="font-size:16px;flex-shrink:0;line-height:1.4;">⚠️</span>' +
+        '<span><strong>Diqqat!</strong> Ushbu akkaunt faqat uning eng birinchi ochilgan asl pochtasi (Original Email) bilan birga sotiladi. Admin akkauntni qabul qilayotganda buni majburiy tekshiradi. Bu sizni kelajakda akkaunt qaytarib olinishidan (revert) 100% himoya qiladi.</span>' +
+      '</div>' +
+      buyBtnHtml +
+      safeBtnHtml +
       '<div class="seller-mini" style="margin-top:14px;">' +
         '<div class="seller-ava">'+(acc.sellerEmoji||'👤')+'</div>' +
         '<div><div style="font-weight:700;font-size:13px;">'+(acc.sellerName||'Sotuvchi')+'</div>' +
         '<div style="font-size:12px;color:var(--text-muted);">⭐'+(acc.sellerRating||5.0)+' · '+(acc.sellerSales||0)+' savdo</div></div>' +
       '</div>' +
       '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">💳 Kartaga to\'lov · 🔒 Escrow himoya<br/>💬 Savdo admin orqali</div>' +
-      '<a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" style="display:block;width:100%;margin-top:10px;background:#2AABEE;color:white;border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;">💬 Admin bilan bog\'lanish</a>' +
+      '<a href="https://t.me/InstaBazar_Garant" target="_blank" rel="noopener" style="display:block;width:100%;margin-top:10px;background:#2AABEE;color:white;border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;">💬 Admin bilan bog\'lanish</a>' +
       '<button onclick="toggleWish(\''+acc.id+'\')" id="wishBtn" style="width:100%;margin-top:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;">❤️ Saqlash</button>' +
     '</div>' +
     '<div style="background:#17171C;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);margin-top:18px;">' +

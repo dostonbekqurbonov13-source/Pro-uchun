@@ -294,16 +294,25 @@ function filterAccounts() {
   }
 }
 
+function mktStatusBadge(status){
+  if (status === 'hold') return '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.45);color:#f59e0b;">🔒 Band qilingan</span>';
+  if (status === 'sold') return '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(107,114,128,0.2);border:1px solid rgba(107,114,128,0.5);color:#9ca3af;">✔️ Sotildi</span>';
+  return '';
+}
+
 function renderRealCard(a) {
   var badge = a.badge === 'top'
     ? '<span class="badge badge-top">⭐ TOP</span>'
     : '<span class="badge badge-verified">✅ Verified</span>';
-  return '<div class="account-card" onclick="handleCardClick(\''+a.id+'\')" style="cursor:pointer;">' +
+  var stBadge  = mktStatusBadge(a.status);
+  var isLocked = (a.status === 'hold' || a.status === 'sold');
+  var dim      = isLocked ? 'opacity:0.55;' : '';
+  return '<div class="account-card" onclick="handleCardClick(\''+a.id+'\')" style="cursor:pointer;'+dim+'">' +
     '<div class="card-top">' +
       '<div class="card-avatar">'+(a.emoji||'📱')+'</div>' +
       '<div><div class="card-username">@'+(a.username||'')+'</div>' +
       '<div class="card-niche">'+(a.niche||'')+'</div>' +
-      '<div class="card-badge-wrap">'+badge+'</div></div>' +
+      '<div class="card-badge-wrap" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">'+badge+stBadge+'</div></div>' +
     '</div>' +
     '<div class="card-stats">' +
       '<div class="card-stat"><div class="val">'+formatNum(a.followers||0)+'</div><div class="key">Followers</div></div>' +
