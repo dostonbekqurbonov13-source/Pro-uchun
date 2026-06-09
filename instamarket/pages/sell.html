@@ -108,6 +108,11 @@ function renderStep1(){
       '<div class="form-group" style="margin:0;"><label>Engagement Rate % *</label><input type="number" class="form-input" id="f_er" placeholder="masalan: 5.2" min="1" max="100" step="0.1" oninput="calcPrice()" required/></div>' +
       '<div class="form-group" style="margin:0;"><label>Account yoshi *</label><select class="form-input" id="f_age" required><option value="">Tanlang...</option><option>3-6 oy</option><option>6-12 oy</option><option>1-2 yil</option><option>2+ yil</option></select></div>' +
     '</div>' +
+    '<div style="background:#0F0F14;border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-top:12px;font-size:12.5px;color:var(--text-light);line-height:1.65;">' +
+      '<strong style="color:#fff;">📊 Engagement Rate (ER) qanday hisoblanadi?</strong><br/>' +
+      'ER = (o\'rtacha like + o\'rtacha izoh) ÷ followers × 100%<br/>' +
+      '<span style="color:var(--text-muted);">Masalan: 1000 follower, oxirgi postlarda o\'rtacha 60 like + 5 izoh → (65 ÷ 1000) × 100 = <strong style="color:var(--green);">6.5%</strong>. Yaxshi ER: 3% va undan yuqori.</span>' +
+    '</div>' +
     '<div class="form-row2" style="margin-top:14px;">' +
       '<div class="form-group" style="margin:0;"><label>Kategoriya *</label><select class="form-input" id="f_category" required><option value="">Tanlang...</option><option value="food">🍔 Ovqat</option><option value="travel">✈️ Sayohat</option><option value="fitness">💪 Fitness</option><option value="beauty">💄 Go\'zallik</option><option value="business">💼 Biznes</option><option value="tech">📱 Tech</option><option value="art">🎨 San\'at</option><option value="home">🏠 Uy</option><option value="other">📌 Boshqa</option></select></div>' +
       '<div class="form-group" style="margin:0;"><label>Auditoriya</label><select class="form-input" id="f_audience"><option>🇺🇿 O\'zbekiston 80%+</option><option>🇺🇿 O\'zbekiston 50-80%</option><option>🌍 Aralash</option></select></div>' +
