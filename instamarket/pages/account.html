@@ -237,18 +237,16 @@ async function loadAccount() {
     if(acc) incrementViews(id);
   }
 
-  // Demo ma'lumotlardan olish
+  // Haqiqiy e'lon topilmadi — soxta (demo) account ko'rsatilmaydi
   if(!acc){
-    var intId = parseInt(id)||1;
-    var demo = accounts.find(function(a){return a.id===intId;}) || accounts[0];
-    acc = {
-      id: 'demo_'+demo.id, username:demo.username, emoji:demo.emoji, niche:demo.niche,
-      category:demo.category, followers:demo.followers, er:demo.er, posts:demo.posts,
-      age:demo.age, realFollowers:demo.realFollowers, score:demo.score, price:demo.price,
-      audience:demo.audience, badge:demo.badge, description:demo.description,
-      sellerName:demo.seller.name, sellerRating:demo.seller.rating, sellerSales:demo.seller.sales,
-      sellerEmoji:demo.seller.emoji, tags:demo.tags,
-    };
+    document.getElementById('pageContent').innerHTML =
+      '<div style="text-align:center;padding:80px 24px;max-width:480px;margin:0 auto;">' +
+        '<div style="font-size:56px;margin-bottom:14px;">🔍</div>' +
+        '<h2 style="font-size:22px;font-weight:800;margin-bottom:8px;color:#E8E8EC;">Account topilmadi</h2>' +
+        '<p style="color:var(--text-muted);margin-bottom:22px;">Bu e\'lon mavjud emas yoki o\'chirilgan.</p>' +
+        '<a href="marketplace.html" class="btn btn-primary">← Bozorga qaytish</a>' +
+      '</div>';
+    return;
   }
 
   currentAcc = acc;
@@ -288,7 +286,7 @@ function renderPage(acc){
     '<div style="font-size:24px;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+safePriceStr+'</div>' +
     '<div style="font-size:12px;color:var(--text-muted);">('+priceStr+' + himoya to\'lovi)</div>';
 
-  var similar = accounts.filter(function(a){return a.category===(acc.category||'')&&('demo_'+a.id)!==acc.id;}).slice(0,3);
+  // O'xshash accountlar bloki demo o'rniga bozorga yo'naltiriladi (soxta ma'lumot yo'q)
 
   document.getElementById('pageContent').innerHTML =
   '<div class="detail-layout">' +
@@ -369,14 +367,9 @@ function renderPage(acc){
       '<button onclick="toggleWish(\''+acc.id+'\')" id="wishBtn" style="width:100%;margin-top:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;">❤️ Saqlash</button>' +
     '</div>' +
     '<div style="background:#17171C;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);margin-top:18px;">' +
-      '<h4 style="font-size:14px;font-weight:700;margin-bottom:13px;">🔥 O\'xshash accountlar</h4>' +
-      (similar.length?similar.map(function(s){
-        return '<a href="account.html?id='+s.id+'" class="sim-item">' +
-          '<div class="sim-ava">'+s.emoji+'</div>' +
-          '<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@'+s.username+'</div>' +
-          '<div style="font-size:11px;color:var(--text-muted);">'+formatNum(s.followers)+' · '+s.er+'% ER</div></div>' +
-          '<div style="font-weight:800;font-size:13px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;">'+(s.price ? formatUZS(s.price) : '—')+'</div></a>';
-      }).join(''):'<p style="font-size:13px;color:var(--text-muted);">Hozircha yo\'q</p>') +
+      '<h4 style="font-size:14px;font-weight:700;margin-bottom:10px;">🔥 Boshqa accountlar</h4>' +
+      '<p style="font-size:13px;color:var(--text-muted);margin-bottom:13px;">Bozordagi barcha tekshirilgan accountlarni ko\'ring.</p>' +
+      '<a href="marketplace.html" class="btn btn-ghost" style="width:100%;justify-content:center;">Bozorni ko\'rish →</a>' +
     '</div>' +
   '</div>' +
   '</div>';
