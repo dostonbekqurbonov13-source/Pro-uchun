@@ -357,3 +357,29 @@ thead tr { background: #0F0F14; }
 th { color: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.08); }
 td { color: #E8E8EC; border-bottom: 1px solid rgba(255,255,255,0.06); }
 tr:hover td { background: rgba(255,255,255,0.03); }
+
+
+
+/* ===== ADMIN — MOBILE MENU (hamburger) ===== */
+.admin-burger { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: #fff; padding: 6px 10px; margin-right: 4px; line-height: 1; border-radius: 8px; }
+.admin-burger:hover { background: rgba(255,255,255,0.08); }
+.admin-sidebar { transition: transform 0.28s ease; }
+.admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 90; opacity: 0; visibility: hidden; transition: opacity 0.28s; }
+.admin-overlay.show { opacity: 1; visibility: visible; }
+
+@media (max-width: 768px) {
+  .admin-burger { display: inline-flex; align-items: center; }
+  .admin-sidebar { width: 260px; z-index: 100; box-shadow: 0 0 40px rgba(0,0,0,0.6); }
+  .admin-sidebar.open { transform: translateX(0); }
+  .admin-topbar { padding: 0 14px; }
+  .admin-topbar h1 { font-size: 16px; }
+  .admin-body { padding: 16px 14px; }
+  /* Jadvallar telefonda gorizontal scroll bo'lsin */
+  .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .admin-table-wrap table { min-width: 640px; }
+  .dash-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dash-card .dc-val { font-size: 22px; }
+}
+@media (max-width: 480px) {
+  .dash-grid { grid-template-columns: 1fr; }
+}

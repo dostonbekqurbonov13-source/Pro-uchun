@@ -2,56 +2,77 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ===== YORDAMCHI FUNKSIYALAR =====
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    // Admin — foydalanuvchi hujjatida role == 'admin' bo'lsa.
+    // (Buning ishlashi uchun admin Firebase'ga role:'admin' li akkaunt bilan kirishi kerak.)
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // ===== FOYDALANUVCHILAR =====
     match /users/{userId} {
-      allow read:   if request.auth != null;
-      allow create: if request.auth != null && request.auth.uid == userId;
-      allow update: if request.auth != null && request.auth.uid == userId;
-      allow delete: if false;
+      // Faqat o'zini yoki admin hammani o'qiy oladi (boshqalarning email/ma'lumoti himoyalangan)
+      allow read:   if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      // O'zini yangilaydi, lekin o'z rolini o'zgartira OLMAYDI (admin bo'lib ololmaydi). Admin hammani yangilaydi.
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isAdmin();
     }
 
     // ===== E'LONLAR =====
     match /listings/{listingId} {
-      // Hamma o'qiy oladi
+      // Hamma o'qiy oladi (bozor public)
       allow read: if true;
-      // Faqat login qilgan va o'z uid si bilan
-      allow create: if request.auth != null
+      // Yaratish — login qilgan, o'z uid'si bilan, kamida 100 follower
+      allow create: if isSignedIn()
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.followers >= 100;
-      // Yangilash — login qilganlar (admin moderatsiya uchun)
-      allow update: if request.auth != null;
-      // O'chirish — faqat login qilganlar
-      allow delete: if request.auth != null;
+      // Yangilash/o'chirish — FAQAT egasi yoki admin (moderatsiya)
+      allow update: if isOwner(resource.data.uid) || isAdmin();
+      allow delete: if isOwner(resource.data.uid) || isAdmin();
     }
 
     // ===== SAVDOLAR =====
     match /orders/{orderId} {
-      // O'qish — xaridor yoki sotuvchi
-      allow read: if request.auth != null;
-      // Yaratish — login qilganlar
-      allow create: if request.auth != null;
-      // Yangilash — login qilganlar
-      allow update: if request.auth != null;
+      // O'qish — faqat xaridor, sotuvchi yoki admin
+      allow read: if isAdmin()
+        || (isSignedIn() && (resource.data.buyerUid == request.auth.uid
+                          || resource.data.sellerUid == request.auth.uid));
+      // Yaratish — login qilgan, o'zi xaridor sifatida
+      allow create: if isSignedIn() && request.resource.data.buyerUid == request.auth.uid;
+      // Yangilash — ishtirokchilar yoki admin (escrow tasdiqlash admin tomonidan)
+      allow update: if isAdmin()
+        || (isSignedIn() && (resource.data.buyerUid == request.auth.uid
+                          || resource.data.sellerUid == request.auth.uid));
       allow delete: if false;
     }
 
     // ===== CHAT =====
     match /chats/{listingId}/messages/{messageId} {
-      allow read:   if request.auth != null;
-      allow create: if request.auth != null
+      allow read:   if isSignedIn();
+      allow create: if isSignedIn()
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.text.size() <= 1000;
       allow update, delete: if false;
     }
 
-    // ===== ADMIN SOZLAMALAR =====
+    // ===== ADMIN SOZLAMALAR (komissiya % va h.k.) =====
     match /admin/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read:  if true;       // sozlamalar saytda o'qilishi mumkin
+      allow write: if isAdmin();  // FAQAT admin o'zgartiradi
     }
 
     // ===== WISHLIST =====
     match /users/{userId}/wishlist/{itemId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
     }
   }
 }
