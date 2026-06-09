@@ -11,8 +11,7 @@ const firebaseConfig = {
 };
 
 let app, auth, db;
-const ADMIN_KEY = 'im_admin_v2';
-const ADMIN_PASS = 'instamarket2024admin';
+const ADMIN_KEY = 'im_admin_v2'; // sessiya bayrog'i — Firebase admin tasdiqlangach '1' bo'ladi (parol kodda SAQLANMAYDI)
 
 function initFirebase() {
   try {
@@ -43,51 +42,87 @@ function logoutUser() {
   sessionStorage.removeItem(ADMIN_KEY);
 }
 
-// ===== ADMIN AUTH =====
+// ===== ADMIN AUTH (Firebase Auth + role tekshiruvi) =====
+// Eski usul (parol kodda ochiq) OLIB TASHLANDI. Endi admin Firebase akkaunt bilan kiradi
+// va faqat users/{uid}.role === 'admin' bo'lsa ruxsat oladi.
+// ASL himoya — Firestore Security Rules (server tomonda): hatto UI aldansa ham, baza himoyalangan.
 function checkAdminSession() {
-  return sessionStorage.getItem(ADMIN_KEY) === ADMIN_PASS;
+  return sessionStorage.getItem(ADMIN_KEY) === '1';
 }
 function setAdminSession() {
-  sessionStorage.setItem(ADMIN_KEY, ADMIN_PASS);
+  sessionStorage.setItem(ADMIN_KEY, '1');
 }
-// Har bir admin sahifada chaqiriladi
+// Joriy Firebase foydalanuvchisi haqiqatan admin (role==='admin') ekanini tekshiradi
+async function verifyAdminRole(user) {
+  if (!user) return false;
+  try {
+    const doc = await db.collection('users').doc(user.uid).get();
+    return doc.exists && doc.data().role === 'admin';
+  } catch (e) { return false; }
+}
+// Har bir admin sahifada chaqiriladi. Sinxron boolean qaytaradi.
 function requireAdmin() {
-  if (!checkAdminSession()) {
-    showAdminLoginScreen();
-    return false;
+  // Shu sessiyada allaqachon tasdiqlangan bo'lsa — darrov ruxsat
+  if (checkAdminSession()) return true;
+
+  // Aks holda: kontentni yashiramiz va Firebase auth holatini kutamiz
+  showAdminLoginScreen();
+  if (auth) {
+    auth.onAuthStateChanged(async function (user) {
+      if (!user) return;                 // login formasi ko'rinib turibdi
+      var ok = await verifyAdminRole(user);
+      if (ok) {
+        setAdminSession();
+        window.location.reload();        // endi requireAdmin true qaytaradi
+      } else {
+        var el = document.getElementById('apErr');
+        if (el) { el.textContent = '⛔ Bu akkaunt admin huquqiga ega emas!'; el.style.display = 'block'; }
+      }
+    });
   }
-  return true;
+  return false;
 }
 function showAdminLoginScreen() {
   document.body.innerHTML = `
-  <div style="min-height:100vh;background:#0a0a0a;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;">
-    <div style="background:white;border-radius:20px;padding:40px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
-      <div style="text-align:center;margin-bottom:28px;">
+  <div style="min-height:100vh;background:#0B0B0F;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;padding:20px;">
+    <div style="background:#17171C;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:40px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+      <div style="text-align:center;margin-bottom:26px;">
         <div style="font-size:52px;margin-bottom:10px;">🔐</div>
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;">Admin Panel</h2>
-        <p style="font-size:13px;color:#6b7280;">InstaBazar.uz — Faqat adminlar</p>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;color:#fff;">Admin Panel</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,0.5);">InstaBazar.uz — faqat adminlar (Firebase login)</p>
       </div>
       <div id="apErr" style="display:none;background:#fee2e2;color:#b91c1c;border-radius:8px;padding:10px;font-size:13px;margin-bottom:14px;text-align:center;"></div>
-      <input type="password" id="apInp" placeholder="Admin parolini kiriting..."
-        style="width:100%;padding:13px 15px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;"
-        onkeypress="if(event.key==='Enter')adminLogin()"
-        onfocus="this.style.borderColor='#C13584'" onblur="this.style.borderColor='#e5e7eb'"/>
+      <input type="email" id="apEmail" placeholder="Admin email"
+        style="width:100%;padding:13px 15px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box;margin-bottom:10px;background:#0F0F14;color:#fff;"
+        onkeypress="if(event.key==='Enter'){document.getElementById('apPass').focus();}"/>
+      <input type="password" id="apPass" placeholder="Parol"
+        style="width:100%;padding:13px 15px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px;background:#0F0F14;color:#fff;"
+        onkeypress="if(event.key==='Enter')adminLogin()"/>
       <button onclick="adminLogin()"
-        style="width:100%;background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);color:white;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">
+        style="width:100%;background:linear-gradient(135deg,#A855F7,#E1306C,#FF4D8D);color:white;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">
         Kirish →
       </button>
+      <div style="text-align:center;margin-top:14px;"><a href="../index.html" style="font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;">← Saytga qaytish</a></div>
     </div>
   </div>`;
-  window.adminLogin = function() {
-    var v = document.getElementById('apInp').value;
-    if (v === ADMIN_PASS) {
-      setAdminSession();
-      window.location.reload();
-    } else {
-      var e = document.getElementById('apErr');
-      e.textContent = '❌ Parol noto\'g\'ri!';
-      e.style.display = 'block';
-      setTimeout(function(){ e.style.display='none'; }, 2500);
+  window.adminLogin = async function() {
+    var email = (document.getElementById('apEmail').value || '').trim();
+    var pass  = document.getElementById('apPass').value || '';
+    var el = document.getElementById('apErr');
+    function fail(msg){ if(el){ el.textContent = msg; el.style.display='block'; } }
+    if (!email || !pass) { fail('Email va parolni kiriting!'); return; }
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, pass);
+      var ok = await verifyAdminRole(cred.user);
+      if (ok) {
+        setAdminSession();
+        window.location.reload();
+      } else {
+        try { await auth.signOut(); } catch(_){}
+        fail('⛔ Bu akkaunt admin huquqiga ega emas!');
+      }
+    } catch (err) {
+      fail('❌ ' + firebaseErr(err.code));
     }
   };
 }
