@@ -151,7 +151,7 @@ function showGate() {
       '<div style="margin-bottom:20px;">' +
         '<div class="gate-benefit"><span>✅</span> Barcha accountlarni ko\'rish</div>' +
         '<div class="gate-benefit"><span>📊</span> To\'liq statistika va nakrutka tahlili</div>' +
-        '<div class="gate-benefit"><span>💬</span> Sotuvchi bilan chat</div>' +
+        '<div class="gate-benefit"><span>💬</span> Admin orqali xavfsiz aloqa</div>' +
         '<div class="gate-benefit"><span>🛡️</span> Escrow himoyali xarid</div>' +
       '</div>' +
       '<a href="register.html" class="btn btn-primary btn-lg" style="display:block;justify-content:center;margin-bottom:10px;">🚀 Bepul ro\'yxatdan o\'tish</a>' +
@@ -189,15 +189,8 @@ async function loadMarket() {
     } catch(e) { console.warn('Firebase:', e.message); }
   }
 
-  // Demo accountlar FAQAT Firebase bo'sh bo'lsa ko'rinadi
-  if (items.length === 0) {
-    var demoItems = accounts.map(function(a){
-      return Object.assign({}, a, {id:'demo_'+a.id, status:'active'});
-    });
-    allItems = demoItems;
-  } else {
-    allItems = items; // Faqat haqiqiy accountlar
-  }
+  // Faqat HAQIQIY Firebase e'lonlari. Demo fallback yo'q.
+  allItems = items;
   filterAccounts();
 }
 
@@ -253,7 +246,26 @@ function filterAccounts() {
   var listEl  = document.getElementById('cardsList');
   var emptyEl = document.getElementById('emptyState');
 
-  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  if (!filtered.length) {
+    listEl.innerHTML = '';
+    if (!allItems.length) {
+      // Umuman e'lon yo'q — halol bo'sh holat + sotish CTA
+      emptyEl.innerHTML =
+        '<div style="font-size:56px;margin-bottom:14px;">🚀</div>' +
+        '<h3 style="font-size:20px;margin-bottom:7px;color:#E8E8EC;">Hozircha e\'lonlar yo\'q. Tez orada!</h3>' +
+        '<p style="color:var(--text-muted);">Birinchi bo\'lib o\'z accountingizni soting.</p>' +
+        '<a href="sell.html" class="btn btn-primary" style="margin-top:18px;display:inline-block;text-decoration:none;">💰 Account sotish</a>';
+    } else {
+      // Filter natijasida hech narsa topilmadi
+      emptyEl.innerHTML =
+        '<div style="font-size:56px;margin-bottom:14px;">🔍</div>' +
+        '<h3 style="font-size:20px;margin-bottom:7px;">Hech narsa topilmadi</h3>' +
+        '<p style="color:var(--text-muted);">Filter shartlarini o\'zgartiring</p>' +
+        '<button class="btn btn-primary" style="margin-top:18px;" onclick="clearFilters()">Tozalash</button>';
+    }
+    emptyEl.style.display = 'block';
+    return;
+  }
   emptyEl.style.display = 'none';
 
   if (user) {

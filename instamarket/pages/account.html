@@ -62,24 +62,33 @@
 
 <!-- BUY MODAL -->
 <div class="modal-overlay" id="buyModal">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal" style="max-width:460px;">
     <button class="modal-close" onclick="closeModal('buyModal')">✕</button>
     <div class="modal-title">🛒 Xarid qilish</div>
-    <p style="color:var(--text-muted);font-size:13px;margin-bottom:18px;">Escrow tizimi orqali xavfsiz xarid</p>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:18px;">Admin orqali kartaga to'lovli Escrow himoyasi</p>
     <div id="buyInfo" style="background:var(--bg);border-radius:10px;padding:13px;margin-bottom:16px;border:1px solid var(--border-light);"></div>
+
+    <!-- KARTA -->
     <div style="margin-bottom:16px;">
-      <div style="font-size:13px;font-weight:600;margin-bottom:9px;">To'lov usuli:</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="payOpts">
-        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="payme" style="accent-color:var(--primary);"/> 💳 Payme</label>
-        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="click"/> ⚡ Click</label>
-        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="usdt"/> 🪙 USDT</label>
-        <label class="pay-opt" onclick="selPay(this)"><input type="radio" name="pay" value="card"/> 💰 Karta</label>
+      <div style="font-size:13px;font-weight:600;margin-bottom:9px;">💳 InstaBazar to'lov kartasi:</div>
+      <div style="background:#0F0F14;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span id="cardNum" style="font-size:19px;font-weight:800;letter-spacing:1.5px;color:#fff;font-family:monospace;">4916 9903 5922 9462</span>
+          <button onclick="copyCard()" style="background:var(--gradient);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;">📋 Nusxa</button>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:7px;">Karta egasi: <strong style="color:var(--text-light);">Qurbonov Dostonbek</strong></div>
       </div>
     </div>
-    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:11px 14px;font-size:13px;color:#1e40af;margin-bottom:16px;display:flex;gap:8px;">
-      <span>🔒</span><span>Pul <strong>Escrow</strong>da ushlanadi. Account tekshirib bo'lgach sotuvchiga o'tadi. <strong>72 soat</strong> beriladi.</span>
+
+    <!-- 3 QADAM ESCROW -->
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:12px 14px;font-size:13px;color:#1e40af;margin-bottom:16px;line-height:1.7;">
+      <div style="font-weight:700;margin-bottom:6px;">🔒 Escrow himoya — 3 qadam:</div>
+      <div><strong>1)</strong> Kartaga to'lang</div>
+      <div><strong>2)</strong> Chekni adminga yuboring</div>
+      <div><strong>3)</strong> Admin pulni ushlab turadi, account qo'lingizga o'tgach sotuvchiga o'tkazadi</div>
     </div>
-    <button class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;" onclick="confirmBuy()">To'lovni amalga oshirish →</button>
+
+    <a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;" onclick="confirmBuy()">💬 Admin bilan bog'lanish (Telegram)</a>
   </div>
 </div>
 
@@ -135,7 +144,7 @@ function showAccGate() {
       </div>
       <div class="gate-benefits">
         <div class="gate-benefit"><span>📊</span> To'liq statistika va nakrutka tahlili</div>
-        <div class="gate-benefit"><span>💬</span> Sotuvchi bilan bevosita chat</div>
+        <div class="gate-benefit"><span>💬</span> Admin bilan bevosita aloqa</div>
         <div class="gate-benefit"><span>🛡️</span> Xavfsiz xarid va Escrow himoya</div>
         <div class="gate-benefit"><span>⭐</span> Safe Deal kafolati</div>
       </div>
@@ -152,10 +161,15 @@ function showAccGate() {
   document.body.appendChild(gate);
 }
 
-function selPay(lbl){
-  document.querySelectorAll('.pay-opt').forEach(function(l){l.classList.remove('sel');});
-  lbl.classList.add('sel');
-  lbl.querySelector('input').checked=true;
+function copyCard(){
+  var num = '4916990359229462';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num).then(function(){
+      showToast('📋 Karta raqami nusxalandi!');
+    }).catch(function(){ showToast('Nusxalashda xato','error'); });
+  } else {
+    showToast('Karta: 4916 9903 5922 9462');
+  }
 }
 
 async function toggleWish(id) {
@@ -267,7 +281,7 @@ function renderPage(acc){
     '<span style="color:var(--text-muted);">Jami summa:</span>' +
     '<span style="font-weight:900;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+priceStr+'</span></div>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;padding:8px;background:var(--bg);border-radius:8px;">' +
-    '📞 To\'lov: Payme/Click — <strong>+998 XX XXX XX XX</strong><br/>Izoh: InstaBazar #'+( acc.id||'').toString().slice(-4)+'</div>';
+    '💳 To\'lov kartaga amalga oshiriladi. Chekni adminga yuboring — pul Escrow himoyasida ushlanadi.<br/>Buyurtma raqami: <strong>InstaBazar #'+( acc.id||'').toString().slice(-4)+'</strong></div>';
 
   document.getElementById('safePriceBox').innerHTML =
     '<div style="font-size:11px;color:var(--text-muted);">Safe Deal narxi</div>' +
@@ -302,7 +316,7 @@ function renderPage(acc){
     '</div>' +
     // Nakrutka
     '<div class="detail-card">' +
-      '<h3 style="font-size:17px;font-weight:700;margin-bottom:16px;">🤖 Nakrutka Tahlili</h3>' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:16px;">🔍 Account tekshiruvi (admin tomonidan qo\'lda)</h3>' +
       '<div style="display:flex;flex-direction:column;gap:13px;">' +
         '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;"><span style="font-weight:600;">Real followers</span><span style="font-weight:700;color:var(--green-dark);">'+(acc.realFollowers||0)+'%</span></div><div class="progress-bar"><div class="progress-fill green" style="width:'+(acc.realFollowers||0)+'%"></div></div></div>' +
         '<div><div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;"><span style="font-weight:600;">Sifat bali</span><span style="font-weight:700;color:var(--primary);">'+(acc.score||0)+'/100</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+(acc.score||0)+'%"></div></div></div>' +
@@ -323,19 +337,14 @@ function renderPage(acc){
     '</div>' +
     // Bog'lanish
     '<div class="detail-card">' +
-      '<h3 style="font-size:17px;font-weight:700;margin-bottom:14px;">💬 Sotuvchi bilan bog\'lanish</h3>' +
+      '<h3 style="font-size:17px;font-weight:700;margin-bottom:14px;">💬 Admin bilan bog\'lanish</h3>' +
       '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:#1e40af;">' +
-        '<strong>ℹ️ Qanday ishlaydi?</strong><br/>Telegram Bot orqali buyurtma bering → Biz sotuvchi bilan bog\'lanamiz → Xavfsiz savdo!' +
+        '<strong>ℹ️ Qanday ishlaydi?</strong><br/>Admin bilan Telegram orqali bog\'laning → Kartaga to\'lang va chekni yuboring → Admin pulni ushlab turadi → Account qo\'lingizga o\'tgach sotuvchiga o\'tkazadi (Escrow himoya).' +
       '</div>' +
-      '<a href="https://t.me/instabazar_bot?start=acc_'+(acc.id||'')+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#2AABEE;color:white;border-radius:10px;padding:13px;font-weight:700;font-size:15px;text-decoration:none;margin-bottom:10px;">' +
-        '✈️ Telegram Bot orqali sotib olish' +
+      '<a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#2AABEE;color:white;border-radius:10px;padding:13px;font-weight:700;font-size:15px;text-decoration:none;margin-bottom:10px;">' +
+        '💬 Admin bilan bog\'lanish (Telegram)' +
       '</a>' +
-      (acc.sellerTelegram
-        ? '<a href="https://t.me/' + acc.sellerTelegram + '" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:11px;font-weight:600;font-size:13px;text-decoration:none;">' +
-          '👤 Sotuvchi bilan to\'g\'ridan bog\'lanish (@' + acc.sellerTelegram + ')' +
-          '</a>'
-        : '<div style="text-align:center;font-size:13px;color:var(--text-muted);padding:8px;">Savol uchun: <a href="https://t.me/instabazar_admin" style="color:var(--primary);font-weight:600;">@instabazar_admin</a></div>'
-      ) +
+      '<div style="text-align:center;font-size:12px;color:var(--text-muted);padding:4px;">Xaridor va sotuvchi faqat admin orqali muloqot qiladi.</div>' +
     '</div>' +
   '</div>' +
   // --- SIDEBAR ---
@@ -348,18 +357,15 @@ function renderPage(acc){
           return '<li><span class="chk">✅</span>'+t+'</li>';
         }).join('') +
       '</ul>' +
-      '<a href="https://t.me/instabazar_bot?start=acc_'+acc.id+'" target="_blank" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;text-decoration:none;gap:8px;background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);">✈️ Bot orqali sotib ol — '+priceStr+'</a>' +
-      '<button onclick="openModal(\'buyModal\')" style="width:100%;background:var(--gradient);color:white;border:none;border-radius:8px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;margin-bottom:9px;">🛒 Sayt orqali sotib olish</button>' +
+      '<button onclick="openModal(\'buyModal\')" class="btn btn-primary" style="width:100%;font-size:15px;padding:13px;margin-bottom:9px;display:flex;justify-content:center;gap:8px;border:none;cursor:pointer;background:linear-gradient(135deg,#833AB4,#C13584,#E1306C);color:#fff;">🛒 Sotib olish — '+priceStr+'</button>' +
       '<button onclick="openModal(\'safeModal\')" style="width:100%;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:8px;padding:10px;font-weight:700;font-size:13px;cursor:pointer;">🛡️ Safe Deal — '+safePriceStr+'</button>' +
       '<div class="seller-mini" style="margin-top:14px;">' +
         '<div class="seller-ava">'+(acc.sellerEmoji||'👤')+'</div>' +
         '<div><div style="font-weight:700;font-size:13px;">'+(acc.sellerName||'Sotuvchi')+'</div>' +
         '<div style="font-size:12px;color:var(--text-muted);">⭐'+(acc.sellerRating||5.0)+' · '+(acc.sellerSales||0)+' savdo</div></div>' +
       '</div>' +
-      '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">🔒 Payme · Click · USDT<br/>⚡ O\'rtacha javob: 1-2 soat</div>' +
-      (acc.sellerTelegram
-        ? '<a href="https://t.me/' + acc.sellerTelegram + '" target="_blank" style="display:block;width:100%;margin-top:10px;background:#2AABEE;color:white;border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;">✈️ Sotuvchi bilan Telegram orqali bog\'lanish</a>'
-        : '') +
+      '<div style="margin-top:12px;font-size:12px;color:var(--text-muted);text-align:center;line-height:1.8;">💳 Kartaga to\'lov · 🔒 Escrow himoya<br/>💬 Savdo admin orqali</div>' +
+      '<a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" style="display:block;width:100%;margin-top:10px;background:#2AABEE;color:white;border-radius:8px;padding:9px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;">💬 Admin bilan bog\'lanish</a>' +
       '<button onclick="toggleWish(\''+acc.id+'\')" id="wishBtn" style="width:100%;margin-top:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-weight:600;font-size:13px;cursor:pointer;">❤️ Saqlash</button>' +
     '</div>' +
     '<div style="background:#17171C;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);border:1.5px solid rgba(255,255,255,0.08);margin-top:18px;">' +
@@ -380,25 +386,16 @@ function renderPage(acc){
 }
 
 
-async function confirmBuy(){
+function confirmBuy(){
   var user=loadUser();
-  if(!user){ closeModal('buyModal'); window.location.href='login.html'; return; }
-  var pay=document.querySelector('input[name="pay"]:checked');
-  if(!pay){ showToast("To'lov usulini tanlang!",'error'); return; }
-
-  var btn=event.target; btn.textContent='⏳ Yuklanmoqda...'; btn.disabled=true;
-
-  if(firebaseOk && currentAcc && !currentAcc.id.startsWith('demo_')){
-    var res=await createOrder(currentAcc.id, pay.value);
-    if(!res.success){ showToast(res.error||"Xato",'error'); btn.textContent="To'lovni amalga oshirish →"; btn.disabled=false; return; }
+  // Foydalanuvchi kirgan bo'lsa va haqiqiy e'lon bo'lsa — buyurtma yozuvi yaratamiz (admin panelda ko'rinadi)
+  if(firebaseOk && user && currentAcc && !currentAcc.id.startsWith('demo_')){
+    try {
+      createOrder(currentAcc.id, 'card_escrow');
+    } catch(e) { console.warn('createOrder:', e); }
   }
-
-  setTimeout(function(){
-    closeModal('buyModal');
-    showToast("✅ To'lov muvaffaqiyatli! Escrow tizimiga qabul qilindi.");
-    setTimeout(function(){ showToast("📧 Tasdiqlash ma'lumotlari emailga yuborildi"); },2000);
-    btn.textContent="To'lovni amalga oshirish →"; btn.disabled=false;
-  },1200);
+  showToast("💬 Admin bilan bog'lanish ochilmoqda. Kartaga to'lang va chekni yuboring.");
+  // Anchor o'zi Telegram chatni yangi oynada ochadi
 }
 
 document.addEventListener('DOMContentLoaded',function(){

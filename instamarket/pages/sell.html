@@ -115,10 +115,10 @@ function renderStep1(){
     '<div class="form-group" style="margin-top:14px;"><label>Tavsif * (kamida 30 belgi)</label>' +
     '<textarea class="form-input" id="f_desc" rows="4" placeholder="Account qanday kontentlar haqida? Auditoriya kim? Nima uchun qimmatli?..." style="resize:vertical;" oninput="document.getElementById(\'descLen\').textContent=this.value.length+\'/300\'" required></textarea>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;" id="descLen">0/300</div></div>' +
-    '<div class="form-group"><label>✈️ Telegram username * (xaridor bilan bog\'lanish uchun)</label>' +
+    '<div class="form-group"><label>✈️ Telegram username * (admin siz bilan bog\'lanishi uchun)</label>' +
     '<div style="position:relative;"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-weight:600;">@</span>' +
     '<input type="text" class="form-input" id="f_telegram" placeholder="telegram_username" style="padding-left:30px;" required/></div>' +
-    '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">⚠️ Xaridor topilganda shu Telegram orqali bog\'laniladi</div></div>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">⚠️ Admin tekshiruv va savdo bo\'yicha shu Telegram orqali bog\'lanadi</div></div>' +
     '<div class="form-group"><label>Narx (so\'mda) *</label><input type="number" class="form-input" id="f_price" placeholder="masalan: 500000" min="50000" step="10000" oninput="calcPrice()" required/>' +
     '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Minimal: 50,000 so\'m · Komissiya 10% hisoblanadi</div>' +
     '<div class="price-calc" id="priceCalc" style="display:none;">' +
@@ -152,7 +152,7 @@ function renderStep2(){
   var allOk = checks.every(function(c){return c.ok;});
   return renderSteps() +
   '<div class="sell-card">' +
-    '<h3>🤖 Avtomatik tekshiruv natijasi</h3><p class="sdesc">Tizim ma\'lumotlaringizni tahlil qildi</p>' +
+    '<h3>🔍 Ma\'lumotlar tekshiruvi</h3><p class="sdesc">Kiritilgan ma\'lumotlar minimal talablarga mosligi</p>' +
     '<div style="border:1.5px solid var(--border);border-radius:10px;overflow:hidden;">' +
       checks.map(function(c){
         return '<div class="checker-row" style="padding:10px 14px;"><span>'+c.label+'</span>' +
@@ -180,11 +180,12 @@ function renderStep3(){
   '<div class="sell-card" style="text-align:center;padding:48px 28px;">' +
     '<div style="font-size:64px;margin-bottom:16px;">🎉</div>' +
     '<h2 style="font-size:26px;font-weight:900;margin-bottom:10px;">E\'lon yuborildi!</h2>' +
-    '<p style="color:var(--text-light);font-size:15px;margin-bottom:28px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;">' +
-    'Moderator <strong>24 soat</strong> ichida e\'loningizni tekshiradi va tasdiqlaydi. Natija haqida xabar olasiz.</p>' +
-    '<div style="background:var(--bg);border-radius:12px;padding:18px;margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;border:1.5px solid var(--border);text-align:left;">' +
+    '<p style="color:var(--text-light);font-size:15px;margin-bottom:24px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.7;">' +
+    'E\'loningiz qabul qilindi. Tekshiruv va tasdiqlash uchun <strong>admin bilan Telegram orqali bog\'laning</strong> — account statistikasi qo\'lda tekshiriladi.</p>' +
+    '<a href="https://t.me/instabazar_admin" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;">💬 Admin bilan bog\'lanish (tasdiqlash uchun)</a>' +
+    '<div style="background:var(--bg);border-radius:12px;padding:18px;margin-bottom:24px;max-width:380px;margin-left:auto;margin-right:auto;border:1.5px solid var(--border);text-align:left;">' +
       '<div style="font-size:12px;color:var(--text-muted);font-weight:700;margin-bottom:10px;text-transform:uppercase;">KEYINGI QADAMLAR</div>' +
-      ['Moderator tekshiradi (24 soat)','E\'lon saytda chiqadi','Xaridor topilsa xabar keladi','To\'lov escrow ga tushadi','72 soat tekshiruvdan so\'ng pul sizga'].map(function(s,i){
+      ['Admin bilan Telegram orqali bog\'laning','Admin account statistikasini qo\'lda tekshiradi','Tasdiqlangach e\'lon saytda chiqadi','Xaridor to\'lovni kartaga amalga oshiradi','Account o\'tkazilgach admin pulni sizga o\'tkazadi (Escrow)'].map(function(s,i){
         return '<div style="font-size:13px;color:var(--text-light);padding:5px 0;">'+( i+1)+'. '+s+'</div>';
       }).join('') +
     '</div>' +
