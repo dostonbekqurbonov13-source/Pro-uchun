@@ -1,8 +1,9 @@
 {
-  "trailingSlash": false,
+  "redirects": [
+    { "source": "/admin", "destination": "/admin/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/instamarket/index.html" },
-    { "source": "/admin", "destination": "/instamarket/admin/index.html" },
     { "source": "/admin/", "destination": "/instamarket/admin/index.html" },
     { "source": "/(.*)/", "destination": "/instamarket/$1/index.html" },
     { "source": "/(.*)", "destination": "/instamarket/$1" }
